@@ -1,8 +1,8 @@
-FROM alpine:3.15.4
+FROM ubuntu:lunar
 
-RUN apk update
-RUN apk upgrade
-RUN apk add g++ musl-dev make luajit luajit-dev
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y make g++ luajit libluajit-5.1-dev
 
 COPY src /build/src
 COPY sdk /build/sdk
