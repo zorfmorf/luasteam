@@ -41,8 +41,13 @@ function love.update(dt)
       for j,m in ipairs(messages) do
          print("received message", j, m, "from connection", connection, type(j))
          print(Steam.networkingSockets.getConnectionInfo(connection))
-         Steam.networkingSockets.sendMessageToConnection(connection, "Hello server! This is the client! Thank you!", Steam.networkingSockets.flags.Send_Reliable)
-         Steam.networkingSockets.sendMessageToConnection(connection, "Immediately one more message!", Steam.networkingSockets.flags.Send_Reliable)
+         --Steam.networkingSockets.sendMessageToConnection(connection, , Steam.networkingSockets.flags.Send_Reliable)
+         --Steam.networkingSockets.sendMessageToConnection(connection, , Steam.networkingSockets.flags.Send_Reliable)
+         local sendM = {}
+         sendM[1] = { conn = connection, msg = "Hello server! This is the client! Thank you!", flag = Steam.networkingSockets.flags.Send_Reliable }
+         sendM[2] = { conn = connection, msg = "Immediately one more message!", flag = Steam.networkingSockets.flags.Send_Reliable }
+         local result = Steam.networkingSockets.sendMessages(#sendM, sendM)
+         print("sendMessages result", result[1], result[2])
       end
    end
 end
