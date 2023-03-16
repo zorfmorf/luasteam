@@ -66,12 +66,15 @@ function love.update(dt)
    --for conn,_ in pairs(connections) do
    --local messages = Steam.networkingSockets.receiveMessagesOnConnection(conn)
    if poll then
-      local messages = Steam.networkingSockets.receiveMessagesOnPollGroup(poll)
-      for j,m in ipairs(messages) do
-         print("received message", j, m.msg, "from connection", m.conn, type(m))
-         --print("received message", j, m, "from connection", conn, type(j))
-         print("Logged on:", Steam.gameServer.bLoggedOn())
-         print("Secure:", Steam.gameServer.bSecure())
+      local n, messages = Steam.networkingSockets.receiveMessagesOnPollGroup(poll)
+      if n > -1 then
+         
+         for j,m in ipairs(messages) do
+            print("received message", j, m.msg, "from connection", m.conn, type(m))
+            --print("received message", j, m, "from connection", conn, type(j))
+            print("Logged on:", Steam.gameServer.bLoggedOn())
+            print("Secure:", Steam.gameServer.bSecure())
+         end
       end
    end
    
