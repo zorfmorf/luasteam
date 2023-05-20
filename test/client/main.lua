@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local Steam = require 'luasteam'
 
 local connection = nil
