@@ -132,7 +132,12 @@ Function Reference
 **Example**::
 
     -- Validate an auth ticket received from a client
-    Steam.GameServer.BeginAuthSession(authTicket, steamID)
+    local result = Steam.GameServer.BeginAuthSession(authTicket, authTicketSize, clientSteamID)
+    if result == k_EBeginAuthSessionResultOK then
+        print('Started auth session for', clientSteamID)
+    else
+        print('Failed to start auth session', result)
+    end
 
 .. function:: GameServer.CancelAuthTicket(hAuthTicket)
 
