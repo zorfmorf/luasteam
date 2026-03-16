@@ -1,7 +1,7 @@
 SRC=src/*.cpp src/auto/*.cpp
 
 # -Wno-invalid-offsetof prevents STEAM_CALLBACK from giving out warnings
-CPP_FLAGS=-Wno-invalid-offsetof -Wall $(STDLIB_VER)
+CPP_FLAGS=-Wno-invalid-offsetof -Wall $(STDLIB_VER) -O2
 
 THIRD_PARTY=./third-party
 LUAJIT_PATH=./luajit
