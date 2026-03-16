@@ -31,10 +31,6 @@ jobs:
         run: |
           make fmt
           git diff --exit-code
-      - name: Download Steamworks SDK
-        run: |
-          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
-          unzip -q sdk.zip
       - name: Validate make generate is clean
         run: |
           make generate
@@ -68,10 +64,6 @@ jobs:
         run: git submodule update --init
       - name: Install dependencies
         run: apt-get update && apt-get install -y build-essential g++-multilib
-      - name: Download Steamworks SDK
-        run: |
-          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
-          unzip -q sdk.zip
       - name: Build linux64
         run: make linux64 && mkdir -p build && cp luasteam.so build/linux64_luasteam.so
       - name: Build linux32
@@ -90,10 +82,6 @@ jobs:
       - uses: actions/checkout@v6
       - name: Update submodules
         run: git submodule update --init
-      - name: Download Steamworks SDK
-        run: |
-          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
-          unzip -q sdk.zip
       - name: Build
         run: make osx && mkdir -p build && cp luasteam.so build/osx_luasteam.so
       - name: Print dependencies
@@ -123,11 +111,6 @@ jobs:
       - name: Update submodules
         shell: bash
         run: git submodule update --init
-      - name: Download Steamworks SDK
-        shell: bash
-        run: |
-          curl -u yancouto:${{ secrets.SDK_TOKEN }} -sL https://raw.githubusercontent.com/yancouto/private-steamworks-sdk/master/steamworks_sdk_163.zip -o sdk.zip
-          unzip -q sdk.zip
       - name: Build win64
         run: |
           export PATH=/mingw64/bin:$PATH

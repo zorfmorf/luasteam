@@ -7,7 +7,6 @@ generator/audit.py
 ### Steam Stuff ###
 
 steam_appid.txt
-/sdk
 
 ### Sphinx/Docs ###
 /docs/_build
