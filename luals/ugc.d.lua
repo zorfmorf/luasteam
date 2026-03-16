@@ -556,5 +556,17 @@ function UGC.SetItemsDisabledLocally(pvecPublishedFileIDs, unNumPublishedFileIDs
 ---@return boolean
 function UGC.SetSubscriptionsLoadOrder(pvecPublishedFileIDs, unNumPublishedFileIDs) end
 
+---@param nPublishedFileID uint64 -- PublishedFileId_t
+---@return boolean
+function UGC.MarkDownloadedItemAsUnused(nPublishedFileID) end
+
+---@return integer
+function UGC.GetNumDownloadedItems() end
+
+---@param cMaxEntries integer? size of the buffer for pvecPublishedFileIDs; if nil then the buffer will be NULL
+---@return integer
+---@return uint64[] -- Value of: pvecPublishedFileIDs
+function UGC.GetDownloadedItems(cMaxEntries) end
+
 Steam.UGC = UGC
 Steam.GameServerUGC = UGC

@@ -1776,6 +1776,7 @@
 ---@field k_EFeatureSiteLicense integer
 ---@field k_EFeatureKioskMode_Deprecated integer
 ---@field k_EFeatureBlockAlways integer
+---@field k_EFeatureDesktop integer
 ---@field k_EFeatureMax integer
 ---@field k_ESteamDeviceFormFactorUnknown integer
 ---@field k_ESteamDeviceFormFactorPhone integer
@@ -2064,6 +2065,7 @@
 ---@field k_ESteamNetworkingConfig_LogLevel_P2PRendezvous integer
 ---@field k_ESteamNetworkingConfig_LogLevel_SDRRelayPings integer
 ---@field k_ESteamNetworkingConfig_ECN integer
+---@field k_ESteamNetworkingConfig_SDRClient_EnableTOSProbes integer
 ---@field k_ESteamNetworkingConfig_DELETED_EnumerateDevVars integer
 ---@field k_ESteamNetworkingConfigValue__Force32Bit integer
 ---@field k_ESteamNetworkingGetConfigValue_BadValue integer

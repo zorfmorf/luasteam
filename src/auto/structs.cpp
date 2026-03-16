@@ -2682,9 +2682,13 @@ static int SteamNetConnectionRealTimeStatus_t_index(lua_State *L) {
 		lua_pushinteger(L, self->m_cbSentUnackedReliable);
 		return 1;
 	}
+	if (strcmp(key, "m_usecMaxJitter") == 0) {
+		lua_pushinteger(L, self->m_usecMaxJitter);
+		return 1;
+	}
 	if (strcmp(key, "reserved") == 0) {
-		lua_createtable(L, 16, 0);
-		for(decltype(16) i = 0; i < 16; i++) {
+		lua_createtable(L, 15, 0);
+		for(decltype(15) i = 0; i < 15; i++) {
 			lua_pushinteger(L, self->reserved[i]);
 			lua_rawseti(L, -2, i+1);
 		}
@@ -2747,9 +2751,13 @@ static int SteamNetConnectionRealTimeStatus_t_newindex(lua_State *L) {
 		self->m_cbSentUnackedReliable = static_cast<int>(luaL_checkint(L, 3));
 		return 0;
 	}
+	if (strcmp(key, "m_usecMaxJitter") == 0) {
+		self->m_usecMaxJitter = static_cast<int32>(luaL_checkint(L, 3));
+		return 0;
+	}
 	if (strcmp(key, "reserved") == 0) {
 		luaL_checktype(L, 3, LUA_TTABLE);
-		for(decltype(16) i = 0; i < 16; i++) {
+		for(decltype(15) i = 0; i < 15; i++) {
 			lua_rawgeti(L, 3, i+1);
 			self->reserved[i] = static_cast<int>(luaL_checkint(L, -1));
 			lua_pop(L, 1);
@@ -2824,10 +2832,15 @@ EXTERN int luasteam_newSteamNetConnectionRealTimeStatus_t(lua_State *L) {
 			ptr->m_cbSentUnackedReliable = static_cast<int>(luaL_checkint(L, -1));
 		}
 		lua_pop(L, 1);
+		lua_getfield(L, 1, "m_usecMaxJitter");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_usecMaxJitter = static_cast<int32>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
 		lua_getfield(L, 1, "reserved");
 		if (!lua_isnil(L, -1)) {
 			luaL_checktype(L, -1, LUA_TTABLE);
-			for(decltype(16) i = 0; i < 16; i++) {
+			for(decltype(15) i = 0; i < 15; i++) {
 				lua_rawgeti(L, -1, i+1);
 				ptr->reserved[i] = static_cast<int>(luaL_checkint(L, -1));
 				lua_pop(L, 1);
@@ -14570,6 +14583,86 @@ EXTERN int luasteam_newSteamRemotePlayTogetherGuestInvite_t(lua_State *L) {
 	return 1;
 }
 
+static int SteamRemotePlaySessionAvatarLoaded_tMetatable_ref = LUA_NOREF;
+
+static int SteamRemotePlaySessionAvatarLoaded_t_index(lua_State *L) {
+	if (lua_type(L, 2) != LUA_TSTRING) { lua_pushnil(L); return 1; }
+	const char *key = lua_tostring(L, 2);
+	SteamRemotePlaySessionAvatarLoaded_t *self = (SteamRemotePlaySessionAvatarLoaded_t*)lua_touserdata(L, 1);
+	if (strcmp(key, "m_unSessionID") == 0) {
+		lua_pushinteger(L, self->m_unSessionID);
+		return 1;
+	}
+	if (strcmp(key, "m_iImage") == 0) {
+		lua_pushinteger(L, self->m_iImage);
+		return 1;
+	}
+	if (strcmp(key, "m_iWide") == 0) {
+		lua_pushinteger(L, self->m_iWide);
+		return 1;
+	}
+	if (strcmp(key, "m_iTall") == 0) {
+		lua_pushinteger(L, self->m_iTall);
+		return 1;
+	}
+	lua_pushnil(L);
+	return 1;
+}
+
+static int SteamRemotePlaySessionAvatarLoaded_t_newindex(lua_State *L) {
+	if (lua_type(L, 2) != LUA_TSTRING) { return 0; }
+	const char *key = lua_tostring(L, 2);
+	SteamRemotePlaySessionAvatarLoaded_t *self = (SteamRemotePlaySessionAvatarLoaded_t*)lua_touserdata(L, 1);
+	if (strcmp(key, "m_unSessionID") == 0) {
+		self->m_unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "m_iImage") == 0) {
+		self->m_iImage = static_cast<int>(luaL_checkint(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "m_iWide") == 0) {
+		self->m_iWide = static_cast<int>(luaL_checkint(L, 3));
+		return 0;
+	}
+	if (strcmp(key, "m_iTall") == 0) {
+		self->m_iTall = static_cast<int>(luaL_checkint(L, 3));
+		return 0;
+	}
+	return luaL_error(L, "SteamRemotePlaySessionAvatarLoaded_t has no field '%%s'", key);
+}
+
+EXTERN int luasteam_newSteamRemotePlaySessionAvatarLoaded_t(lua_State *L) {
+	SteamRemotePlaySessionAvatarLoaded_t *ptr = (SteamRemotePlaySessionAvatarLoaded_t*)lua_newuserdata(L, sizeof(SteamRemotePlaySessionAvatarLoaded_t));
+	new (ptr) SteamRemotePlaySessionAvatarLoaded_t();
+	if (!lua_isnoneornil(L, 1)) {
+		luaL_checktype(L, 1, LUA_TTABLE);
+		lua_getfield(L, 1, "m_unSessionID");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "m_iImage");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_iImage = static_cast<int>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "m_iWide");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_iWide = static_cast<int>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+		lua_getfield(L, 1, "m_iTall");
+		if (!lua_isnil(L, -1)) {
+			ptr->m_iTall = static_cast<int>(luaL_checkint(L, -1));
+		}
+		lua_pop(L, 1);
+	}
+	lua_rawgeti(L, LUA_REGISTRYINDEX, SteamRemotePlaySessionAvatarLoaded_tMetatable_ref);
+	lua_setmetatable(L, -2);
+	return 1;
+}
+
 static int SteamNetworkingMessagesSessionRequest_tMetatable_ref = LUA_NOREF;
 
 static int SteamNetworkingMessagesSessionRequest_t_index(lua_State *L) {
@@ -19671,6 +19764,25 @@ SteamRemotePlayTogetherGuestInvite_t *check_SteamRemotePlayTogetherGuestInvite_t
 
 SteamRemotePlayTogetherGuestInvite_t check_SteamRemotePlayTogetherGuestInvite_t(lua_State *L, int nParam) { return *check_SteamRemotePlayTogetherGuestInvite_t_ptr(L, nParam); }
 
+void push_SteamRemotePlaySessionAvatarLoaded_t(lua_State *L, SteamRemotePlaySessionAvatarLoaded_t val) {
+	SteamRemotePlaySessionAvatarLoaded_t *ptr = (SteamRemotePlaySessionAvatarLoaded_t*)lua_newuserdata(L, sizeof(SteamRemotePlaySessionAvatarLoaded_t));
+	*ptr = val;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, SteamRemotePlaySessionAvatarLoaded_tMetatable_ref);
+	lua_setmetatable(L, -2);
+}
+
+SteamRemotePlaySessionAvatarLoaded_t *check_SteamRemotePlaySessionAvatarLoaded_t_ptr(lua_State *L, int nParam) {
+	luaL_argcheck(L, lua_isuserdata(L, nParam), nParam, "SteamRemotePlaySessionAvatarLoaded_t expected");
+	lua_rawgeti(L, LUA_REGISTRYINDEX, SteamRemotePlaySessionAvatarLoaded_tMetatable_ref);
+	lua_getmetatable(L, nParam);
+	bool ok = lua_rawequal(L, -1, -2);
+	lua_pop(L, 2);
+	luaL_argcheck(L, ok, nParam, "SteamRemotePlaySessionAvatarLoaded_t expected");
+	return (SteamRemotePlaySessionAvatarLoaded_t*)lua_touserdata(L, nParam);
+}
+
+SteamRemotePlaySessionAvatarLoaded_t check_SteamRemotePlaySessionAvatarLoaded_t(lua_State *L, int nParam) { return *check_SteamRemotePlaySessionAvatarLoaded_t_ptr(L, nParam); }
+
 void push_SteamNetworkingMessagesSessionRequest_t(lua_State *L, SteamNetworkingMessagesSessionRequest_t val) {
 	SteamNetworkingMessagesSessionRequest_t *ptr = (SteamNetworkingMessagesSessionRequest_t*)lua_newuserdata(L, sizeof(SteamNetworkingMessagesSessionRequest_t));
 	*ptr = val;
@@ -21280,6 +21392,12 @@ void add_structs_auto(lua_State *L) {
 	add_func(L, "__index", SteamRemotePlayTogetherGuestInvite_t_index);
 	add_func(L, "__newindex", SteamRemotePlayTogetherGuestInvite_t_newindex);
 	SteamRemotePlayTogetherGuestInvite_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamRemotePlaySessionAvatarLoaded_t", luasteam_newSteamRemotePlaySessionAvatarLoaded_t);
+	// SteamRemotePlaySessionAvatarLoaded_t metatable
+	lua_createtable(L, 0, 2);
+	add_func(L, "__index", SteamRemotePlaySessionAvatarLoaded_t_index);
+	add_func(L, "__newindex", SteamRemotePlaySessionAvatarLoaded_t_newindex);
+	SteamRemotePlaySessionAvatarLoaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	add_func(L, "newSteamNetworkingMessagesSessionRequest_t", luasteam_newSteamNetworkingMessagesSessionRequest_t);
 	// SteamNetworkingMessagesSessionRequest_t metatable
 	lua_createtable(L, 0, 2);
@@ -21801,6 +21919,8 @@ void shutdown_structs_auto(lua_State *L) {
 	SteamRemotePlaySessionDisconnected_tMetatable_ref = LUA_NOREF;
 	luaL_unref(L, LUA_REGISTRYINDEX, SteamRemotePlayTogetherGuestInvite_tMetatable_ref);
 	SteamRemotePlayTogetherGuestInvite_tMetatable_ref = LUA_NOREF;
+	luaL_unref(L, LUA_REGISTRYINDEX, SteamRemotePlaySessionAvatarLoaded_tMetatable_ref);
+	SteamRemotePlaySessionAvatarLoaded_tMetatable_ref = LUA_NOREF;
 	luaL_unref(L, LUA_REGISTRYINDEX, SteamNetworkingMessagesSessionRequest_tMetatable_ref);
 	SteamNetworkingMessagesSessionRequest_tMetatable_ref = LUA_NOREF;
 	luaL_unref(L, LUA_REGISTRYINDEX, SteamNetworkingMessagesSessionFailed_tMetatable_ref);

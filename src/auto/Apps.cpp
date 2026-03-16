@@ -520,9 +520,9 @@ static int luasteam_Apps_GetNumBetas(lua_State *L) {
 }
 
 // In C++:
-// bool GetBetaInfo(int iBetaIndex, uint32 * punFlags, uint32 * punBuildID, char * pchBetaName, int cchBetaName, char * pchDescription, int cchDescription);
+// bool GetBetaInfo(int iBetaIndex, uint32 * punFlags, uint32 * punBuildID, char * pchBetaName, int cchBetaName, char * pchDescription, int cchDescription, uint32 * punLastUpdated);
 // In Lua:
-// (bool, punFlags: int, punBuildID: int, pchBetaName: str, pchDescription: str) Apps.GetBetaInfo(iBetaIndex: int, cchBetaName: int, cchDescription: int)
+// (bool, punFlags: int, punBuildID: int, pchBetaName: str, pchDescription: str, punLastUpdated: int) Apps.GetBetaInfo(iBetaIndex: int, cchBetaName: int, cchDescription: int)
 static int luasteam_Apps_GetBetaInfo(lua_State *L) {
 	auto *iface = SteamApps();
 	int iBetaIndex = static_cast<int>(luaL_checkint(L, 1));
@@ -532,13 +532,15 @@ static int luasteam_Apps_GetBetaInfo(lua_State *L) {
 	std::vector<char> pchBetaName(cchBetaName);
 	int cchDescription = lua_isnil(L, 3) ? 0 : (int)luaL_checkint(L, 3);
 	std::vector<char> pchDescription(cchDescription);
-	bool __ret = SteamAPI_ISteamApps_GetBetaInfo(iface, iBetaIndex, &punFlags, &punBuildID, lua_isnil(L, 2) ? nullptr : pchBetaName.data(), cchBetaName, lua_isnil(L, 3) ? nullptr : pchDescription.data(), cchDescription);
+	uint32 punLastUpdated;
+	bool __ret = SteamAPI_ISteamApps_GetBetaInfo(iface, iBetaIndex, &punFlags, &punBuildID, lua_isnil(L, 2) ? nullptr : pchBetaName.data(), cchBetaName, lua_isnil(L, 3) ? nullptr : pchDescription.data(), cchDescription, &punLastUpdated);
 	lua_pushboolean(L, __ret);
 	lua_pushinteger(L, punFlags);
 	lua_pushinteger(L, punBuildID);
 	lua_pushstring(L, reinterpret_cast<const char*>(pchBetaName.data()));
 	lua_pushstring(L, reinterpret_cast<const char*>(pchDescription.data()));
-	return 5;
+	lua_pushinteger(L, punLastUpdated);
+	return 6;
 }
 
 // In C++:

@@ -137,6 +137,7 @@ function Apps.GetNumBetas() end
 ---@return integer -- Value of: punBuildID
 ---@return string -- Value of: pchBetaName
 ---@return string -- Value of: pchDescription
+---@return integer -- Value of: punLastUpdated
 function Apps.GetBetaInfo(iBetaIndex, cchBetaName, cchDescription) end
 
 ---@param pchBetaName string?

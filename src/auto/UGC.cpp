@@ -2377,6 +2377,51 @@ static int luasteam_UGC_SetSubscriptionsLoadOrder(lua_State *L, ISteamUGC *iface
 static int luasteam_UGC_SetSubscriptionsLoadOrder_user(lua_State *L) { return luasteam_UGC_SetSubscriptionsLoadOrder(L, SteamUGC()); }
 static int luasteam_UGC_SetSubscriptionsLoadOrder_gs(lua_State *L) { return luasteam_UGC_SetSubscriptionsLoadOrder(L, SteamGameServerUGC()); }
 
+// In C++:
+// bool MarkDownloadedItemAsUnused(PublishedFileId_t nPublishedFileID);
+// In Lua:
+// bool UGC.MarkDownloadedItemAsUnused(nPublishedFileID: uint64)
+static int luasteam_UGC_MarkDownloadedItemAsUnused(lua_State *L, ISteamUGC *iface) {
+	PublishedFileId_t nPublishedFileID = luasteam::checkuint64(L, 1);
+	bool __ret = SteamAPI_ISteamUGC_MarkDownloadedItemAsUnused(iface, nPublishedFileID);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+static int luasteam_UGC_MarkDownloadedItemAsUnused_user(lua_State *L) { return luasteam_UGC_MarkDownloadedItemAsUnused(L, SteamUGC()); }
+static int luasteam_UGC_MarkDownloadedItemAsUnused_gs(lua_State *L) { return luasteam_UGC_MarkDownloadedItemAsUnused(L, SteamGameServerUGC()); }
+
+// In C++:
+// uint32 GetNumDownloadedItems();
+// In Lua:
+// int UGC.GetNumDownloadedItems()
+static int luasteam_UGC_GetNumDownloadedItems(lua_State *L, ISteamUGC *iface) {
+	uint32 __ret = SteamAPI_ISteamUGC_GetNumDownloadedItems(iface);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+static int luasteam_UGC_GetNumDownloadedItems_user(lua_State *L) { return luasteam_UGC_GetNumDownloadedItems(L, SteamUGC()); }
+static int luasteam_UGC_GetNumDownloadedItems_gs(lua_State *L) { return luasteam_UGC_GetNumDownloadedItems(L, SteamGameServerUGC()); }
+
+// In C++:
+// uint32 GetDownloadedItems(PublishedFileId_t * pvecPublishedFileIDs, uint32 cMaxEntries);
+// In Lua:
+// (int, pvecPublishedFileIDs: uint64[]) UGC.GetDownloadedItems(cMaxEntries: int)
+static int luasteam_UGC_GetDownloadedItems(lua_State *L, ISteamUGC *iface) {
+	uint32 cMaxEntries = lua_isnil(L, 1) ? 0 : (uint32)luaL_checkint(L, 1);
+	std::vector<PublishedFileId_t> pvecPublishedFileIDs(cMaxEntries);
+	uint32 __ret = SteamAPI_ISteamUGC_GetDownloadedItems(iface, lua_isnil(L, 1) ? nullptr : pvecPublishedFileIDs.data(), cMaxEntries);
+	lua_pushinteger(L, __ret);
+	lua_createtable(L, __ret, 0);
+	for(decltype(__ret) i = 0; i < __ret; i++) {
+		luasteam::pushuint64(L, pvecPublishedFileIDs[i]);
+		lua_rawseti(L, -2, i+1);
+	}
+	luasteam::set_readonly_table_metatable(L);
+	return 2;
+}
+static int luasteam_UGC_GetDownloadedItems_user(lua_State *L) { return luasteam_UGC_GetDownloadedItems(L, SteamUGC()); }
+static int luasteam_UGC_GetDownloadedItems_gs(lua_State *L) { return luasteam_UGC_GetDownloadedItems(L, SteamGameServerUGC()); }
+
 void register_UGC_auto(lua_State *L, bool is_gs) {
 	add_func(L, "CreateQueryUserUGCRequest", is_gs ? luasteam_UGC_CreateQueryUserUGCRequest_gs : luasteam_UGC_CreateQueryUserUGCRequest_user);
 	add_func(L, "CreateQueryAllUGCRequestPage", is_gs ? luasteam_UGC_CreateQueryAllUGCRequestPage_gs : luasteam_UGC_CreateQueryAllUGCRequestPage_user);
@@ -2473,6 +2518,9 @@ void register_UGC_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetUserContentDescriptorPreferences", is_gs ? luasteam_UGC_GetUserContentDescriptorPreferences_gs : luasteam_UGC_GetUserContentDescriptorPreferences_user);
 	add_func(L, "SetItemsDisabledLocally", is_gs ? luasteam_UGC_SetItemsDisabledLocally_gs : luasteam_UGC_SetItemsDisabledLocally_user);
 	add_func(L, "SetSubscriptionsLoadOrder", is_gs ? luasteam_UGC_SetSubscriptionsLoadOrder_gs : luasteam_UGC_SetSubscriptionsLoadOrder_user);
+	add_func(L, "MarkDownloadedItemAsUnused", is_gs ? luasteam_UGC_MarkDownloadedItemAsUnused_gs : luasteam_UGC_MarkDownloadedItemAsUnused_user);
+	add_func(L, "GetNumDownloadedItems", is_gs ? luasteam_UGC_GetNumDownloadedItems_gs : luasteam_UGC_GetNumDownloadedItems_user);
+	add_func(L, "GetDownloadedItems", is_gs ? luasteam_UGC_GetDownloadedItems_gs : luasteam_UGC_GetDownloadedItems_user);
 }
 
 void add_UGC_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {

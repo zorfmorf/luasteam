@@ -2,6 +2,7 @@
 ---@field OnSteamRemotePlaySessionConnected? fun(data: SteamRemotePlaySessionConnected_t)
 ---@field OnSteamRemotePlaySessionDisconnected? fun(data: SteamRemotePlaySessionDisconnected_t)
 ---@field OnSteamRemotePlayTogetherGuestInvite? fun(data: SteamRemotePlayTogetherGuestInvite_t)
+---@field OnSteamRemotePlaySessionAvatarLoaded? fun(data: SteamRemotePlaySessionAvatarLoaded_t)
 local RemotePlay = {}
 
 ---@return integer
@@ -12,8 +13,28 @@ function RemotePlay.GetSessionCount() end
 function RemotePlay.GetSessionID(iSessionIndex) end
 
 ---@param unSessionID integer -- RemotePlaySessionID_t
+---@return boolean
+function RemotePlay.BSessionRemotePlayTogether(unSessionID) end
+
+---@param unSessionID integer -- RemotePlaySessionID_t
 ---@return uint64 -- CSteamID
 function RemotePlay.GetSessionSteamID(unSessionID) end
+
+---@param unSessionID integer -- RemotePlaySessionID_t
+---@return integer
+function RemotePlay.GetSessionGuestID(unSessionID) end
+
+---@param unSessionID integer -- RemotePlaySessionID_t
+---@return integer
+function RemotePlay.GetSmallSessionAvatar(unSessionID) end
+
+---@param unSessionID integer -- RemotePlaySessionID_t
+---@return integer
+function RemotePlay.GetMediumSessionAvatar(unSessionID) end
+
+---@param unSessionID integer -- RemotePlaySessionID_t
+---@return integer
+function RemotePlay.GetLargeSessionAvatar(unSessionID) end
 
 ---@param unSessionID integer -- RemotePlaySessionID_t
 ---@return string

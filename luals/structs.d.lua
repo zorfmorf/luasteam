@@ -418,6 +418,7 @@ function Steam.newSteamNetConnectionInfo_t(table) end
 ---@field m_cbPendingUnreliable integer
 ---@field m_cbPendingReliable integer
 ---@field m_cbSentUnackedReliable integer
+---@field m_usecMaxJitter integer
 ---@field reserved integer[]
 
 ---@param table table?
@@ -2019,6 +2020,16 @@ function Steam.newSteamRemotePlaySessionDisconnected_t(table) end
 ---@param table table?
 ---@return SteamRemotePlayTogetherGuestInvite_t
 function Steam.newSteamRemotePlayTogetherGuestInvite_t(table) end
+
+---@class SteamRemotePlaySessionAvatarLoaded_t
+---@field m_unSessionID integer
+---@field m_iImage integer
+---@field m_iWide integer
+---@field m_iTall integer
+
+---@param table table?
+---@return SteamRemotePlaySessionAvatarLoaded_t
+function Steam.newSteamRemotePlaySessionAvatarLoaded_t(table) end
 
 ---@class SteamNetworkingMessagesSessionRequest_t
 ---@field m_identityRemote SteamNetworkingIdentity

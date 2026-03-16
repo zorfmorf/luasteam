@@ -12,14 +12,19 @@ List of Functions
 * :func:`RemotePlay.BEnableRemotePlayTogetherDirectInput`
 * :func:`RemotePlay.BGetSessionClientResolution`
 * :func:`RemotePlay.BSendRemotePlayTogetherInvite`
+* :func:`RemotePlay.BSessionRemotePlayTogether`
 * :func:`RemotePlay.CreateMouseCursor`
 * :func:`RemotePlay.DisableRemotePlayTogetherDirectInput`
 * :func:`RemotePlay.GetInput`
+* :func:`RemotePlay.GetLargeSessionAvatar`
+* :func:`RemotePlay.GetMediumSessionAvatar`
 * :func:`RemotePlay.GetSessionClientFormFactor`
 * :func:`RemotePlay.GetSessionClientName`
 * :func:`RemotePlay.GetSessionCount`
+* :func:`RemotePlay.GetSessionGuestID`
 * :func:`RemotePlay.GetSessionID`
 * :func:`RemotePlay.GetSessionSteamID`
+* :func:`RemotePlay.GetSmallSessionAvatar`
 * :func:`RemotePlay.SetMouseCursor`
 * :func:`RemotePlay.SetMousePosition`
 * :func:`RemotePlay.SetMouseVisibility`
@@ -31,6 +36,7 @@ List of Callbacks
 * :func:`RemotePlay.OnSteamRemotePlaySessionConnected`
 * :func:`RemotePlay.OnSteamRemotePlaySessionDisconnected`
 * :func:`RemotePlay.OnSteamRemotePlayTogetherGuestInvite`
+* :func:`RemotePlay.OnSteamRemotePlaySessionAvatarLoaded`
 
 Function Reference
 ------------------
@@ -70,6 +76,14 @@ Function Reference
     if Steam.RemotePlay.BSendRemotePlayTogetherInvite(friendSteamID) then
         print('Remote Play Together invite sent')
     end
+
+.. function:: RemotePlay.BSessionRemotePlayTogether(unSessionID)
+
+    🤖 **Auto-generated binding**
+
+    :param int - RemotePlaySessionID_t unSessionID:
+    :returns: (bool) Return value
+    :SteamWorks: `BSessionRemotePlayTogether <https://partner.steamgames.com/doc/api/ISteamRemotePlay#BSessionRemotePlayTogether>`_
 
 .. function:: RemotePlay.CreateMouseCursor(nWidth, nHeight, nHotX, nHotY, pBGRA, nPitch)
 
@@ -111,6 +125,22 @@ Function Reference
         processInput(input)
     end
 
+.. function:: RemotePlay.GetLargeSessionAvatar(unSessionID)
+
+    🤖 **Auto-generated binding**
+
+    :param int - RemotePlaySessionID_t unSessionID:
+    :returns: (int) Return value
+    :SteamWorks: `GetLargeSessionAvatar <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetLargeSessionAvatar>`_
+
+.. function:: RemotePlay.GetMediumSessionAvatar(unSessionID)
+
+    🤖 **Auto-generated binding**
+
+    :param int - RemotePlaySessionID_t unSessionID:
+    :returns: (int) Return value
+    :SteamWorks: `GetMediumSessionAvatar <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetMediumSessionAvatar>`_
+
 .. function:: RemotePlay.GetSessionClientFormFactor(unSessionID)
 
     🤖 **Auto-generated binding**
@@ -150,6 +180,14 @@ Function Reference
     local count = Steam.RemotePlay.GetSessionCount()
     print('Active Remote Play sessions:', count)
 
+.. function:: RemotePlay.GetSessionGuestID(unSessionID)
+
+    🤖 **Auto-generated binding**
+
+    :param int - RemotePlaySessionID_t unSessionID:
+    :returns: (int) Return value
+    :SteamWorks: `GetSessionGuestID <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSessionGuestID>`_
+
 .. function:: RemotePlay.GetSessionID(iSessionIndex)
 
     🤖 **Auto-generated binding**
@@ -179,6 +217,14 @@ Function Reference
 
     local steamID = Steam.RemotePlay.GetSessionSteamID(sessionID)
     print('Remote player:', Steam.Friends.GetFriendPersonaName(steamID))
+
+.. function:: RemotePlay.GetSmallSessionAvatar(unSessionID)
+
+    🤖 **Auto-generated binding**
+
+    :param int - RemotePlaySessionID_t unSessionID:
+    :returns: (int) Return value
+    :SteamWorks: `GetSmallSessionAvatar <https://partner.steamgames.com/doc/api/ISteamRemotePlay#GetSmallSessionAvatar>`_
 
 .. function:: RemotePlay.SetMouseCursor(unSessionID, unCursorID)
 
@@ -252,4 +298,15 @@ Callbacks
     **callback(data)** receives:
 
     * **data.m_szConnectURL** *(string)*
+
+.. function:: RemotePlay.OnSteamRemotePlaySessionAvatarLoaded
+
+    Callback for `SteamRemotePlaySessionAvatarLoaded_t <https://partner.steamgames.com/doc/api/ISteamRemotePlay#SteamRemotePlaySessionAvatarLoaded_t>`_
+
+    **callback(data)** receives:
+
+    * **data.m_unSessionID** *(int - RemotePlaySessionID_t)*
+    * **data.m_iImage** *(int)*
+    * **data.m_iWide** *(int)*
+    * **data.m_iTall** *(int)*
 

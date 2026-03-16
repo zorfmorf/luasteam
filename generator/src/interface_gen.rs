@@ -1395,16 +1395,17 @@ impl Generator {
                 } else {
                     let size = if [
                         "SteamAPI_ISteamApps_GetInstalledDepots",
-                        "SteamAPI_ISteamRemotePlay_GetInput",
-                        "SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64",
-                        "SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble",
-                        "SteamAPI_ISteamUGC_GetSubscribedItems",
-                        "SteamAPI_ISteamInput_GetConnectedControllers",
                         "SteamAPI_ISteamInput_GetActiveActionSetLayers",
                         "SteamAPI_ISteamInput_GetAnalogActionOrigins",
+                        "SteamAPI_ISteamInput_GetConnectedControllers",
                         "SteamAPI_ISteamInput_GetDigitalActionOrigins",
                         "SteamAPI_ISteamNetworkingUtils_GetPOPList",
+                        "SteamAPI_ISteamRemotePlay_GetInput",
+                        "SteamAPI_ISteamUGC_GetDownloadedItems",
                         "SteamAPI_ISteamUGC_GetQueryUGCContentDescriptors",
+                        "SteamAPI_ISteamUGC_GetSubscribedItems",
+                        "SteamAPI_ISteamUserStats_GetGlobalStatHistoryDouble",
+                        "SteamAPI_ISteamUserStats_GetGlobalStatHistoryInt64",
                         // This is not in the official docs, but I assumed this from the return value
                         "SteamAPI_ISteamUGC_GetUserContentDescriptorPreferences",
                     ]
@@ -1422,12 +1423,12 @@ impl Generator {
                             // If the size is a pointer, it is updated, use that
                             oac
                         } else if [
-                            "SteamAPI_ISteamFriends_GetFriendsGroupMembersList",
                             "SteamAPI_ISteamFriends_DownloadClanActivityCounts",
-                            "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
-                            "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
+                            "SteamAPI_ISteamFriends_GetFriendsGroupMembersList",
                             "SteamAPI_ISteamInventory_GetItemsWithPrices",
+                            "SteamAPI_ISteamParties_GetAvailableBeaconLocations",
                             "SteamAPI_ISteamUGC_GetQueryUGCChildren",
+                            "SteamAPI_ISteamUserStats_GetDownloadedLeaderboardEntry",
                         ]
                         .contains(&method.methodname_flat.as_str())
                         {

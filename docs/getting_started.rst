@@ -26,7 +26,7 @@ On Linux you may need ``LD_LIBRARY_PATH=. love ...`` when running with LÖVE. Th
     * Windows 32: ``sdk/redistributable_bin/steam_api.dll``
     * macOS: ``sdk/redistributable_bin/osx/libsteam_api.dylib``
 
-    This version of luasteam is guaranteed to work with Steamworks SDK v1.63 and
+    This version of luasteam is guaranteed to work with Steamworks SDK v1.64 and
     likely works with later versions.
 
 When developing, make sure Steam is running and place a ``steam_appid.txt`` file

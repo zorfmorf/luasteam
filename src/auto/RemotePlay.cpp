@@ -10,6 +10,7 @@ private:
 	STEAM_CALLBACK(RemotePlayCallbackListener, OnSteamRemotePlaySessionConnected, SteamRemotePlaySessionConnected_t);
 	STEAM_CALLBACK(RemotePlayCallbackListener, OnSteamRemotePlaySessionDisconnected, SteamRemotePlaySessionDisconnected_t);
 	STEAM_CALLBACK(RemotePlayCallbackListener, OnSteamRemotePlayTogetherGuestInvite, SteamRemotePlayTogetherGuestInvite_t);
+	STEAM_CALLBACK(RemotePlayCallbackListener, OnSteamRemotePlaySessionAvatarLoaded, SteamRemotePlaySessionAvatarLoaded_t);
 };
 void RemotePlayCallbackListener::OnSteamRemotePlaySessionConnected(SteamRemotePlaySessionConnected_t *data) {
 	if (data == nullptr) return;
@@ -53,6 +54,20 @@ void RemotePlayCallbackListener::OnSteamRemotePlayTogetherGuestInvite(SteamRemot
 		lua_pop(L, 1);
 	}
 }
+void RemotePlayCallbackListener::OnSteamRemotePlaySessionAvatarLoaded(SteamRemotePlaySessionAvatarLoaded_t *data) {
+	if (data == nullptr) return;
+	lua_State *L = luasteam::global_lua_state;
+	if (!lua_checkstack(L, 4)) return;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, luasteam::RemotePlay_ref);
+	lua_getfield(L, -1, "OnSteamRemotePlaySessionAvatarLoaded");
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 2);
+	} else {
+		luasteam::push_SteamRemotePlaySessionAvatarLoaded_t(L, *data);
+		lua_call(L, 1, 0);
+		lua_pop(L, 1);
+	}
+}
 RemotePlayCallbackListener *RemotePlay_listener = nullptr;
 } // namespace
 
@@ -88,6 +103,18 @@ static int luasteam_RemotePlay_GetSessionID(lua_State *L) {
 }
 
 // In C++:
+// bool BSessionRemotePlayTogether(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// bool RemotePlay.BSessionRemotePlayTogether(unSessionID: int)
+static int luasteam_RemotePlay_BSessionRemotePlayTogether(lua_State *L) {
+	auto *iface = SteamRemotePlay();
+	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+	bool __ret = SteamAPI_ISteamRemotePlay_BSessionRemotePlayTogether(iface, unSessionID);
+	lua_pushboolean(L, __ret);
+	return 1;
+}
+
+// In C++:
 // CSteamID GetSessionSteamID(RemotePlaySessionID_t unSessionID);
 // In Lua:
 // uint64 RemotePlay.GetSessionSteamID(unSessionID: int)
@@ -96,6 +123,54 @@ static int luasteam_RemotePlay_GetSessionSteamID(lua_State *L) {
 	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
 	uint64 __ret = SteamAPI_ISteamRemotePlay_GetSessionSteamID(iface, unSessionID);
 	luasteam::pushuint64(L, __ret);
+	return 1;
+}
+
+// In C++:
+// uint32 GetSessionGuestID(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// int RemotePlay.GetSessionGuestID(unSessionID: int)
+static int luasteam_RemotePlay_GetSessionGuestID(lua_State *L) {
+	auto *iface = SteamRemotePlay();
+	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+	uint32 __ret = SteamAPI_ISteamRemotePlay_GetSessionGuestID(iface, unSessionID);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
+// int GetSmallSessionAvatar(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// int RemotePlay.GetSmallSessionAvatar(unSessionID: int)
+static int luasteam_RemotePlay_GetSmallSessionAvatar(lua_State *L) {
+	auto *iface = SteamRemotePlay();
+	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+	int __ret = SteamAPI_ISteamRemotePlay_GetSmallSessionAvatar(iface, unSessionID);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
+// int GetMediumSessionAvatar(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// int RemotePlay.GetMediumSessionAvatar(unSessionID: int)
+static int luasteam_RemotePlay_GetMediumSessionAvatar(lua_State *L) {
+	auto *iface = SteamRemotePlay();
+	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+	int __ret = SteamAPI_ISteamRemotePlay_GetMediumSessionAvatar(iface, unSessionID);
+	lua_pushinteger(L, __ret);
+	return 1;
+}
+
+// In C++:
+// int GetLargeSessionAvatar(RemotePlaySessionID_t unSessionID);
+// In Lua:
+// int RemotePlay.GetLargeSessionAvatar(unSessionID: int)
+static int luasteam_RemotePlay_GetLargeSessionAvatar(lua_State *L) {
+	auto *iface = SteamRemotePlay();
+	RemotePlaySessionID_t unSessionID = static_cast<RemotePlaySessionID_t>(luaL_checkint(L, 1));
+	int __ret = SteamAPI_ISteamRemotePlay_GetLargeSessionAvatar(iface, unSessionID);
+	lua_pushinteger(L, __ret);
 	return 1;
 }
 
@@ -261,7 +336,12 @@ static int luasteam_RemotePlay_SetMouseCursor(lua_State *L) {
 void register_RemotePlay_auto(lua_State *L) {
 	add_func(L, "GetSessionCount", luasteam_RemotePlay_GetSessionCount);
 	add_func(L, "GetSessionID", luasteam_RemotePlay_GetSessionID);
+	add_func(L, "BSessionRemotePlayTogether", luasteam_RemotePlay_BSessionRemotePlayTogether);
 	add_func(L, "GetSessionSteamID", luasteam_RemotePlay_GetSessionSteamID);
+	add_func(L, "GetSessionGuestID", luasteam_RemotePlay_GetSessionGuestID);
+	add_func(L, "GetSmallSessionAvatar", luasteam_RemotePlay_GetSmallSessionAvatar);
+	add_func(L, "GetMediumSessionAvatar", luasteam_RemotePlay_GetMediumSessionAvatar);
+	add_func(L, "GetLargeSessionAvatar", luasteam_RemotePlay_GetLargeSessionAvatar);
 	add_func(L, "GetSessionClientName", luasteam_RemotePlay_GetSessionClientName);
 	add_func(L, "GetSessionClientFormFactor", luasteam_RemotePlay_GetSessionClientFormFactor);
 	add_func(L, "BGetSessionClientResolution", luasteam_RemotePlay_BGetSessionClientResolution);
@@ -277,7 +357,7 @@ void register_RemotePlay_auto(lua_State *L) {
 }
 
 void add_RemotePlay_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::RemotePlay_count + static_cast<int>(extra_funcs.size()) + 3);
+	lua_createtable(L, 0, luasteam::RemotePlay_count + static_cast<int>(extra_funcs.size()) + 4);
 	register_RemotePlay_auto(L);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

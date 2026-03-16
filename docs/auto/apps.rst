@@ -257,6 +257,7 @@ Function Reference
     :returns: (int) ``punBuildID``
     :returns: (str) ``pchBetaName``
     :returns: (str) ``pchDescription``
+    :returns: (int) ``punLastUpdated``
     :SteamWorks: `GetBetaInfo <https://partner.steamgames.com/doc/api/ISteamApps#GetBetaInfo>`_
 
     **Signature differences from C++ API:**
@@ -265,6 +266,7 @@ Function Reference
     * Parameter ``punBuildID`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
     * Parameter ``pchBetaName`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
     * Parameter ``pchDescription`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+    * Parameter ``punLastUpdated`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
 
 .. function:: Apps.GetCurrentBetaName(cchNameBufferSize)
 

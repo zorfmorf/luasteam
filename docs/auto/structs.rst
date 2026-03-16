@@ -200,6 +200,7 @@ List of Structs
 * :ref:`SteamParentalSettingsChanged_t <struct-SteamParentalSettingsChanged_t>`
 * :ref:`SteamPartyBeaconLocation_t <struct-SteamPartyBeaconLocation_t>`
 * :ref:`SteamRelayNetworkStatus_t <struct-SteamRelayNetworkStatus_t>`
+* :ref:`SteamRemotePlaySessionAvatarLoaded_t <struct-SteamRemotePlaySessionAvatarLoaded_t>`
 * :ref:`SteamRemotePlaySessionConnected_t <struct-SteamRemotePlaySessionConnected_t>`
 * :ref:`SteamRemotePlaySessionDisconnected_t <struct-SteamRemotePlaySessionDisconnected_t>`
 * :ref:`SteamRemotePlayTogetherGuestInvite_t <struct-SteamRemotePlayTogetherGuestInvite_t>`
@@ -3653,6 +3654,7 @@ SteamNetConnectionRealTimeStatus_t
     * **m_cbPendingUnreliable** (int)
     * **m_cbPendingReliable** (int)
     * **m_cbSentUnackedReliable** (int)
+    * **m_usecMaxJitter** (int)
     * **reserved** (int[])
 
     **Fields** (unsupported — not accessible from Lua):
@@ -4113,6 +4115,26 @@ SteamRelayNetworkStatus_t
     * **m_eAvailNetworkConfig** (int)
     * **m_eAvailAnyRelay** (int)
     * **m_debugMsg** (str)
+
+.. _struct-SteamRemotePlaySessionAvatarLoaded_t:
+
+------------------------------------
+SteamRemotePlaySessionAvatarLoaded_t
+------------------------------------
+
+.. function:: Steam.newSteamRemotePlaySessionAvatarLoaded_t([table])
+
+    🤖 Constructor — creates a new userdata instance.
+
+    :param table table: *(optional)* Initial field values as a table.
+    :returns: (SteamRemotePlaySessionAvatarLoaded_t) New userdata instance.
+
+    **Fields** (readable and writable):
+
+    * **m_unSessionID** (int)
+    * **m_iImage** (int)
+    * **m_iWide** (int)
+    * **m_iTall** (int)
 
 .. _struct-SteamRemotePlaySessionConnected_t:
 

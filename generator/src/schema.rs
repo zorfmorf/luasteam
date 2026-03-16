@@ -359,6 +359,10 @@ impl SteamApi {
             assert!(p.out_array_count.is_some() && p.array_count.is_some());
             p.out_array_count = p.array_count.take();
         }
+        // Even with this, when returning an array, we need to know the size of the
+        // output buffer, so in that case you need to add the function as a special
+        // case in `generate_method_body`.
+        // In the future, it might be good to unify that behaviour here.
         let to_mark_counters = [
             (
                 "ISteamApps",
@@ -534,6 +538,7 @@ impl SteamApi {
                         "unNumPublishedFileIDs",
                     ),
                     ("GetQueryUGCChildren", "pvecPublishedFileID", "cMaxEntries"),
+                    ("GetDownloadedItems", "pvecPublishedFileIDs", "cMaxEntries"),
                     (
                         "GetQueryUGCContentDescriptors",
                         "pvecDescriptors",

@@ -35,10 +35,12 @@ List of Functions
 * :func:`UGC.DeleteItem`
 * :func:`UGC.DownloadItem`
 * :func:`UGC.GetAppDependencies`
+* :func:`UGC.GetDownloadedItems`
 * :func:`UGC.GetItemDownloadInfo`
 * :func:`UGC.GetItemInstallInfo`
 * :func:`UGC.GetItemState`
 * :func:`UGC.GetItemUpdateProgress`
+* :func:`UGC.GetNumDownloadedItems`
 * :func:`UGC.GetNumSubscribedItems`
 * :func:`UGC.GetNumSupportedGameVersions`
 * :func:`UGC.GetQueryUGCAdditionalPreview`
@@ -59,6 +61,7 @@ List of Functions
 * :func:`UGC.GetUserContentDescriptorPreferences`
 * :func:`UGC.GetUserItemVote`
 * :func:`UGC.GetWorkshopEULAStatus`
+* :func:`UGC.MarkDownloadedItemAsUnused`
 * :func:`UGC.ReleaseQueryUGCRequest`
 * :func:`UGC.RemoveAllItemKeyValueTags`
 * :func:`UGC.RemoveAppDependency`
@@ -430,6 +433,19 @@ Function Reference
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetAppDependencies <https://partner.steamgames.com/doc/api/ISteamUGC#GetAppDependencies>`_
 
+.. function:: UGC.GetDownloadedItems(cMaxEntries)
+
+    🤖 **Auto-generated binding**
+
+    :param int? cMaxEntries: size of the buffer to allocate for ``pvecPublishedFileIDs``. If ``nil`` then the buffer will be ``NULL``.
+    :returns: (int) Return value
+    :returns: (uint64[]) ``pvecPublishedFileIDs``
+    :SteamWorks: `GetDownloadedItems <https://partner.steamgames.com/doc/api/ISteamUGC#GetDownloadedItems>`_
+
+    **Signature differences from C++ API:**
+
+    * Parameter ``pvecPublishedFileIDs`` is not a parameter in Lua — it is an output-only pointer in C++ and is returned as an additional return value.
+
 .. function:: UGC.GetItemDownloadInfo(nPublishedFileID)
 
     🤖 **Auto-generated binding**
@@ -512,6 +528,13 @@ Function Reference
     if total > 0 then
         print(string.format('Download progress: %.1f%%', processed / total * 100))
     end
+
+.. function:: UGC.GetNumDownloadedItems()
+
+    🤖 **Auto-generated binding**
+
+    :returns: (int) Return value
+    :SteamWorks: `GetNumDownloadedItems <https://partner.steamgames.com/doc/api/ISteamUGC#GetNumDownloadedItems>`_
 
 .. function:: UGC.GetNumSubscribedItems(bIncludeLocallyDisabled)
 
@@ -812,6 +835,14 @@ Function Reference
     :param function callback: CallResult callback receiving struct :func:`WorkshopEULAStatus_t <UGC.OnWorkshopEULAStatus>` and a boolean
     :returns: (uint64) ``SteamAPICall_t`` handle for this async call. The result is delivered via the ``callback`` parameter when :func:`Steam.RunCallbacks` is called.
     :SteamWorks: `GetWorkshopEULAStatus <https://partner.steamgames.com/doc/api/ISteamUGC#GetWorkshopEULAStatus>`_
+
+.. function:: UGC.MarkDownloadedItemAsUnused(nPublishedFileID)
+
+    🤖 **Auto-generated binding**
+
+    :param uint64 - PublishedFileId_t nPublishedFileID:
+    :returns: (bool) Return value
+    :SteamWorks: `MarkDownloadedItemAsUnused <https://partner.steamgames.com/doc/api/ISteamUGC#MarkDownloadedItemAsUnused>`_
 
 .. function:: UGC.ReleaseQueryUGCRequest(handle)
 

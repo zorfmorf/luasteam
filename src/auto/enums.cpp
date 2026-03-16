@@ -3557,6 +3557,8 @@ void add_enums_auto(lua_State *L) {
 	lua_setfield(L, -2, "k_EFeatureKioskMode_Deprecated");
 	lua_pushinteger(L, k_EFeatureBlockAlways);
 	lua_setfield(L, -2, "k_EFeatureBlockAlways");
+	lua_pushinteger(L, k_EFeatureDesktop);
+	lua_setfield(L, -2, "k_EFeatureDesktop");
 	lua_pushinteger(L, k_EFeatureMax);
 	lua_setfield(L, -2, "k_EFeatureMax");
 	lua_pushinteger(L, k_ESteamDeviceFormFactorUnknown);
@@ -4133,6 +4135,8 @@ void add_enums_auto(lua_State *L) {
 	lua_setfield(L, -2, "k_ESteamNetworkingConfig_LogLevel_SDRRelayPings");
 	lua_pushinteger(L, k_ESteamNetworkingConfig_ECN);
 	lua_setfield(L, -2, "k_ESteamNetworkingConfig_ECN");
+	lua_pushinteger(L, k_ESteamNetworkingConfig_SDRClient_EnableTOSProbes);
+	lua_setfield(L, -2, "k_ESteamNetworkingConfig_SDRClient_EnableTOSProbes");
 	lua_pushinteger(L, k_ESteamNetworkingConfig_DELETED_EnumerateDevVars);
 	lua_setfield(L, -2, "k_ESteamNetworkingConfig_DELETED_EnumerateDevVars");
 	lua_pushinteger(L, k_ESteamNetworkingConfigValue__Force32Bit);
