@@ -20032,23 +20032,27 @@ SteamNetworkingFakeIPResult_t *check_SteamNetworkingFakeIPResult_t_ptr(lua_State
 
 SteamNetworkingFakeIPResult_t check_SteamNetworkingFakeIPResult_t(lua_State *L, int nParam) { return *check_SteamNetworkingFakeIPResult_t_ptr(L, nParam); }
 
-void init_structs_auto(lua_State *L) {
+void add_structs_auto(lua_State *L) {
+	add_func(L, "newSteamIPAddress_t", luasteam_newSteamIPAddress_t);
 	// SteamIPAddress_t metatable
 	lua_createtable(L, 0, 3);
 	add_func(L, "IsSet", luasteam_SteamIPAddress_t_IsSet);
 	add_func(L, "__index", SteamIPAddress_t_index);
 	add_func(L, "__newindex", SteamIPAddress_t_newindex);
 	SteamIPAddress_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFriendGameInfo_t", luasteam_newFriendGameInfo_t);
 	// FriendGameInfo_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FriendGameInfo_t_index);
 	add_func(L, "__newindex", FriendGameInfo_t_newindex);
 	FriendGameInfo_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newMatchMakingKeyValuePair_t", luasteam_newMatchMakingKeyValuePair_t);
 	// MatchMakingKeyValuePair_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", MatchMakingKeyValuePair_t_index);
 	add_func(L, "__newindex", MatchMakingKeyValuePair_t_newindex);
 	MatchMakingKeyValuePair_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newservernetadr_t", luasteam_newservernetadr_t);
 	// servernetadr_t metatable
 	lua_createtable(L, 0, 10);
 	add_func(L, "Init", luasteam_servernetadr_t_Init);
@@ -20062,6 +20066,7 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "GetQueryAddressString", luasteam_servernetadr_t_GetQueryAddressString);
 	add_func(L, "__index", servernetadr_t_index);
 	servernetadr_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newgameserveritem_t", luasteam_newgameserveritem_t);
 	// gameserveritem_t metatable
 	lua_createtable(L, 0, 4);
 	add_func(L, "GetName", luasteam_gameserveritem_t_GetName);
@@ -20069,77 +20074,92 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__index", gameserveritem_t_index);
 	add_func(L, "__newindex", gameserveritem_t_newindex);
 	gameserveritem_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamPartyBeaconLocation_t", luasteam_newSteamPartyBeaconLocation_t);
 	// SteamPartyBeaconLocation_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamPartyBeaconLocation_t_index);
 	add_func(L, "__newindex", SteamPartyBeaconLocation_t_newindex);
 	SteamPartyBeaconLocation_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamParamStringArray_t", luasteam_newSteamParamStringArray_t);
 	// SteamParamStringArray_t metatable
 	lua_createtable(L, 0, 3);
 	add_func(L, "__index", SteamParamStringArray_t_index);
 	add_func(L, "__newindex", SteamParamStringArray_t_newindex);
 	add_func(L, "__gc", SteamParamStringArray_t_gc);
 	SteamParamStringArray_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLeaderboardEntry_t", luasteam_newLeaderboardEntry_t);
 	// LeaderboardEntry_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LeaderboardEntry_t_index);
 	add_func(L, "__newindex", LeaderboardEntry_t_newindex);
 	LeaderboardEntry_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newP2PSessionState_t", luasteam_newP2PSessionState_t);
 	// P2PSessionState_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", P2PSessionState_t_index);
 	add_func(L, "__newindex", P2PSessionState_t_newindex);
 	P2PSessionState_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newInputAnalogActionData_t", luasteam_newInputAnalogActionData_t);
 	// InputAnalogActionData_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", InputAnalogActionData_t_index);
 	add_func(L, "__newindex", InputAnalogActionData_t_newindex);
 	InputAnalogActionData_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newInputDigitalActionData_t", luasteam_newInputDigitalActionData_t);
 	// InputDigitalActionData_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", InputDigitalActionData_t_index);
 	add_func(L, "__newindex", InputDigitalActionData_t_newindex);
 	InputDigitalActionData_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newInputMotionData_t", luasteam_newInputMotionData_t);
 	// InputMotionData_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", InputMotionData_t_index);
 	add_func(L, "__newindex", InputMotionData_t_newindex);
 	InputMotionData_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInputActionEvent_t", luasteam_newSteamInputActionEvent_t);
 	// SteamInputActionEvent_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInputActionEvent_t_index);
 	add_func(L, "__newindex", SteamInputActionEvent_t_newindex);
 	SteamInputActionEvent_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamUGCDetails_t", luasteam_newSteamUGCDetails_t);
 	// SteamUGCDetails_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamUGCDetails_t_index);
 	add_func(L, "__newindex", SteamUGCDetails_t_newindex);
 	SteamUGCDetails_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamItemDetails_t", luasteam_newSteamItemDetails_t);
 	// SteamItemDetails_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamItemDetails_t_index);
 	add_func(L, "__newindex", SteamItemDetails_t_newindex);
 	SteamItemDetails_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemotePlayInputMouseMotion_t", luasteam_newRemotePlayInputMouseMotion_t);
 	// RemotePlayInputMouseMotion_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemotePlayInputMouseMotion_t_index);
 	add_func(L, "__newindex", RemotePlayInputMouseMotion_t_newindex);
 	RemotePlayInputMouseMotion_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemotePlayInputMouseWheel_t", luasteam_newRemotePlayInputMouseWheel_t);
 	// RemotePlayInputMouseWheel_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemotePlayInputMouseWheel_t_index);
 	add_func(L, "__newindex", RemotePlayInputMouseWheel_t_newindex);
 	RemotePlayInputMouseWheel_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemotePlayInputKey_t", luasteam_newRemotePlayInputKey_t);
 	// RemotePlayInputKey_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemotePlayInputKey_t_index);
 	add_func(L, "__newindex", RemotePlayInputKey_t_newindex);
 	RemotePlayInputKey_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemotePlayInput_t", luasteam_newRemotePlayInput_t);
 	// RemotePlayInput_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemotePlayInput_t_index);
 	add_func(L, "__newindex", RemotePlayInput_t_newindex);
 	RemotePlayInput_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkingIPAddr", luasteam_newSteamNetworkingIPAddr);
 	// SteamNetworkingIPAddr metatable
 	lua_createtable(L, 0, 14);
 	add_func(L, "Clear", luasteam_SteamNetworkingIPAddr_Clear);
@@ -20157,6 +20177,7 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__index", SteamNetworkingIPAddr_index);
 	add_func(L, "__newindex", SteamNetworkingIPAddr_newindex);
 	SteamNetworkingIPAddrMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkingIdentity", luasteam_newSteamNetworkingIdentity);
 	// SteamNetworkingIdentity metatable
 	lua_createtable(L, 0, 24);
 	add_func(L, "Clear", luasteam_SteamNetworkingIdentity_Clear);
@@ -20184,26 +20205,31 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "ParseString", luasteam_SteamNetworkingIdentity_ParseString);
 	add_func(L, "__index", SteamNetworkingIdentity_index);
 	SteamNetworkingIdentityMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetConnectionInfo_t", luasteam_newSteamNetConnectionInfo_t);
 	// SteamNetConnectionInfo_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetConnectionInfo_t_index);
 	add_func(L, "__newindex", SteamNetConnectionInfo_t_newindex);
 	SteamNetConnectionInfo_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetConnectionRealTimeStatus_t", luasteam_newSteamNetConnectionRealTimeStatus_t);
 	// SteamNetConnectionRealTimeStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetConnectionRealTimeStatus_t_index);
 	add_func(L, "__newindex", SteamNetConnectionRealTimeStatus_t_newindex);
 	SteamNetConnectionRealTimeStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetConnectionRealTimeLaneStatus_t", luasteam_newSteamNetConnectionRealTimeLaneStatus_t);
 	// SteamNetConnectionRealTimeLaneStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetConnectionRealTimeLaneStatus_t_index);
 	add_func(L, "__newindex", SteamNetConnectionRealTimeLaneStatus_t_newindex);
 	SteamNetConnectionRealTimeLaneStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkPingLocation_t", luasteam_newSteamNetworkPingLocation_t);
 	// SteamNetworkPingLocation_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetworkPingLocation_t_index);
 	add_func(L, "__newindex", SteamNetworkPingLocation_t_newindex);
 	SteamNetworkPingLocation_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkingConfigValue_t", luasteam_newSteamNetworkingConfigValue_t);
 	// SteamNetworkingConfigValue_t metatable
 	lua_createtable(L, 0, 6);
 	add_func(L, "SetInt32", luasteam_SteamNetworkingConfigValue_t_SetInt32);
@@ -20213,961 +20239,1156 @@ void init_structs_auto(lua_State *L) {
 	add_func(L, "__index", SteamNetworkingConfigValue_t_index);
 	add_func(L, "__newindex", SteamNetworkingConfigValue_t_newindex);
 	SteamNetworkingConfigValue_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamServersConnected_t", luasteam_newSteamServersConnected_t);
 	// SteamServersConnected_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", SteamServersConnected_t_index);
 	SteamServersConnected_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamServerConnectFailure_t", luasteam_newSteamServerConnectFailure_t);
 	// SteamServerConnectFailure_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamServerConnectFailure_t_index);
 	add_func(L, "__newindex", SteamServerConnectFailure_t_newindex);
 	SteamServerConnectFailure_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamServersDisconnected_t", luasteam_newSteamServersDisconnected_t);
 	// SteamServersDisconnected_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamServersDisconnected_t_index);
 	add_func(L, "__newindex", SteamServersDisconnected_t_newindex);
 	SteamServersDisconnected_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newClientGameServerDeny_t", luasteam_newClientGameServerDeny_t);
 	// ClientGameServerDeny_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ClientGameServerDeny_t_index);
 	add_func(L, "__newindex", ClientGameServerDeny_t_newindex);
 	ClientGameServerDeny_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newIPCFailure_t", luasteam_newIPCFailure_t);
 	// IPCFailure_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", IPCFailure_t_index);
 	add_func(L, "__newindex", IPCFailure_t_newindex);
 	IPCFailure_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLicensesUpdated_t", luasteam_newLicensesUpdated_t);
 	// LicensesUpdated_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", LicensesUpdated_t_index);
 	LicensesUpdated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newValidateAuthTicketResponse_t", luasteam_newValidateAuthTicketResponse_t);
 	// ValidateAuthTicketResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ValidateAuthTicketResponse_t_index);
 	add_func(L, "__newindex", ValidateAuthTicketResponse_t_newindex);
 	ValidateAuthTicketResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newMicroTxnAuthorizationResponse_t", luasteam_newMicroTxnAuthorizationResponse_t);
 	// MicroTxnAuthorizationResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", MicroTxnAuthorizationResponse_t_index);
 	add_func(L, "__newindex", MicroTxnAuthorizationResponse_t_newindex);
 	MicroTxnAuthorizationResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newEncryptedAppTicketResponse_t", luasteam_newEncryptedAppTicketResponse_t);
 	// EncryptedAppTicketResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", EncryptedAppTicketResponse_t_index);
 	add_func(L, "__newindex", EncryptedAppTicketResponse_t_newindex);
 	EncryptedAppTicketResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGetAuthSessionTicketResponse_t", luasteam_newGetAuthSessionTicketResponse_t);
 	// GetAuthSessionTicketResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GetAuthSessionTicketResponse_t_index);
 	add_func(L, "__newindex", GetAuthSessionTicketResponse_t_newindex);
 	GetAuthSessionTicketResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameWebCallback_t", luasteam_newGameWebCallback_t);
 	// GameWebCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameWebCallback_t_index);
 	add_func(L, "__newindex", GameWebCallback_t_newindex);
 	GameWebCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newStoreAuthURLResponse_t", luasteam_newStoreAuthURLResponse_t);
 	// StoreAuthURLResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", StoreAuthURLResponse_t_index);
 	add_func(L, "__newindex", StoreAuthURLResponse_t_newindex);
 	StoreAuthURLResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newMarketEligibilityResponse_t", luasteam_newMarketEligibilityResponse_t);
 	// MarketEligibilityResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", MarketEligibilityResponse_t_index);
 	add_func(L, "__newindex", MarketEligibilityResponse_t_newindex);
 	MarketEligibilityResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newDurationControl_t", luasteam_newDurationControl_t);
 	// DurationControl_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", DurationControl_t_index);
 	add_func(L, "__newindex", DurationControl_t_newindex);
 	DurationControl_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGetTicketForWebApiResponse_t", luasteam_newGetTicketForWebApiResponse_t);
 	// GetTicketForWebApiResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GetTicketForWebApiResponse_t_index);
 	add_func(L, "__newindex", GetTicketForWebApiResponse_t_newindex);
 	GetTicketForWebApiResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newPersonaStateChange_t", luasteam_newPersonaStateChange_t);
 	// PersonaStateChange_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", PersonaStateChange_t_index);
 	add_func(L, "__newindex", PersonaStateChange_t_newindex);
 	PersonaStateChange_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameOverlayActivated_t", luasteam_newGameOverlayActivated_t);
 	// GameOverlayActivated_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameOverlayActivated_t_index);
 	add_func(L, "__newindex", GameOverlayActivated_t_newindex);
 	GameOverlayActivated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameServerChangeRequested_t", luasteam_newGameServerChangeRequested_t);
 	// GameServerChangeRequested_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameServerChangeRequested_t_index);
 	add_func(L, "__newindex", GameServerChangeRequested_t_newindex);
 	GameServerChangeRequested_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameLobbyJoinRequested_t", luasteam_newGameLobbyJoinRequested_t);
 	// GameLobbyJoinRequested_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameLobbyJoinRequested_t_index);
 	add_func(L, "__newindex", GameLobbyJoinRequested_t_newindex);
 	GameLobbyJoinRequested_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAvatarImageLoaded_t", luasteam_newAvatarImageLoaded_t);
 	// AvatarImageLoaded_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", AvatarImageLoaded_t_index);
 	add_func(L, "__newindex", AvatarImageLoaded_t_newindex);
 	AvatarImageLoaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newClanOfficerListResponse_t", luasteam_newClanOfficerListResponse_t);
 	// ClanOfficerListResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ClanOfficerListResponse_t_index);
 	add_func(L, "__newindex", ClanOfficerListResponse_t_newindex);
 	ClanOfficerListResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFriendRichPresenceUpdate_t", luasteam_newFriendRichPresenceUpdate_t);
 	// FriendRichPresenceUpdate_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FriendRichPresenceUpdate_t_index);
 	add_func(L, "__newindex", FriendRichPresenceUpdate_t_newindex);
 	FriendRichPresenceUpdate_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameRichPresenceJoinRequested_t", luasteam_newGameRichPresenceJoinRequested_t);
 	// GameRichPresenceJoinRequested_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameRichPresenceJoinRequested_t_index);
 	add_func(L, "__newindex", GameRichPresenceJoinRequested_t_newindex);
 	GameRichPresenceJoinRequested_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameConnectedClanChatMsg_t", luasteam_newGameConnectedClanChatMsg_t);
 	// GameConnectedClanChatMsg_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameConnectedClanChatMsg_t_index);
 	add_func(L, "__newindex", GameConnectedClanChatMsg_t_newindex);
 	GameConnectedClanChatMsg_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameConnectedChatJoin_t", luasteam_newGameConnectedChatJoin_t);
 	// GameConnectedChatJoin_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameConnectedChatJoin_t_index);
 	add_func(L, "__newindex", GameConnectedChatJoin_t_newindex);
 	GameConnectedChatJoin_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameConnectedChatLeave_t", luasteam_newGameConnectedChatLeave_t);
 	// GameConnectedChatLeave_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameConnectedChatLeave_t_index);
 	add_func(L, "__newindex", GameConnectedChatLeave_t_newindex);
 	GameConnectedChatLeave_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newDownloadClanActivityCountsResult_t", luasteam_newDownloadClanActivityCountsResult_t);
 	// DownloadClanActivityCountsResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", DownloadClanActivityCountsResult_t_index);
 	add_func(L, "__newindex", DownloadClanActivityCountsResult_t_newindex);
 	DownloadClanActivityCountsResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newJoinClanChatRoomCompletionResult_t", luasteam_newJoinClanChatRoomCompletionResult_t);
 	// JoinClanChatRoomCompletionResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", JoinClanChatRoomCompletionResult_t_index);
 	add_func(L, "__newindex", JoinClanChatRoomCompletionResult_t_newindex);
 	JoinClanChatRoomCompletionResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGameConnectedFriendChatMsg_t", luasteam_newGameConnectedFriendChatMsg_t);
 	// GameConnectedFriendChatMsg_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GameConnectedFriendChatMsg_t_index);
 	add_func(L, "__newindex", GameConnectedFriendChatMsg_t_newindex);
 	GameConnectedFriendChatMsg_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFriendsGetFollowerCount_t", luasteam_newFriendsGetFollowerCount_t);
 	// FriendsGetFollowerCount_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FriendsGetFollowerCount_t_index);
 	add_func(L, "__newindex", FriendsGetFollowerCount_t_newindex);
 	FriendsGetFollowerCount_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFriendsIsFollowing_t", luasteam_newFriendsIsFollowing_t);
 	// FriendsIsFollowing_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FriendsIsFollowing_t_index);
 	add_func(L, "__newindex", FriendsIsFollowing_t_newindex);
 	FriendsIsFollowing_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFriendsEnumerateFollowingList_t", luasteam_newFriendsEnumerateFollowingList_t);
 	// FriendsEnumerateFollowingList_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FriendsEnumerateFollowingList_t_index);
 	add_func(L, "__newindex", FriendsEnumerateFollowingList_t_newindex);
 	FriendsEnumerateFollowingList_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUnreadChatMessagesChanged_t", luasteam_newUnreadChatMessagesChanged_t);
 	// UnreadChatMessagesChanged_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", UnreadChatMessagesChanged_t_index);
 	UnreadChatMessagesChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newOverlayBrowserProtocolNavigation_t", luasteam_newOverlayBrowserProtocolNavigation_t);
 	// OverlayBrowserProtocolNavigation_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", OverlayBrowserProtocolNavigation_t_index);
 	add_func(L, "__newindex", OverlayBrowserProtocolNavigation_t_newindex);
 	OverlayBrowserProtocolNavigation_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newEquippedProfileItemsChanged_t", luasteam_newEquippedProfileItemsChanged_t);
 	// EquippedProfileItemsChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", EquippedProfileItemsChanged_t_index);
 	add_func(L, "__newindex", EquippedProfileItemsChanged_t_newindex);
 	EquippedProfileItemsChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newEquippedProfileItems_t", luasteam_newEquippedProfileItems_t);
 	// EquippedProfileItems_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", EquippedProfileItems_t_index);
 	add_func(L, "__newindex", EquippedProfileItems_t_newindex);
 	EquippedProfileItems_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newIPCountry_t", luasteam_newIPCountry_t);
 	// IPCountry_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", IPCountry_t_index);
 	IPCountry_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLowBatteryPower_t", luasteam_newLowBatteryPower_t);
 	// LowBatteryPower_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LowBatteryPower_t_index);
 	add_func(L, "__newindex", LowBatteryPower_t_newindex);
 	LowBatteryPower_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamAPICallCompleted_t", luasteam_newSteamAPICallCompleted_t);
 	// SteamAPICallCompleted_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamAPICallCompleted_t_index);
 	add_func(L, "__newindex", SteamAPICallCompleted_t_newindex);
 	SteamAPICallCompleted_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamShutdown_t", luasteam_newSteamShutdown_t);
 	// SteamShutdown_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", SteamShutdown_t_index);
 	SteamShutdown_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newCheckFileSignature_t", luasteam_newCheckFileSignature_t);
 	// CheckFileSignature_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", CheckFileSignature_t_index);
 	add_func(L, "__newindex", CheckFileSignature_t_newindex);
 	CheckFileSignature_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGamepadTextInputDismissed_t", luasteam_newGamepadTextInputDismissed_t);
 	// GamepadTextInputDismissed_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GamepadTextInputDismissed_t_index);
 	add_func(L, "__newindex", GamepadTextInputDismissed_t_newindex);
 	GamepadTextInputDismissed_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAppResumingFromSuspend_t", luasteam_newAppResumingFromSuspend_t);
 	// AppResumingFromSuspend_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", AppResumingFromSuspend_t_index);
 	AppResumingFromSuspend_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFloatingGamepadTextInputDismissed_t", luasteam_newFloatingGamepadTextInputDismissed_t);
 	// FloatingGamepadTextInputDismissed_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", FloatingGamepadTextInputDismissed_t_index);
 	FloatingGamepadTextInputDismissed_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFilterTextDictionaryChanged_t", luasteam_newFilterTextDictionaryChanged_t);
 	// FilterTextDictionaryChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FilterTextDictionaryChanged_t_index);
 	add_func(L, "__newindex", FilterTextDictionaryChanged_t_newindex);
 	FilterTextDictionaryChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFavoritesListChanged_t", luasteam_newFavoritesListChanged_t);
 	// FavoritesListChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FavoritesListChanged_t_index);
 	add_func(L, "__newindex", FavoritesListChanged_t_newindex);
 	FavoritesListChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyInvite_t", luasteam_newLobbyInvite_t);
 	// LobbyInvite_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyInvite_t_index);
 	add_func(L, "__newindex", LobbyInvite_t_newindex);
 	LobbyInvite_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyEnter_t", luasteam_newLobbyEnter_t);
 	// LobbyEnter_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyEnter_t_index);
 	add_func(L, "__newindex", LobbyEnter_t_newindex);
 	LobbyEnter_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyDataUpdate_t", luasteam_newLobbyDataUpdate_t);
 	// LobbyDataUpdate_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyDataUpdate_t_index);
 	add_func(L, "__newindex", LobbyDataUpdate_t_newindex);
 	LobbyDataUpdate_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyChatUpdate_t", luasteam_newLobbyChatUpdate_t);
 	// LobbyChatUpdate_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyChatUpdate_t_index);
 	add_func(L, "__newindex", LobbyChatUpdate_t_newindex);
 	LobbyChatUpdate_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyChatMsg_t", luasteam_newLobbyChatMsg_t);
 	// LobbyChatMsg_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyChatMsg_t_index);
 	add_func(L, "__newindex", LobbyChatMsg_t_newindex);
 	LobbyChatMsg_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyGameCreated_t", luasteam_newLobbyGameCreated_t);
 	// LobbyGameCreated_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyGameCreated_t_index);
 	add_func(L, "__newindex", LobbyGameCreated_t_newindex);
 	LobbyGameCreated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyMatchList_t", luasteam_newLobbyMatchList_t);
 	// LobbyMatchList_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyMatchList_t_index);
 	add_func(L, "__newindex", LobbyMatchList_t_newindex);
 	LobbyMatchList_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyKicked_t", luasteam_newLobbyKicked_t);
 	// LobbyKicked_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyKicked_t_index);
 	add_func(L, "__newindex", LobbyKicked_t_newindex);
 	LobbyKicked_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLobbyCreated_t", luasteam_newLobbyCreated_t);
 	// LobbyCreated_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LobbyCreated_t_index);
 	add_func(L, "__newindex", LobbyCreated_t_newindex);
 	LobbyCreated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFavoritesListAccountsUpdated_t", luasteam_newFavoritesListAccountsUpdated_t);
 	// FavoritesListAccountsUpdated_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FavoritesListAccountsUpdated_t_index);
 	add_func(L, "__newindex", FavoritesListAccountsUpdated_t_newindex);
 	FavoritesListAccountsUpdated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newJoinPartyCallback_t", luasteam_newJoinPartyCallback_t);
 	// JoinPartyCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", JoinPartyCallback_t_index);
 	add_func(L, "__newindex", JoinPartyCallback_t_newindex);
 	JoinPartyCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newCreateBeaconCallback_t", luasteam_newCreateBeaconCallback_t);
 	// CreateBeaconCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", CreateBeaconCallback_t_index);
 	add_func(L, "__newindex", CreateBeaconCallback_t_newindex);
 	CreateBeaconCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newReservationNotificationCallback_t", luasteam_newReservationNotificationCallback_t);
 	// ReservationNotificationCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ReservationNotificationCallback_t_index);
 	add_func(L, "__newindex", ReservationNotificationCallback_t_newindex);
 	ReservationNotificationCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newChangeNumOpenSlotsCallback_t", luasteam_newChangeNumOpenSlotsCallback_t);
 	// ChangeNumOpenSlotsCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ChangeNumOpenSlotsCallback_t_index);
 	add_func(L, "__newindex", ChangeNumOpenSlotsCallback_t_newindex);
 	ChangeNumOpenSlotsCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAvailableBeaconLocationsUpdated_t", luasteam_newAvailableBeaconLocationsUpdated_t);
 	// AvailableBeaconLocationsUpdated_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", AvailableBeaconLocationsUpdated_t_index);
 	AvailableBeaconLocationsUpdated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newActiveBeaconsUpdated_t", luasteam_newActiveBeaconsUpdated_t);
 	// ActiveBeaconsUpdated_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", ActiveBeaconsUpdated_t_index);
 	ActiveBeaconsUpdated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageFileShareResult_t", luasteam_newRemoteStorageFileShareResult_t);
 	// RemoteStorageFileShareResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageFileShareResult_t_index);
 	add_func(L, "__newindex", RemoteStorageFileShareResult_t_newindex);
 	RemoteStorageFileShareResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStoragePublishFileResult_t", luasteam_newRemoteStoragePublishFileResult_t);
 	// RemoteStoragePublishFileResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStoragePublishFileResult_t_index);
 	add_func(L, "__newindex", RemoteStoragePublishFileResult_t_newindex);
 	RemoteStoragePublishFileResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageDeletePublishedFileResult_t", luasteam_newRemoteStorageDeletePublishedFileResult_t);
 	// RemoteStorageDeletePublishedFileResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageDeletePublishedFileResult_t_index);
 	add_func(L, "__newindex", RemoteStorageDeletePublishedFileResult_t_newindex);
 	RemoteStorageDeletePublishedFileResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageEnumerateUserPublishedFilesResult_t", luasteam_newRemoteStorageEnumerateUserPublishedFilesResult_t);
 	// RemoteStorageEnumerateUserPublishedFilesResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageEnumerateUserPublishedFilesResult_t_index);
 	add_func(L, "__newindex", RemoteStorageEnumerateUserPublishedFilesResult_t_newindex);
 	RemoteStorageEnumerateUserPublishedFilesResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageSubscribePublishedFileResult_t", luasteam_newRemoteStorageSubscribePublishedFileResult_t);
 	// RemoteStorageSubscribePublishedFileResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageSubscribePublishedFileResult_t_index);
 	add_func(L, "__newindex", RemoteStorageSubscribePublishedFileResult_t_newindex);
 	RemoteStorageSubscribePublishedFileResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageEnumerateUserSubscribedFilesResult_t", luasteam_newRemoteStorageEnumerateUserSubscribedFilesResult_t);
 	// RemoteStorageEnumerateUserSubscribedFilesResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageEnumerateUserSubscribedFilesResult_t_index);
 	add_func(L, "__newindex", RemoteStorageEnumerateUserSubscribedFilesResult_t_newindex);
 	RemoteStorageEnumerateUserSubscribedFilesResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageUnsubscribePublishedFileResult_t", luasteam_newRemoteStorageUnsubscribePublishedFileResult_t);
 	// RemoteStorageUnsubscribePublishedFileResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageUnsubscribePublishedFileResult_t_index);
 	add_func(L, "__newindex", RemoteStorageUnsubscribePublishedFileResult_t_newindex);
 	RemoteStorageUnsubscribePublishedFileResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageUpdatePublishedFileResult_t", luasteam_newRemoteStorageUpdatePublishedFileResult_t);
 	// RemoteStorageUpdatePublishedFileResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageUpdatePublishedFileResult_t_index);
 	add_func(L, "__newindex", RemoteStorageUpdatePublishedFileResult_t_newindex);
 	RemoteStorageUpdatePublishedFileResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageDownloadUGCResult_t", luasteam_newRemoteStorageDownloadUGCResult_t);
 	// RemoteStorageDownloadUGCResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageDownloadUGCResult_t_index);
 	add_func(L, "__newindex", RemoteStorageDownloadUGCResult_t_newindex);
 	RemoteStorageDownloadUGCResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageGetPublishedFileDetailsResult_t", luasteam_newRemoteStorageGetPublishedFileDetailsResult_t);
 	// RemoteStorageGetPublishedFileDetailsResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageGetPublishedFileDetailsResult_t_index);
 	add_func(L, "__newindex", RemoteStorageGetPublishedFileDetailsResult_t_newindex);
 	RemoteStorageGetPublishedFileDetailsResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageEnumerateWorkshopFilesResult_t", luasteam_newRemoteStorageEnumerateWorkshopFilesResult_t);
 	// RemoteStorageEnumerateWorkshopFilesResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageEnumerateWorkshopFilesResult_t_index);
 	add_func(L, "__newindex", RemoteStorageEnumerateWorkshopFilesResult_t_newindex);
 	RemoteStorageEnumerateWorkshopFilesResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageGetPublishedItemVoteDetailsResult_t", luasteam_newRemoteStorageGetPublishedItemVoteDetailsResult_t);
 	// RemoteStorageGetPublishedItemVoteDetailsResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageGetPublishedItemVoteDetailsResult_t_index);
 	add_func(L, "__newindex", RemoteStorageGetPublishedItemVoteDetailsResult_t_newindex);
 	RemoteStorageGetPublishedItemVoteDetailsResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStoragePublishedFileSubscribed_t", luasteam_newRemoteStoragePublishedFileSubscribed_t);
 	// RemoteStoragePublishedFileSubscribed_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStoragePublishedFileSubscribed_t_index);
 	add_func(L, "__newindex", RemoteStoragePublishedFileSubscribed_t_newindex);
 	RemoteStoragePublishedFileSubscribed_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStoragePublishedFileUnsubscribed_t", luasteam_newRemoteStoragePublishedFileUnsubscribed_t);
 	// RemoteStoragePublishedFileUnsubscribed_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStoragePublishedFileUnsubscribed_t_index);
 	add_func(L, "__newindex", RemoteStoragePublishedFileUnsubscribed_t_newindex);
 	RemoteStoragePublishedFileUnsubscribed_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStoragePublishedFileDeleted_t", luasteam_newRemoteStoragePublishedFileDeleted_t);
 	// RemoteStoragePublishedFileDeleted_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStoragePublishedFileDeleted_t_index);
 	add_func(L, "__newindex", RemoteStoragePublishedFileDeleted_t_newindex);
 	RemoteStoragePublishedFileDeleted_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageUpdateUserPublishedItemVoteResult_t", luasteam_newRemoteStorageUpdateUserPublishedItemVoteResult_t);
 	// RemoteStorageUpdateUserPublishedItemVoteResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageUpdateUserPublishedItemVoteResult_t_index);
 	add_func(L, "__newindex", RemoteStorageUpdateUserPublishedItemVoteResult_t_newindex);
 	RemoteStorageUpdateUserPublishedItemVoteResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageUserVoteDetails_t", luasteam_newRemoteStorageUserVoteDetails_t);
 	// RemoteStorageUserVoteDetails_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageUserVoteDetails_t_index);
 	add_func(L, "__newindex", RemoteStorageUserVoteDetails_t_newindex);
 	RemoteStorageUserVoteDetails_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageEnumerateUserSharedWorkshopFilesResult_t", luasteam_newRemoteStorageEnumerateUserSharedWorkshopFilesResult_t);
 	// RemoteStorageEnumerateUserSharedWorkshopFilesResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageEnumerateUserSharedWorkshopFilesResult_t_index);
 	add_func(L, "__newindex", RemoteStorageEnumerateUserSharedWorkshopFilesResult_t_newindex);
 	RemoteStorageEnumerateUserSharedWorkshopFilesResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageSetUserPublishedFileActionResult_t", luasteam_newRemoteStorageSetUserPublishedFileActionResult_t);
 	// RemoteStorageSetUserPublishedFileActionResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageSetUserPublishedFileActionResult_t_index);
 	add_func(L, "__newindex", RemoteStorageSetUserPublishedFileActionResult_t_newindex);
 	RemoteStorageSetUserPublishedFileActionResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageEnumeratePublishedFilesByUserActionResult_t", luasteam_newRemoteStorageEnumeratePublishedFilesByUserActionResult_t);
 	// RemoteStorageEnumeratePublishedFilesByUserActionResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageEnumeratePublishedFilesByUserActionResult_t_index);
 	add_func(L, "__newindex", RemoteStorageEnumeratePublishedFilesByUserActionResult_t_newindex);
 	RemoteStorageEnumeratePublishedFilesByUserActionResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStoragePublishFileProgress_t", luasteam_newRemoteStoragePublishFileProgress_t);
 	// RemoteStoragePublishFileProgress_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStoragePublishFileProgress_t_index);
 	add_func(L, "__newindex", RemoteStoragePublishFileProgress_t_newindex);
 	RemoteStoragePublishFileProgress_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStoragePublishedFileUpdated_t", luasteam_newRemoteStoragePublishedFileUpdated_t);
 	// RemoteStoragePublishedFileUpdated_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStoragePublishedFileUpdated_t_index);
 	add_func(L, "__newindex", RemoteStoragePublishedFileUpdated_t_newindex);
 	RemoteStoragePublishedFileUpdated_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageFileWriteAsyncComplete_t", luasteam_newRemoteStorageFileWriteAsyncComplete_t);
 	// RemoteStorageFileWriteAsyncComplete_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageFileWriteAsyncComplete_t_index);
 	add_func(L, "__newindex", RemoteStorageFileWriteAsyncComplete_t_newindex);
 	RemoteStorageFileWriteAsyncComplete_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageFileReadAsyncComplete_t", luasteam_newRemoteStorageFileReadAsyncComplete_t);
 	// RemoteStorageFileReadAsyncComplete_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoteStorageFileReadAsyncComplete_t_index);
 	add_func(L, "__newindex", RemoteStorageFileReadAsyncComplete_t_newindex);
 	RemoteStorageFileReadAsyncComplete_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoteStorageLocalFileChange_t", luasteam_newRemoteStorageLocalFileChange_t);
 	// RemoteStorageLocalFileChange_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", RemoteStorageLocalFileChange_t_index);
 	RemoteStorageLocalFileChange_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserStatsReceived_t", luasteam_newUserStatsReceived_t);
 	// UserStatsReceived_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserStatsReceived_t_index);
 	add_func(L, "__newindex", UserStatsReceived_t_newindex);
 	UserStatsReceived_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserStatsStored_t", luasteam_newUserStatsStored_t);
 	// UserStatsStored_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserStatsStored_t_index);
 	add_func(L, "__newindex", UserStatsStored_t_newindex);
 	UserStatsStored_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserAchievementStored_t", luasteam_newUserAchievementStored_t);
 	// UserAchievementStored_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserAchievementStored_t_index);
 	add_func(L, "__newindex", UserAchievementStored_t_newindex);
 	UserAchievementStored_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLeaderboardFindResult_t", luasteam_newLeaderboardFindResult_t);
 	// LeaderboardFindResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LeaderboardFindResult_t_index);
 	add_func(L, "__newindex", LeaderboardFindResult_t_newindex);
 	LeaderboardFindResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLeaderboardScoresDownloaded_t", luasteam_newLeaderboardScoresDownloaded_t);
 	// LeaderboardScoresDownloaded_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LeaderboardScoresDownloaded_t_index);
 	add_func(L, "__newindex", LeaderboardScoresDownloaded_t_newindex);
 	LeaderboardScoresDownloaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLeaderboardScoreUploaded_t", luasteam_newLeaderboardScoreUploaded_t);
 	// LeaderboardScoreUploaded_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LeaderboardScoreUploaded_t_index);
 	add_func(L, "__newindex", LeaderboardScoreUploaded_t_newindex);
 	LeaderboardScoreUploaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newNumberOfCurrentPlayers_t", luasteam_newNumberOfCurrentPlayers_t);
 	// NumberOfCurrentPlayers_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", NumberOfCurrentPlayers_t_index);
 	add_func(L, "__newindex", NumberOfCurrentPlayers_t_newindex);
 	NumberOfCurrentPlayers_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserStatsUnloaded_t", luasteam_newUserStatsUnloaded_t);
 	// UserStatsUnloaded_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserStatsUnloaded_t_index);
 	add_func(L, "__newindex", UserStatsUnloaded_t_newindex);
 	UserStatsUnloaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserAchievementIconFetched_t", luasteam_newUserAchievementIconFetched_t);
 	// UserAchievementIconFetched_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserAchievementIconFetched_t_index);
 	add_func(L, "__newindex", UserAchievementIconFetched_t_newindex);
 	UserAchievementIconFetched_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGlobalAchievementPercentagesReady_t", luasteam_newGlobalAchievementPercentagesReady_t);
 	// GlobalAchievementPercentagesReady_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GlobalAchievementPercentagesReady_t_index);
 	add_func(L, "__newindex", GlobalAchievementPercentagesReady_t_newindex);
 	GlobalAchievementPercentagesReady_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newLeaderboardUGCSet_t", luasteam_newLeaderboardUGCSet_t);
 	// LeaderboardUGCSet_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", LeaderboardUGCSet_t_index);
 	add_func(L, "__newindex", LeaderboardUGCSet_t_newindex);
 	LeaderboardUGCSet_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGlobalStatsReceived_t", luasteam_newGlobalStatsReceived_t);
 	// GlobalStatsReceived_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GlobalStatsReceived_t_index);
 	add_func(L, "__newindex", GlobalStatsReceived_t_newindex);
 	GlobalStatsReceived_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newDlcInstalled_t", luasteam_newDlcInstalled_t);
 	// DlcInstalled_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", DlcInstalled_t_index);
 	add_func(L, "__newindex", DlcInstalled_t_newindex);
 	DlcInstalled_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newNewUrlLaunchParameters_t", luasteam_newNewUrlLaunchParameters_t);
 	// NewUrlLaunchParameters_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", NewUrlLaunchParameters_t_index);
 	NewUrlLaunchParameters_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAppProofOfPurchaseKeyResponse_t", luasteam_newAppProofOfPurchaseKeyResponse_t);
 	// AppProofOfPurchaseKeyResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", AppProofOfPurchaseKeyResponse_t_index);
 	add_func(L, "__newindex", AppProofOfPurchaseKeyResponse_t_newindex);
 	AppProofOfPurchaseKeyResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newFileDetailsResult_t", luasteam_newFileDetailsResult_t);
 	// FileDetailsResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", FileDetailsResult_t_index);
 	add_func(L, "__newindex", FileDetailsResult_t_newindex);
 	FileDetailsResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newTimedTrialStatus_t", luasteam_newTimedTrialStatus_t);
 	// TimedTrialStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", TimedTrialStatus_t_index);
 	add_func(L, "__newindex", TimedTrialStatus_t_newindex);
 	TimedTrialStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newP2PSessionRequest_t", luasteam_newP2PSessionRequest_t);
 	// P2PSessionRequest_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", P2PSessionRequest_t_index);
 	add_func(L, "__newindex", P2PSessionRequest_t_newindex);
 	P2PSessionRequest_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newP2PSessionConnectFail_t", luasteam_newP2PSessionConnectFail_t);
 	// P2PSessionConnectFail_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", P2PSessionConnectFail_t_index);
 	add_func(L, "__newindex", P2PSessionConnectFail_t_newindex);
 	P2PSessionConnectFail_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSocketStatusCallback_t", luasteam_newSocketStatusCallback_t);
 	// SocketStatusCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SocketStatusCallback_t_index);
 	add_func(L, "__newindex", SocketStatusCallback_t_newindex);
 	SocketStatusCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newScreenshotReady_t", luasteam_newScreenshotReady_t);
 	// ScreenshotReady_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ScreenshotReady_t_index);
 	add_func(L, "__newindex", ScreenshotReady_t_newindex);
 	ScreenshotReady_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newScreenshotRequested_t", luasteam_newScreenshotRequested_t);
 	// ScreenshotRequested_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", ScreenshotRequested_t_index);
 	ScreenshotRequested_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newPlaybackStatusHasChanged_t", luasteam_newPlaybackStatusHasChanged_t);
 	// PlaybackStatusHasChanged_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", PlaybackStatusHasChanged_t_index);
 	PlaybackStatusHasChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newVolumeHasChanged_t", luasteam_newVolumeHasChanged_t);
 	// VolumeHasChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", VolumeHasChanged_t_index);
 	add_func(L, "__newindex", VolumeHasChanged_t_newindex);
 	VolumeHasChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTTPRequestCompleted_t", luasteam_newHTTPRequestCompleted_t);
 	// HTTPRequestCompleted_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTTPRequestCompleted_t_index);
 	add_func(L, "__newindex", HTTPRequestCompleted_t_newindex);
 	HTTPRequestCompleted_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTTPRequestHeadersReceived_t", luasteam_newHTTPRequestHeadersReceived_t);
 	// HTTPRequestHeadersReceived_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTTPRequestHeadersReceived_t_index);
 	add_func(L, "__newindex", HTTPRequestHeadersReceived_t_newindex);
 	HTTPRequestHeadersReceived_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTTPRequestDataReceived_t", luasteam_newHTTPRequestDataReceived_t);
 	// HTTPRequestDataReceived_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTTPRequestDataReceived_t_index);
 	add_func(L, "__newindex", HTTPRequestDataReceived_t_newindex);
 	HTTPRequestDataReceived_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInputDeviceConnected_t", luasteam_newSteamInputDeviceConnected_t);
 	// SteamInputDeviceConnected_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInputDeviceConnected_t_index);
 	add_func(L, "__newindex", SteamInputDeviceConnected_t_newindex);
 	SteamInputDeviceConnected_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInputDeviceDisconnected_t", luasteam_newSteamInputDeviceDisconnected_t);
 	// SteamInputDeviceDisconnected_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInputDeviceDisconnected_t_index);
 	add_func(L, "__newindex", SteamInputDeviceDisconnected_t_newindex);
 	SteamInputDeviceDisconnected_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInputConfigurationLoaded_t", luasteam_newSteamInputConfigurationLoaded_t);
 	// SteamInputConfigurationLoaded_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInputConfigurationLoaded_t_index);
 	add_func(L, "__newindex", SteamInputConfigurationLoaded_t_newindex);
 	SteamInputConfigurationLoaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInputGamepadSlotChange_t", luasteam_newSteamInputGamepadSlotChange_t);
 	// SteamInputGamepadSlotChange_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInputGamepadSlotChange_t_index);
 	add_func(L, "__newindex", SteamInputGamepadSlotChange_t_newindex);
 	SteamInputGamepadSlotChange_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamUGCQueryCompleted_t", luasteam_newSteamUGCQueryCompleted_t);
 	// SteamUGCQueryCompleted_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamUGCQueryCompleted_t_index);
 	add_func(L, "__newindex", SteamUGCQueryCompleted_t_newindex);
 	SteamUGCQueryCompleted_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamUGCRequestUGCDetailsResult_t", luasteam_newSteamUGCRequestUGCDetailsResult_t);
 	// SteamUGCRequestUGCDetailsResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamUGCRequestUGCDetailsResult_t_index);
 	add_func(L, "__newindex", SteamUGCRequestUGCDetailsResult_t_newindex);
 	SteamUGCRequestUGCDetailsResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newCreateItemResult_t", luasteam_newCreateItemResult_t);
 	// CreateItemResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", CreateItemResult_t_index);
 	add_func(L, "__newindex", CreateItemResult_t_newindex);
 	CreateItemResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSubmitItemUpdateResult_t", luasteam_newSubmitItemUpdateResult_t);
 	// SubmitItemUpdateResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SubmitItemUpdateResult_t_index);
 	add_func(L, "__newindex", SubmitItemUpdateResult_t_newindex);
 	SubmitItemUpdateResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newItemInstalled_t", luasteam_newItemInstalled_t);
 	// ItemInstalled_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ItemInstalled_t_index);
 	add_func(L, "__newindex", ItemInstalled_t_newindex);
 	ItemInstalled_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newDownloadItemResult_t", luasteam_newDownloadItemResult_t);
 	// DownloadItemResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", DownloadItemResult_t_index);
 	add_func(L, "__newindex", DownloadItemResult_t_newindex);
 	DownloadItemResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserFavoriteItemsListChanged_t", luasteam_newUserFavoriteItemsListChanged_t);
 	// UserFavoriteItemsListChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserFavoriteItemsListChanged_t_index);
 	add_func(L, "__newindex", UserFavoriteItemsListChanged_t_newindex);
 	UserFavoriteItemsListChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSetUserItemVoteResult_t", luasteam_newSetUserItemVoteResult_t);
 	// SetUserItemVoteResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SetUserItemVoteResult_t_index);
 	add_func(L, "__newindex", SetUserItemVoteResult_t_newindex);
 	SetUserItemVoteResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGetUserItemVoteResult_t", luasteam_newGetUserItemVoteResult_t);
 	// GetUserItemVoteResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GetUserItemVoteResult_t_index);
 	add_func(L, "__newindex", GetUserItemVoteResult_t_newindex);
 	GetUserItemVoteResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newStartPlaytimeTrackingResult_t", luasteam_newStartPlaytimeTrackingResult_t);
 	// StartPlaytimeTrackingResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", StartPlaytimeTrackingResult_t_index);
 	add_func(L, "__newindex", StartPlaytimeTrackingResult_t_newindex);
 	StartPlaytimeTrackingResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newStopPlaytimeTrackingResult_t", luasteam_newStopPlaytimeTrackingResult_t);
 	// StopPlaytimeTrackingResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", StopPlaytimeTrackingResult_t_index);
 	add_func(L, "__newindex", StopPlaytimeTrackingResult_t_newindex);
 	StopPlaytimeTrackingResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAddUGCDependencyResult_t", luasteam_newAddUGCDependencyResult_t);
 	// AddUGCDependencyResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", AddUGCDependencyResult_t_index);
 	add_func(L, "__newindex", AddUGCDependencyResult_t_newindex);
 	AddUGCDependencyResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoveUGCDependencyResult_t", luasteam_newRemoveUGCDependencyResult_t);
 	// RemoveUGCDependencyResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoveUGCDependencyResult_t_index);
 	add_func(L, "__newindex", RemoveUGCDependencyResult_t_newindex);
 	RemoveUGCDependencyResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAddAppDependencyResult_t", luasteam_newAddAppDependencyResult_t);
 	// AddAppDependencyResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", AddAppDependencyResult_t_index);
 	add_func(L, "__newindex", AddAppDependencyResult_t_newindex);
 	AddAppDependencyResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newRemoveAppDependencyResult_t", luasteam_newRemoveAppDependencyResult_t);
 	// RemoveAppDependencyResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", RemoveAppDependencyResult_t_index);
 	add_func(L, "__newindex", RemoveAppDependencyResult_t_newindex);
 	RemoveAppDependencyResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGetAppDependenciesResult_t", luasteam_newGetAppDependenciesResult_t);
 	// GetAppDependenciesResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GetAppDependenciesResult_t_index);
 	add_func(L, "__newindex", GetAppDependenciesResult_t_newindex);
 	GetAppDependenciesResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newDeleteItemResult_t", luasteam_newDeleteItemResult_t);
 	// DeleteItemResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", DeleteItemResult_t_index);
 	add_func(L, "__newindex", DeleteItemResult_t_newindex);
 	DeleteItemResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newUserSubscribedItemsListChanged_t", luasteam_newUserSubscribedItemsListChanged_t);
 	// UserSubscribedItemsListChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", UserSubscribedItemsListChanged_t_index);
 	add_func(L, "__newindex", UserSubscribedItemsListChanged_t_newindex);
 	UserSubscribedItemsListChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newWorkshopEULAStatus_t", luasteam_newWorkshopEULAStatus_t);
 	// WorkshopEULAStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", WorkshopEULAStatus_t_index);
 	add_func(L, "__newindex", WorkshopEULAStatus_t_newindex);
 	WorkshopEULAStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_BrowserReady_t", luasteam_newHTML_BrowserReady_t);
 	// HTML_BrowserReady_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_BrowserReady_t_index);
 	add_func(L, "__newindex", HTML_BrowserReady_t_newindex);
 	HTML_BrowserReady_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_NeedsPaint_t", luasteam_newHTML_NeedsPaint_t);
 	// HTML_NeedsPaint_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_NeedsPaint_t_index);
 	add_func(L, "__newindex", HTML_NeedsPaint_t_newindex);
 	HTML_NeedsPaint_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_StartRequest_t", luasteam_newHTML_StartRequest_t);
 	// HTML_StartRequest_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_StartRequest_t_index);
 	add_func(L, "__newindex", HTML_StartRequest_t_newindex);
 	HTML_StartRequest_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_CloseBrowser_t", luasteam_newHTML_CloseBrowser_t);
 	// HTML_CloseBrowser_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_CloseBrowser_t_index);
 	add_func(L, "__newindex", HTML_CloseBrowser_t_newindex);
 	HTML_CloseBrowser_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_URLChanged_t", luasteam_newHTML_URLChanged_t);
 	// HTML_URLChanged_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_URLChanged_t_index);
 	add_func(L, "__newindex", HTML_URLChanged_t_newindex);
 	HTML_URLChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_FinishedRequest_t", luasteam_newHTML_FinishedRequest_t);
 	// HTML_FinishedRequest_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_FinishedRequest_t_index);
 	add_func(L, "__newindex", HTML_FinishedRequest_t_newindex);
 	HTML_FinishedRequest_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_OpenLinkInNewTab_t", luasteam_newHTML_OpenLinkInNewTab_t);
 	// HTML_OpenLinkInNewTab_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_OpenLinkInNewTab_t_index);
 	add_func(L, "__newindex", HTML_OpenLinkInNewTab_t_newindex);
 	HTML_OpenLinkInNewTab_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_ChangedTitle_t", luasteam_newHTML_ChangedTitle_t);
 	// HTML_ChangedTitle_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_ChangedTitle_t_index);
 	add_func(L, "__newindex", HTML_ChangedTitle_t_newindex);
 	HTML_ChangedTitle_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_SearchResults_t", luasteam_newHTML_SearchResults_t);
 	// HTML_SearchResults_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_SearchResults_t_index);
 	add_func(L, "__newindex", HTML_SearchResults_t_newindex);
 	HTML_SearchResults_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_CanGoBackAndForward_t", luasteam_newHTML_CanGoBackAndForward_t);
 	// HTML_CanGoBackAndForward_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_CanGoBackAndForward_t_index);
 	add_func(L, "__newindex", HTML_CanGoBackAndForward_t_newindex);
 	HTML_CanGoBackAndForward_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_HorizontalScroll_t", luasteam_newHTML_HorizontalScroll_t);
 	// HTML_HorizontalScroll_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_HorizontalScroll_t_index);
 	add_func(L, "__newindex", HTML_HorizontalScroll_t_newindex);
 	HTML_HorizontalScroll_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_VerticalScroll_t", luasteam_newHTML_VerticalScroll_t);
 	// HTML_VerticalScroll_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_VerticalScroll_t_index);
 	add_func(L, "__newindex", HTML_VerticalScroll_t_newindex);
 	HTML_VerticalScroll_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_LinkAtPosition_t", luasteam_newHTML_LinkAtPosition_t);
 	// HTML_LinkAtPosition_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_LinkAtPosition_t_index);
 	add_func(L, "__newindex", HTML_LinkAtPosition_t_newindex);
 	HTML_LinkAtPosition_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_JSAlert_t", luasteam_newHTML_JSAlert_t);
 	// HTML_JSAlert_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_JSAlert_t_index);
 	add_func(L, "__newindex", HTML_JSAlert_t_newindex);
 	HTML_JSAlert_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_JSConfirm_t", luasteam_newHTML_JSConfirm_t);
 	// HTML_JSConfirm_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_JSConfirm_t_index);
 	add_func(L, "__newindex", HTML_JSConfirm_t_newindex);
 	HTML_JSConfirm_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_FileOpenDialog_t", luasteam_newHTML_FileOpenDialog_t);
 	// HTML_FileOpenDialog_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_FileOpenDialog_t_index);
 	add_func(L, "__newindex", HTML_FileOpenDialog_t_newindex);
 	HTML_FileOpenDialog_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_NewWindow_t", luasteam_newHTML_NewWindow_t);
 	// HTML_NewWindow_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_NewWindow_t_index);
 	add_func(L, "__newindex", HTML_NewWindow_t_newindex);
 	HTML_NewWindow_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_SetCursor_t", luasteam_newHTML_SetCursor_t);
 	// HTML_SetCursor_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_SetCursor_t_index);
 	add_func(L, "__newindex", HTML_SetCursor_t_newindex);
 	HTML_SetCursor_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_StatusText_t", luasteam_newHTML_StatusText_t);
 	// HTML_StatusText_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_StatusText_t_index);
 	add_func(L, "__newindex", HTML_StatusText_t_newindex);
 	HTML_StatusText_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_ShowToolTip_t", luasteam_newHTML_ShowToolTip_t);
 	// HTML_ShowToolTip_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_ShowToolTip_t_index);
 	add_func(L, "__newindex", HTML_ShowToolTip_t_newindex);
 	HTML_ShowToolTip_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_UpdateToolTip_t", luasteam_newHTML_UpdateToolTip_t);
 	// HTML_UpdateToolTip_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_UpdateToolTip_t_index);
 	add_func(L, "__newindex", HTML_UpdateToolTip_t_newindex);
 	HTML_UpdateToolTip_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_HideToolTip_t", luasteam_newHTML_HideToolTip_t);
 	// HTML_HideToolTip_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_HideToolTip_t_index);
 	add_func(L, "__newindex", HTML_HideToolTip_t_newindex);
 	HTML_HideToolTip_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newHTML_BrowserRestarted_t", luasteam_newHTML_BrowserRestarted_t);
 	// HTML_BrowserRestarted_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", HTML_BrowserRestarted_t_index);
 	add_func(L, "__newindex", HTML_BrowserRestarted_t_newindex);
 	HTML_BrowserRestarted_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInventoryResultReady_t", luasteam_newSteamInventoryResultReady_t);
 	// SteamInventoryResultReady_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInventoryResultReady_t_index);
 	add_func(L, "__newindex", SteamInventoryResultReady_t_newindex);
 	SteamInventoryResultReady_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInventoryFullUpdate_t", luasteam_newSteamInventoryFullUpdate_t);
 	// SteamInventoryFullUpdate_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInventoryFullUpdate_t_index);
 	add_func(L, "__newindex", SteamInventoryFullUpdate_t_newindex);
 	SteamInventoryFullUpdate_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInventoryDefinitionUpdate_t", luasteam_newSteamInventoryDefinitionUpdate_t);
 	// SteamInventoryDefinitionUpdate_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", SteamInventoryDefinitionUpdate_t_index);
 	SteamInventoryDefinitionUpdate_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInventoryEligiblePromoItemDefIDs_t", luasteam_newSteamInventoryEligiblePromoItemDefIDs_t);
 	// SteamInventoryEligiblePromoItemDefIDs_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInventoryEligiblePromoItemDefIDs_t_index);
 	add_func(L, "__newindex", SteamInventoryEligiblePromoItemDefIDs_t_newindex);
 	SteamInventoryEligiblePromoItemDefIDs_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInventoryStartPurchaseResult_t", luasteam_newSteamInventoryStartPurchaseResult_t);
 	// SteamInventoryStartPurchaseResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInventoryStartPurchaseResult_t_index);
 	add_func(L, "__newindex", SteamInventoryStartPurchaseResult_t_newindex);
 	SteamInventoryStartPurchaseResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamInventoryRequestPricesResult_t", luasteam_newSteamInventoryRequestPricesResult_t);
 	// SteamInventoryRequestPricesResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamInventoryRequestPricesResult_t_index);
 	add_func(L, "__newindex", SteamInventoryRequestPricesResult_t_newindex);
 	SteamInventoryRequestPricesResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamTimelineGamePhaseRecordingExists_t", luasteam_newSteamTimelineGamePhaseRecordingExists_t);
 	// SteamTimelineGamePhaseRecordingExists_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamTimelineGamePhaseRecordingExists_t_index);
 	add_func(L, "__newindex", SteamTimelineGamePhaseRecordingExists_t_newindex);
 	SteamTimelineGamePhaseRecordingExists_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamTimelineEventRecordingExists_t", luasteam_newSteamTimelineEventRecordingExists_t);
 	// SteamTimelineEventRecordingExists_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamTimelineEventRecordingExists_t_index);
 	add_func(L, "__newindex", SteamTimelineEventRecordingExists_t_newindex);
 	SteamTimelineEventRecordingExists_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGetVideoURLResult_t", luasteam_newGetVideoURLResult_t);
 	// GetVideoURLResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GetVideoURLResult_t_index);
 	add_func(L, "__newindex", GetVideoURLResult_t_newindex);
 	GetVideoURLResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGetOPFSettingsResult_t", luasteam_newGetOPFSettingsResult_t);
 	// GetOPFSettingsResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GetOPFSettingsResult_t_index);
 	add_func(L, "__newindex", GetOPFSettingsResult_t_newindex);
 	GetOPFSettingsResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newBroadcastUploadStart_t", luasteam_newBroadcastUploadStart_t);
 	// BroadcastUploadStart_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", BroadcastUploadStart_t_index);
 	add_func(L, "__newindex", BroadcastUploadStart_t_newindex);
 	BroadcastUploadStart_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newBroadcastUploadStop_t", luasteam_newBroadcastUploadStop_t);
 	// BroadcastUploadStop_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", BroadcastUploadStop_t_index);
 	add_func(L, "__newindex", BroadcastUploadStop_t_newindex);
 	BroadcastUploadStop_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamParentalSettingsChanged_t", luasteam_newSteamParentalSettingsChanged_t);
 	// SteamParentalSettingsChanged_t metatable
 	lua_createtable(L, 0, 1);
 	add_func(L, "__index", SteamParentalSettingsChanged_t_index);
 	SteamParentalSettingsChanged_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamRemotePlaySessionConnected_t", luasteam_newSteamRemotePlaySessionConnected_t);
 	// SteamRemotePlaySessionConnected_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamRemotePlaySessionConnected_t_index);
 	add_func(L, "__newindex", SteamRemotePlaySessionConnected_t_newindex);
 	SteamRemotePlaySessionConnected_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamRemotePlaySessionDisconnected_t", luasteam_newSteamRemotePlaySessionDisconnected_t);
 	// SteamRemotePlaySessionDisconnected_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamRemotePlaySessionDisconnected_t_index);
 	add_func(L, "__newindex", SteamRemotePlaySessionDisconnected_t_newindex);
 	SteamRemotePlaySessionDisconnected_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamRemotePlayTogetherGuestInvite_t", luasteam_newSteamRemotePlayTogetherGuestInvite_t);
 	// SteamRemotePlayTogetherGuestInvite_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamRemotePlayTogetherGuestInvite_t_index);
 	add_func(L, "__newindex", SteamRemotePlayTogetherGuestInvite_t_newindex);
 	SteamRemotePlayTogetherGuestInvite_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkingMessagesSessionRequest_t", luasteam_newSteamNetworkingMessagesSessionRequest_t);
 	// SteamNetworkingMessagesSessionRequest_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetworkingMessagesSessionRequest_t_index);
 	add_func(L, "__newindex", SteamNetworkingMessagesSessionRequest_t_newindex);
 	SteamNetworkingMessagesSessionRequest_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkingMessagesSessionFailed_t", luasteam_newSteamNetworkingMessagesSessionFailed_t);
 	// SteamNetworkingMessagesSessionFailed_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetworkingMessagesSessionFailed_t_index);
 	add_func(L, "__newindex", SteamNetworkingMessagesSessionFailed_t_newindex);
 	SteamNetworkingMessagesSessionFailed_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetConnectionStatusChangedCallback_t", luasteam_newSteamNetConnectionStatusChangedCallback_t);
 	// SteamNetConnectionStatusChangedCallback_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetConnectionStatusChangedCallback_t_index);
 	add_func(L, "__newindex", SteamNetConnectionStatusChangedCallback_t_newindex);
 	SteamNetConnectionStatusChangedCallback_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetAuthenticationStatus_t", luasteam_newSteamNetAuthenticationStatus_t);
 	// SteamNetAuthenticationStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetAuthenticationStatus_t_index);
 	add_func(L, "__newindex", SteamNetAuthenticationStatus_t_newindex);
 	SteamNetAuthenticationStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamRelayNetworkStatus_t", luasteam_newSteamRelayNetworkStatus_t);
 	// SteamRelayNetworkStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamRelayNetworkStatus_t_index);
 	add_func(L, "__newindex", SteamRelayNetworkStatus_t_newindex);
 	SteamRelayNetworkStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSClientApprove_t", luasteam_newGSClientApprove_t);
 	// GSClientApprove_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSClientApprove_t_index);
 	add_func(L, "__newindex", GSClientApprove_t_newindex);
 	GSClientApprove_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSClientDeny_t", luasteam_newGSClientDeny_t);
 	// GSClientDeny_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSClientDeny_t_index);
 	add_func(L, "__newindex", GSClientDeny_t_newindex);
 	GSClientDeny_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSClientKick_t", luasteam_newGSClientKick_t);
 	// GSClientKick_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSClientKick_t_index);
 	add_func(L, "__newindex", GSClientKick_t_newindex);
 	GSClientKick_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSClientAchievementStatus_t", luasteam_newGSClientAchievementStatus_t);
 	// GSClientAchievementStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSClientAchievementStatus_t_index);
 	add_func(L, "__newindex", GSClientAchievementStatus_t_newindex);
 	GSClientAchievementStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSPolicyResponse_t", luasteam_newGSPolicyResponse_t);
 	// GSPolicyResponse_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSPolicyResponse_t_index);
 	add_func(L, "__newindex", GSPolicyResponse_t_newindex);
 	GSPolicyResponse_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSGameplayStats_t", luasteam_newGSGameplayStats_t);
 	// GSGameplayStats_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSGameplayStats_t_index);
 	add_func(L, "__newindex", GSGameplayStats_t_newindex);
 	GSGameplayStats_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSClientGroupStatus_t", luasteam_newGSClientGroupStatus_t);
 	// GSClientGroupStatus_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSClientGroupStatus_t_index);
 	add_func(L, "__newindex", GSClientGroupStatus_t_newindex);
 	GSClientGroupStatus_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSReputation_t", luasteam_newGSReputation_t);
 	// GSReputation_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSReputation_t_index);
 	add_func(L, "__newindex", GSReputation_t_newindex);
 	GSReputation_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newAssociateWithClanResult_t", luasteam_newAssociateWithClanResult_t);
 	// AssociateWithClanResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", AssociateWithClanResult_t_index);
 	add_func(L, "__newindex", AssociateWithClanResult_t_newindex);
 	AssociateWithClanResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newComputeNewPlayerCompatibilityResult_t", luasteam_newComputeNewPlayerCompatibilityResult_t);
 	// ComputeNewPlayerCompatibilityResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", ComputeNewPlayerCompatibilityResult_t_index);
 	add_func(L, "__newindex", ComputeNewPlayerCompatibilityResult_t_newindex);
 	ComputeNewPlayerCompatibilityResult_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSStatsReceived_t", luasteam_newGSStatsReceived_t);
 	// GSStatsReceived_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSStatsReceived_t_index);
 	add_func(L, "__newindex", GSStatsReceived_t_newindex);
 	GSStatsReceived_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSStatsStored_t", luasteam_newGSStatsStored_t);
 	// GSStatsStored_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSStatsStored_t_index);
 	add_func(L, "__newindex", GSStatsStored_t_newindex);
 	GSStatsStored_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newGSStatsUnloaded_t", luasteam_newGSStatsUnloaded_t);
 	// GSStatsUnloaded_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", GSStatsUnloaded_t_index);
 	add_func(L, "__newindex", GSStatsUnloaded_t_newindex);
 	GSStatsUnloaded_tMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newSteamNetworkingFakeIPResult_t", luasteam_newSteamNetworkingFakeIPResult_t);
 	// SteamNetworkingFakeIPResult_t metatable
 	lua_createtable(L, 0, 2);
 	add_func(L, "__index", SteamNetworkingFakeIPResult_t_index);
@@ -21618,230 +21839,6 @@ void shutdown_structs_auto(lua_State *L) {
 	GSStatsUnloaded_tMetatable_ref = LUA_NOREF;
 	luaL_unref(L, LUA_REGISTRYINDEX, SteamNetworkingFakeIPResult_tMetatable_ref);
 	SteamNetworkingFakeIPResult_tMetatable_ref = LUA_NOREF;
-}
-
-void add_structs_auto(lua_State *L) {
-	add_func(L, "newSteamIPAddress_t", luasteam_newSteamIPAddress_t);
-	add_func(L, "newFriendGameInfo_t", luasteam_newFriendGameInfo_t);
-	add_func(L, "newMatchMakingKeyValuePair_t", luasteam_newMatchMakingKeyValuePair_t);
-	add_func(L, "newservernetadr_t", luasteam_newservernetadr_t);
-	add_func(L, "newgameserveritem_t", luasteam_newgameserveritem_t);
-	add_func(L, "newSteamPartyBeaconLocation_t", luasteam_newSteamPartyBeaconLocation_t);
-	add_func(L, "newSteamParamStringArray_t", luasteam_newSteamParamStringArray_t);
-	add_func(L, "newLeaderboardEntry_t", luasteam_newLeaderboardEntry_t);
-	add_func(L, "newP2PSessionState_t", luasteam_newP2PSessionState_t);
-	add_func(L, "newInputAnalogActionData_t", luasteam_newInputAnalogActionData_t);
-	add_func(L, "newInputDigitalActionData_t", luasteam_newInputDigitalActionData_t);
-	add_func(L, "newInputMotionData_t", luasteam_newInputMotionData_t);
-	add_func(L, "newSteamInputActionEvent_t", luasteam_newSteamInputActionEvent_t);
-	add_func(L, "newSteamUGCDetails_t", luasteam_newSteamUGCDetails_t);
-	add_func(L, "newSteamItemDetails_t", luasteam_newSteamItemDetails_t);
-	add_func(L, "newRemotePlayInputMouseMotion_t", luasteam_newRemotePlayInputMouseMotion_t);
-	add_func(L, "newRemotePlayInputMouseWheel_t", luasteam_newRemotePlayInputMouseWheel_t);
-	add_func(L, "newRemotePlayInputKey_t", luasteam_newRemotePlayInputKey_t);
-	add_func(L, "newRemotePlayInput_t", luasteam_newRemotePlayInput_t);
-	add_func(L, "newSteamNetworkingIPAddr", luasteam_newSteamNetworkingIPAddr);
-	add_func(L, "newSteamNetworkingIdentity", luasteam_newSteamNetworkingIdentity);
-	add_func(L, "newSteamNetConnectionInfo_t", luasteam_newSteamNetConnectionInfo_t);
-	add_func(L, "newSteamNetConnectionRealTimeStatus_t", luasteam_newSteamNetConnectionRealTimeStatus_t);
-	add_func(L, "newSteamNetConnectionRealTimeLaneStatus_t", luasteam_newSteamNetConnectionRealTimeLaneStatus_t);
-	add_func(L, "newSteamNetworkPingLocation_t", luasteam_newSteamNetworkPingLocation_t);
-	add_func(L, "newSteamNetworkingConfigValue_t", luasteam_newSteamNetworkingConfigValue_t);
-	add_func(L, "newSteamServersConnected_t", luasteam_newSteamServersConnected_t);
-	add_func(L, "newSteamServerConnectFailure_t", luasteam_newSteamServerConnectFailure_t);
-	add_func(L, "newSteamServersDisconnected_t", luasteam_newSteamServersDisconnected_t);
-	add_func(L, "newClientGameServerDeny_t", luasteam_newClientGameServerDeny_t);
-	add_func(L, "newIPCFailure_t", luasteam_newIPCFailure_t);
-	add_func(L, "newLicensesUpdated_t", luasteam_newLicensesUpdated_t);
-	add_func(L, "newValidateAuthTicketResponse_t", luasteam_newValidateAuthTicketResponse_t);
-	add_func(L, "newMicroTxnAuthorizationResponse_t", luasteam_newMicroTxnAuthorizationResponse_t);
-	add_func(L, "newEncryptedAppTicketResponse_t", luasteam_newEncryptedAppTicketResponse_t);
-	add_func(L, "newGetAuthSessionTicketResponse_t", luasteam_newGetAuthSessionTicketResponse_t);
-	add_func(L, "newGameWebCallback_t", luasteam_newGameWebCallback_t);
-	add_func(L, "newStoreAuthURLResponse_t", luasteam_newStoreAuthURLResponse_t);
-	add_func(L, "newMarketEligibilityResponse_t", luasteam_newMarketEligibilityResponse_t);
-	add_func(L, "newDurationControl_t", luasteam_newDurationControl_t);
-	add_func(L, "newGetTicketForWebApiResponse_t", luasteam_newGetTicketForWebApiResponse_t);
-	add_func(L, "newPersonaStateChange_t", luasteam_newPersonaStateChange_t);
-	add_func(L, "newGameOverlayActivated_t", luasteam_newGameOverlayActivated_t);
-	add_func(L, "newGameServerChangeRequested_t", luasteam_newGameServerChangeRequested_t);
-	add_func(L, "newGameLobbyJoinRequested_t", luasteam_newGameLobbyJoinRequested_t);
-	add_func(L, "newAvatarImageLoaded_t", luasteam_newAvatarImageLoaded_t);
-	add_func(L, "newClanOfficerListResponse_t", luasteam_newClanOfficerListResponse_t);
-	add_func(L, "newFriendRichPresenceUpdate_t", luasteam_newFriendRichPresenceUpdate_t);
-	add_func(L, "newGameRichPresenceJoinRequested_t", luasteam_newGameRichPresenceJoinRequested_t);
-	add_func(L, "newGameConnectedClanChatMsg_t", luasteam_newGameConnectedClanChatMsg_t);
-	add_func(L, "newGameConnectedChatJoin_t", luasteam_newGameConnectedChatJoin_t);
-	add_func(L, "newGameConnectedChatLeave_t", luasteam_newGameConnectedChatLeave_t);
-	add_func(L, "newDownloadClanActivityCountsResult_t", luasteam_newDownloadClanActivityCountsResult_t);
-	add_func(L, "newJoinClanChatRoomCompletionResult_t", luasteam_newJoinClanChatRoomCompletionResult_t);
-	add_func(L, "newGameConnectedFriendChatMsg_t", luasteam_newGameConnectedFriendChatMsg_t);
-	add_func(L, "newFriendsGetFollowerCount_t", luasteam_newFriendsGetFollowerCount_t);
-	add_func(L, "newFriendsIsFollowing_t", luasteam_newFriendsIsFollowing_t);
-	add_func(L, "newFriendsEnumerateFollowingList_t", luasteam_newFriendsEnumerateFollowingList_t);
-	add_func(L, "newUnreadChatMessagesChanged_t", luasteam_newUnreadChatMessagesChanged_t);
-	add_func(L, "newOverlayBrowserProtocolNavigation_t", luasteam_newOverlayBrowserProtocolNavigation_t);
-	add_func(L, "newEquippedProfileItemsChanged_t", luasteam_newEquippedProfileItemsChanged_t);
-	add_func(L, "newEquippedProfileItems_t", luasteam_newEquippedProfileItems_t);
-	add_func(L, "newIPCountry_t", luasteam_newIPCountry_t);
-	add_func(L, "newLowBatteryPower_t", luasteam_newLowBatteryPower_t);
-	add_func(L, "newSteamAPICallCompleted_t", luasteam_newSteamAPICallCompleted_t);
-	add_func(L, "newSteamShutdown_t", luasteam_newSteamShutdown_t);
-	add_func(L, "newCheckFileSignature_t", luasteam_newCheckFileSignature_t);
-	add_func(L, "newGamepadTextInputDismissed_t", luasteam_newGamepadTextInputDismissed_t);
-	add_func(L, "newAppResumingFromSuspend_t", luasteam_newAppResumingFromSuspend_t);
-	add_func(L, "newFloatingGamepadTextInputDismissed_t", luasteam_newFloatingGamepadTextInputDismissed_t);
-	add_func(L, "newFilterTextDictionaryChanged_t", luasteam_newFilterTextDictionaryChanged_t);
-	add_func(L, "newFavoritesListChanged_t", luasteam_newFavoritesListChanged_t);
-	add_func(L, "newLobbyInvite_t", luasteam_newLobbyInvite_t);
-	add_func(L, "newLobbyEnter_t", luasteam_newLobbyEnter_t);
-	add_func(L, "newLobbyDataUpdate_t", luasteam_newLobbyDataUpdate_t);
-	add_func(L, "newLobbyChatUpdate_t", luasteam_newLobbyChatUpdate_t);
-	add_func(L, "newLobbyChatMsg_t", luasteam_newLobbyChatMsg_t);
-	add_func(L, "newLobbyGameCreated_t", luasteam_newLobbyGameCreated_t);
-	add_func(L, "newLobbyMatchList_t", luasteam_newLobbyMatchList_t);
-	add_func(L, "newLobbyKicked_t", luasteam_newLobbyKicked_t);
-	add_func(L, "newLobbyCreated_t", luasteam_newLobbyCreated_t);
-	add_func(L, "newFavoritesListAccountsUpdated_t", luasteam_newFavoritesListAccountsUpdated_t);
-	add_func(L, "newJoinPartyCallback_t", luasteam_newJoinPartyCallback_t);
-	add_func(L, "newCreateBeaconCallback_t", luasteam_newCreateBeaconCallback_t);
-	add_func(L, "newReservationNotificationCallback_t", luasteam_newReservationNotificationCallback_t);
-	add_func(L, "newChangeNumOpenSlotsCallback_t", luasteam_newChangeNumOpenSlotsCallback_t);
-	add_func(L, "newAvailableBeaconLocationsUpdated_t", luasteam_newAvailableBeaconLocationsUpdated_t);
-	add_func(L, "newActiveBeaconsUpdated_t", luasteam_newActiveBeaconsUpdated_t);
-	add_func(L, "newRemoteStorageFileShareResult_t", luasteam_newRemoteStorageFileShareResult_t);
-	add_func(L, "newRemoteStoragePublishFileResult_t", luasteam_newRemoteStoragePublishFileResult_t);
-	add_func(L, "newRemoteStorageDeletePublishedFileResult_t", luasteam_newRemoteStorageDeletePublishedFileResult_t);
-	add_func(L, "newRemoteStorageEnumerateUserPublishedFilesResult_t", luasteam_newRemoteStorageEnumerateUserPublishedFilesResult_t);
-	add_func(L, "newRemoteStorageSubscribePublishedFileResult_t", luasteam_newRemoteStorageSubscribePublishedFileResult_t);
-	add_func(L, "newRemoteStorageEnumerateUserSubscribedFilesResult_t", luasteam_newRemoteStorageEnumerateUserSubscribedFilesResult_t);
-	add_func(L, "newRemoteStorageUnsubscribePublishedFileResult_t", luasteam_newRemoteStorageUnsubscribePublishedFileResult_t);
-	add_func(L, "newRemoteStorageUpdatePublishedFileResult_t", luasteam_newRemoteStorageUpdatePublishedFileResult_t);
-	add_func(L, "newRemoteStorageDownloadUGCResult_t", luasteam_newRemoteStorageDownloadUGCResult_t);
-	add_func(L, "newRemoteStorageGetPublishedFileDetailsResult_t", luasteam_newRemoteStorageGetPublishedFileDetailsResult_t);
-	add_func(L, "newRemoteStorageEnumerateWorkshopFilesResult_t", luasteam_newRemoteStorageEnumerateWorkshopFilesResult_t);
-	add_func(L, "newRemoteStorageGetPublishedItemVoteDetailsResult_t", luasteam_newRemoteStorageGetPublishedItemVoteDetailsResult_t);
-	add_func(L, "newRemoteStoragePublishedFileSubscribed_t", luasteam_newRemoteStoragePublishedFileSubscribed_t);
-	add_func(L, "newRemoteStoragePublishedFileUnsubscribed_t", luasteam_newRemoteStoragePublishedFileUnsubscribed_t);
-	add_func(L, "newRemoteStoragePublishedFileDeleted_t", luasteam_newRemoteStoragePublishedFileDeleted_t);
-	add_func(L, "newRemoteStorageUpdateUserPublishedItemVoteResult_t", luasteam_newRemoteStorageUpdateUserPublishedItemVoteResult_t);
-	add_func(L, "newRemoteStorageUserVoteDetails_t", luasteam_newRemoteStorageUserVoteDetails_t);
-	add_func(L, "newRemoteStorageEnumerateUserSharedWorkshopFilesResult_t", luasteam_newRemoteStorageEnumerateUserSharedWorkshopFilesResult_t);
-	add_func(L, "newRemoteStorageSetUserPublishedFileActionResult_t", luasteam_newRemoteStorageSetUserPublishedFileActionResult_t);
-	add_func(L, "newRemoteStorageEnumeratePublishedFilesByUserActionResult_t", luasteam_newRemoteStorageEnumeratePublishedFilesByUserActionResult_t);
-	add_func(L, "newRemoteStoragePublishFileProgress_t", luasteam_newRemoteStoragePublishFileProgress_t);
-	add_func(L, "newRemoteStoragePublishedFileUpdated_t", luasteam_newRemoteStoragePublishedFileUpdated_t);
-	add_func(L, "newRemoteStorageFileWriteAsyncComplete_t", luasteam_newRemoteStorageFileWriteAsyncComplete_t);
-	add_func(L, "newRemoteStorageFileReadAsyncComplete_t", luasteam_newRemoteStorageFileReadAsyncComplete_t);
-	add_func(L, "newRemoteStorageLocalFileChange_t", luasteam_newRemoteStorageLocalFileChange_t);
-	add_func(L, "newUserStatsReceived_t", luasteam_newUserStatsReceived_t);
-	add_func(L, "newUserStatsStored_t", luasteam_newUserStatsStored_t);
-	add_func(L, "newUserAchievementStored_t", luasteam_newUserAchievementStored_t);
-	add_func(L, "newLeaderboardFindResult_t", luasteam_newLeaderboardFindResult_t);
-	add_func(L, "newLeaderboardScoresDownloaded_t", luasteam_newLeaderboardScoresDownloaded_t);
-	add_func(L, "newLeaderboardScoreUploaded_t", luasteam_newLeaderboardScoreUploaded_t);
-	add_func(L, "newNumberOfCurrentPlayers_t", luasteam_newNumberOfCurrentPlayers_t);
-	add_func(L, "newUserStatsUnloaded_t", luasteam_newUserStatsUnloaded_t);
-	add_func(L, "newUserAchievementIconFetched_t", luasteam_newUserAchievementIconFetched_t);
-	add_func(L, "newGlobalAchievementPercentagesReady_t", luasteam_newGlobalAchievementPercentagesReady_t);
-	add_func(L, "newLeaderboardUGCSet_t", luasteam_newLeaderboardUGCSet_t);
-	add_func(L, "newGlobalStatsReceived_t", luasteam_newGlobalStatsReceived_t);
-	add_func(L, "newDlcInstalled_t", luasteam_newDlcInstalled_t);
-	add_func(L, "newNewUrlLaunchParameters_t", luasteam_newNewUrlLaunchParameters_t);
-	add_func(L, "newAppProofOfPurchaseKeyResponse_t", luasteam_newAppProofOfPurchaseKeyResponse_t);
-	add_func(L, "newFileDetailsResult_t", luasteam_newFileDetailsResult_t);
-	add_func(L, "newTimedTrialStatus_t", luasteam_newTimedTrialStatus_t);
-	add_func(L, "newP2PSessionRequest_t", luasteam_newP2PSessionRequest_t);
-	add_func(L, "newP2PSessionConnectFail_t", luasteam_newP2PSessionConnectFail_t);
-	add_func(L, "newSocketStatusCallback_t", luasteam_newSocketStatusCallback_t);
-	add_func(L, "newScreenshotReady_t", luasteam_newScreenshotReady_t);
-	add_func(L, "newScreenshotRequested_t", luasteam_newScreenshotRequested_t);
-	add_func(L, "newPlaybackStatusHasChanged_t", luasteam_newPlaybackStatusHasChanged_t);
-	add_func(L, "newVolumeHasChanged_t", luasteam_newVolumeHasChanged_t);
-	add_func(L, "newHTTPRequestCompleted_t", luasteam_newHTTPRequestCompleted_t);
-	add_func(L, "newHTTPRequestHeadersReceived_t", luasteam_newHTTPRequestHeadersReceived_t);
-	add_func(L, "newHTTPRequestDataReceived_t", luasteam_newHTTPRequestDataReceived_t);
-	add_func(L, "newSteamInputDeviceConnected_t", luasteam_newSteamInputDeviceConnected_t);
-	add_func(L, "newSteamInputDeviceDisconnected_t", luasteam_newSteamInputDeviceDisconnected_t);
-	add_func(L, "newSteamInputConfigurationLoaded_t", luasteam_newSteamInputConfigurationLoaded_t);
-	add_func(L, "newSteamInputGamepadSlotChange_t", luasteam_newSteamInputGamepadSlotChange_t);
-	add_func(L, "newSteamUGCQueryCompleted_t", luasteam_newSteamUGCQueryCompleted_t);
-	add_func(L, "newSteamUGCRequestUGCDetailsResult_t", luasteam_newSteamUGCRequestUGCDetailsResult_t);
-	add_func(L, "newCreateItemResult_t", luasteam_newCreateItemResult_t);
-	add_func(L, "newSubmitItemUpdateResult_t", luasteam_newSubmitItemUpdateResult_t);
-	add_func(L, "newItemInstalled_t", luasteam_newItemInstalled_t);
-	add_func(L, "newDownloadItemResult_t", luasteam_newDownloadItemResult_t);
-	add_func(L, "newUserFavoriteItemsListChanged_t", luasteam_newUserFavoriteItemsListChanged_t);
-	add_func(L, "newSetUserItemVoteResult_t", luasteam_newSetUserItemVoteResult_t);
-	add_func(L, "newGetUserItemVoteResult_t", luasteam_newGetUserItemVoteResult_t);
-	add_func(L, "newStartPlaytimeTrackingResult_t", luasteam_newStartPlaytimeTrackingResult_t);
-	add_func(L, "newStopPlaytimeTrackingResult_t", luasteam_newStopPlaytimeTrackingResult_t);
-	add_func(L, "newAddUGCDependencyResult_t", luasteam_newAddUGCDependencyResult_t);
-	add_func(L, "newRemoveUGCDependencyResult_t", luasteam_newRemoveUGCDependencyResult_t);
-	add_func(L, "newAddAppDependencyResult_t", luasteam_newAddAppDependencyResult_t);
-	add_func(L, "newRemoveAppDependencyResult_t", luasteam_newRemoveAppDependencyResult_t);
-	add_func(L, "newGetAppDependenciesResult_t", luasteam_newGetAppDependenciesResult_t);
-	add_func(L, "newDeleteItemResult_t", luasteam_newDeleteItemResult_t);
-	add_func(L, "newUserSubscribedItemsListChanged_t", luasteam_newUserSubscribedItemsListChanged_t);
-	add_func(L, "newWorkshopEULAStatus_t", luasteam_newWorkshopEULAStatus_t);
-	add_func(L, "newHTML_BrowserReady_t", luasteam_newHTML_BrowserReady_t);
-	add_func(L, "newHTML_NeedsPaint_t", luasteam_newHTML_NeedsPaint_t);
-	add_func(L, "newHTML_StartRequest_t", luasteam_newHTML_StartRequest_t);
-	add_func(L, "newHTML_CloseBrowser_t", luasteam_newHTML_CloseBrowser_t);
-	add_func(L, "newHTML_URLChanged_t", luasteam_newHTML_URLChanged_t);
-	add_func(L, "newHTML_FinishedRequest_t", luasteam_newHTML_FinishedRequest_t);
-	add_func(L, "newHTML_OpenLinkInNewTab_t", luasteam_newHTML_OpenLinkInNewTab_t);
-	add_func(L, "newHTML_ChangedTitle_t", luasteam_newHTML_ChangedTitle_t);
-	add_func(L, "newHTML_SearchResults_t", luasteam_newHTML_SearchResults_t);
-	add_func(L, "newHTML_CanGoBackAndForward_t", luasteam_newHTML_CanGoBackAndForward_t);
-	add_func(L, "newHTML_HorizontalScroll_t", luasteam_newHTML_HorizontalScroll_t);
-	add_func(L, "newHTML_VerticalScroll_t", luasteam_newHTML_VerticalScroll_t);
-	add_func(L, "newHTML_LinkAtPosition_t", luasteam_newHTML_LinkAtPosition_t);
-	add_func(L, "newHTML_JSAlert_t", luasteam_newHTML_JSAlert_t);
-	add_func(L, "newHTML_JSConfirm_t", luasteam_newHTML_JSConfirm_t);
-	add_func(L, "newHTML_FileOpenDialog_t", luasteam_newHTML_FileOpenDialog_t);
-	add_func(L, "newHTML_NewWindow_t", luasteam_newHTML_NewWindow_t);
-	add_func(L, "newHTML_SetCursor_t", luasteam_newHTML_SetCursor_t);
-	add_func(L, "newHTML_StatusText_t", luasteam_newHTML_StatusText_t);
-	add_func(L, "newHTML_ShowToolTip_t", luasteam_newHTML_ShowToolTip_t);
-	add_func(L, "newHTML_UpdateToolTip_t", luasteam_newHTML_UpdateToolTip_t);
-	add_func(L, "newHTML_HideToolTip_t", luasteam_newHTML_HideToolTip_t);
-	add_func(L, "newHTML_BrowserRestarted_t", luasteam_newHTML_BrowserRestarted_t);
-	add_func(L, "newSteamInventoryResultReady_t", luasteam_newSteamInventoryResultReady_t);
-	add_func(L, "newSteamInventoryFullUpdate_t", luasteam_newSteamInventoryFullUpdate_t);
-	add_func(L, "newSteamInventoryDefinitionUpdate_t", luasteam_newSteamInventoryDefinitionUpdate_t);
-	add_func(L, "newSteamInventoryEligiblePromoItemDefIDs_t", luasteam_newSteamInventoryEligiblePromoItemDefIDs_t);
-	add_func(L, "newSteamInventoryStartPurchaseResult_t", luasteam_newSteamInventoryStartPurchaseResult_t);
-	add_func(L, "newSteamInventoryRequestPricesResult_t", luasteam_newSteamInventoryRequestPricesResult_t);
-	add_func(L, "newSteamTimelineGamePhaseRecordingExists_t", luasteam_newSteamTimelineGamePhaseRecordingExists_t);
-	add_func(L, "newSteamTimelineEventRecordingExists_t", luasteam_newSteamTimelineEventRecordingExists_t);
-	add_func(L, "newGetVideoURLResult_t", luasteam_newGetVideoURLResult_t);
-	add_func(L, "newGetOPFSettingsResult_t", luasteam_newGetOPFSettingsResult_t);
-	add_func(L, "newBroadcastUploadStart_t", luasteam_newBroadcastUploadStart_t);
-	add_func(L, "newBroadcastUploadStop_t", luasteam_newBroadcastUploadStop_t);
-	add_func(L, "newSteamParentalSettingsChanged_t", luasteam_newSteamParentalSettingsChanged_t);
-	add_func(L, "newSteamRemotePlaySessionConnected_t", luasteam_newSteamRemotePlaySessionConnected_t);
-	add_func(L, "newSteamRemotePlaySessionDisconnected_t", luasteam_newSteamRemotePlaySessionDisconnected_t);
-	add_func(L, "newSteamRemotePlayTogetherGuestInvite_t", luasteam_newSteamRemotePlayTogetherGuestInvite_t);
-	add_func(L, "newSteamNetworkingMessagesSessionRequest_t", luasteam_newSteamNetworkingMessagesSessionRequest_t);
-	add_func(L, "newSteamNetworkingMessagesSessionFailed_t", luasteam_newSteamNetworkingMessagesSessionFailed_t);
-	add_func(L, "newSteamNetConnectionStatusChangedCallback_t", luasteam_newSteamNetConnectionStatusChangedCallback_t);
-	add_func(L, "newSteamNetAuthenticationStatus_t", luasteam_newSteamNetAuthenticationStatus_t);
-	add_func(L, "newSteamRelayNetworkStatus_t", luasteam_newSteamRelayNetworkStatus_t);
-	add_func(L, "newGSClientApprove_t", luasteam_newGSClientApprove_t);
-	add_func(L, "newGSClientDeny_t", luasteam_newGSClientDeny_t);
-	add_func(L, "newGSClientKick_t", luasteam_newGSClientKick_t);
-	add_func(L, "newGSClientAchievementStatus_t", luasteam_newGSClientAchievementStatus_t);
-	add_func(L, "newGSPolicyResponse_t", luasteam_newGSPolicyResponse_t);
-	add_func(L, "newGSGameplayStats_t", luasteam_newGSGameplayStats_t);
-	add_func(L, "newGSClientGroupStatus_t", luasteam_newGSClientGroupStatus_t);
-	add_func(L, "newGSReputation_t", luasteam_newGSReputation_t);
-	add_func(L, "newAssociateWithClanResult_t", luasteam_newAssociateWithClanResult_t);
-	add_func(L, "newComputeNewPlayerCompatibilityResult_t", luasteam_newComputeNewPlayerCompatibilityResult_t);
-	add_func(L, "newGSStatsReceived_t", luasteam_newGSStatsReceived_t);
-	add_func(L, "newGSStatsStored_t", luasteam_newGSStatsStored_t);
-	add_func(L, "newGSStatsUnloaded_t", luasteam_newGSStatsUnloaded_t);
-	add_func(L, "newSteamNetworkingFakeIPResult_t", luasteam_newSteamNetworkingFakeIPResult_t);
 }
 
 } // namespace luasteam

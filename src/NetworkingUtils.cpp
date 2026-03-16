@@ -1,6 +1,7 @@
 #include "NetworkingUtils.hpp"
 #include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
+#include <cassert>
 
 // ======================================
 // SetGlobalCallback_* — store a Lua function and pass a trampoline to Steam
@@ -63,23 +64,27 @@ EXTERN int luasteam_networkingUtils_AllocateMessage(lua_State *L) {
 
 namespace luasteam {
 
-void add_networkingUtils(lua_State *L) {
-    lua_createtable(L, 0, luasteam::NetworkingUtils_count + 7);
-    lua_pushvalue(L, -1);
-    NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    register_NetworkingUtils_auto(L);
-    add_func(L, "SetGlobalCallback_SteamNetConnectionStatusChanged", luasteam_NetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged);
-    add_func(L, "SetGlobalCallback_SteamNetAuthenticationStatusChanged", luasteam_NetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged);
-    add_func(L, "SetGlobalCallback_SteamRelayNetworkStatusChanged", luasteam_NetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged);
-    add_func(L, "SetGlobalCallback_FakeIPResult", luasteam_NetworkingUtils_SetGlobalCallback_FakeIPResult);
-    add_func(L, "SetGlobalCallback_MessagesSessionRequest", luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionRequest);
-    add_func(L, "SetGlobalCallback_MessagesSessionFailed", luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionFailed);
-    add_func(L, "AllocateMessage", luasteam_networkingUtils_AllocateMessage);
-    lua_setfield(L, -2, "NetworkingUtils");
+void add_NetworkingUtils(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_NetworkingUtils_auto(L, {
+                                    {"SetGlobalCallback_SteamNetConnectionStatusChanged", luasteam_NetworkingUtils_SetGlobalCallback_SteamNetConnectionStatusChanged},
+                                    {"SetGlobalCallback_SteamNetAuthenticationStatusChanged", luasteam_NetworkingUtils_SetGlobalCallback_SteamNetAuthenticationStatusChanged},
+                                    {"SetGlobalCallback_SteamRelayNetworkStatusChanged", luasteam_NetworkingUtils_SetGlobalCallback_SteamRelayNetworkStatusChanged},
+                                    {"SetGlobalCallback_FakeIPResult", luasteam_NetworkingUtils_SetGlobalCallback_FakeIPResult},
+                                    {"SetGlobalCallback_MessagesSessionRequest", luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionRequest},
+                                    {"SetGlobalCallback_MessagesSessionFailed", luasteam_NetworkingUtils_SetGlobalCallback_MessagesSessionFailed},
+                                    {"AllocateMessage", luasteam_networkingUtils_AllocateMessage},
+                                });
 }
 
-void init_networkingUtils(lua_State *L) { init_NetworkingUtils_auto(L); }
-
-void shutdown_networkingUtils(lua_State *L) { shutdown_NetworkingUtils_auto(L); }
+void shutdown_NetworkingUtils(lua_State *L) {
+    shutdown_NetworkingUtils_auto(L);
+    for (auto ptr : {&cb_SteamNetConnectionStatusChanged_ref, &cb_SteamNetAuthenticationStatusChanged_ref, &cb_SteamRelayNetworkStatusChanged_ref, &cb_SteamNetworkingFakeIPResult_ref, &cb_MessagesSessionRequest_ref, &cb_MessagesSessionFailed_ref}) {
+        if (*ptr != LUA_NOREF) {
+            luaL_unref(L, LUA_REGISTRYINDEX, *ptr);
+            *ptr = LUA_NOREF;
+        }
+    }
+}
 
 } // namespace luasteam

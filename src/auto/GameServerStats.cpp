@@ -41,8 +41,9 @@ void GameServerStatsCallbackListener::OnGSStatsStored(GSStatsStored_t *data) {
 GameServerStatsCallbackListener *GameServerStats_listener = nullptr;
 } // namespace
 
-void init_GameServerStats_auto(lua_State *L) { if (GameServerStats_listener != nullptr) return; GameServerStats_listener = new GameServerStatsCallbackListener(); }
+void add_callback_listener_GameServerStats(lua_State *L) { if (GameServerStats_listener != nullptr) return; GameServerStats_listener = new GameServerStatsCallbackListener(); }
 void shutdown_GameServerStats_auto(lua_State *L) {
+	if (GameServerStats_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerStats_ref);
 	GameServerStats_ref = LUA_NOREF;
 	delete GameServerStats_listener; GameServerStats_listener = nullptr;
@@ -265,9 +266,13 @@ void register_GameServerStats_auto(lua_State *L) {
 	add_func(L, "StoreUserStats", luasteam_GameServerStats_StoreUserStats);
 }
 
-void add_GameServerStats_auto(lua_State *L) {
-	lua_createtable(L, 0, 10);
+void add_GameServerStats_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerStats_count + static_cast<int>(extra_funcs.size()) + 2);
 	register_GameServerStats_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerStats(L);
 	lua_pushvalue(L, -1);
 	GameServerStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerStats");

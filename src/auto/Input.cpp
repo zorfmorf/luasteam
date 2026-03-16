@@ -71,8 +71,9 @@ void InputCallbackListener::OnSteamInputGamepadSlotChange(SteamInputGamepadSlotC
 InputCallbackListener *Input_listener = nullptr;
 } // namespace
 
-void init_Input_auto(lua_State *L) { if (Input_listener != nullptr) return; Input_listener = new InputCallbackListener(); }
+void add_callback_listener_Input(lua_State *L) { if (Input_listener != nullptr) return; Input_listener = new InputCallbackListener(); }
 void shutdown_Input_auto(lua_State *L) {
+	if (Input_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Input_ref);
 	Input_ref = LUA_NOREF;
 	delete Input_listener; Input_listener = nullptr;
@@ -731,9 +732,13 @@ void register_Input_auto(lua_State *L) {
 	add_func(L, "GetSessionInputConfigurationSettings", luasteam_Input_GetSessionInputConfigurationSettings);
 }
 
-void add_Input_auto(lua_State *L) {
-	lua_createtable(L, 0, 46);
+void add_Input_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Input_count + static_cast<int>(extra_funcs.size()) + 4);
 	register_Input_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Input(L);
 	lua_pushvalue(L, -1);
 	Input_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Input");

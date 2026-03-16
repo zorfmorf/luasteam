@@ -41,8 +41,9 @@ void MusicCallbackListener::OnVolumeHasChanged(VolumeHasChanged_t *data) {
 MusicCallbackListener *Music_listener = nullptr;
 } // namespace
 
-void init_Music_auto(lua_State *L) { if (Music_listener != nullptr) return; Music_listener = new MusicCallbackListener(); }
+void add_callback_listener_Music(lua_State *L) { if (Music_listener != nullptr) return; Music_listener = new MusicCallbackListener(); }
 void shutdown_Music_auto(lua_State *L) {
+	if (Music_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Music_ref);
 	Music_ref = LUA_NOREF;
 	delete Music_listener; Music_listener = nullptr;
@@ -155,9 +156,13 @@ void register_Music_auto(lua_State *L) {
 	add_func(L, "GetVolume", luasteam_Music_GetVolume);
 }
 
-void add_Music_auto(lua_State *L) {
-	lua_createtable(L, 0, 9);
+void add_Music_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Music_count + static_cast<int>(extra_funcs.size()) + 2);
 	register_Music_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Music(L);
 	lua_pushvalue(L, -1);
 	Music_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Music");

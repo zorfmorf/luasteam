@@ -4,7 +4,7 @@ namespace luasteam {
 
 int Controller_ref = LUA_NOREF;
 
-void init_Controller_auto(lua_State *L) {}
+void add_callback_listener_Controller(lua_State *L) {}
 void shutdown_Controller_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Controller_ref);
 	Controller_ref = LUA_NOREF;
@@ -498,9 +498,13 @@ void register_Controller_auto(lua_State *L) {
 	add_func(L, "GetControllerBindingRevision", luasteam_Controller_GetControllerBindingRevision);
 }
 
-void add_Controller_auto(lua_State *L) {
-	lua_createtable(L, 0, 34);
+void add_Controller_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Controller_count + static_cast<int>(extra_funcs.size()) + 0);
 	register_Controller_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Controller(L);
 	lua_pushvalue(L, -1);
 	Controller_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Controller");

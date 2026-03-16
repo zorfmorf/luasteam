@@ -10,7 +10,7 @@ namespace luasteam {
 void push_SteamNetworkingMessage_t(lua_State *L, SteamNetworkingMessage_t *msg);
 SteamNetworkingMessage_t *check_SteamNetworkingMessage_t(lua_State *L, int nParam);
 
-void init_SteamNetworkingMessage_t(lua_State *L);
+void add_SteamNetworkingMessage_t(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs);
 void shutdown_SteamNetworkingMessage_t(lua_State *L);
 
 } // namespace luasteam

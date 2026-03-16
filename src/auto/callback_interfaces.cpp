@@ -223,16 +223,23 @@ ISteamMatchmakingRulesResponse *check_ISteamMatchmakingRulesResponse(lua_State *
 	return (ISteamMatchmakingRulesResponseImpl*)luaL_checkudata(L, idx, "ISteamMatchmakingRulesResponse");
 }
 
-void init_callback_interfaces_auto(lua_State *L) {
+void add_callback_interfaces_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	add_func(L, "newISteamMatchmakingServerListResponse", lua_newISteamMatchmakingServerListResponse);
 	luaL_newmetatable(L, "ISteamMatchmakingServerListResponse");
 	add_func(L, "__gc", ISteamMatchmakingServerListResponse_gc);
 	ISteamMatchmakingServerListResponseMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newISteamMatchmakingPingResponse", lua_newISteamMatchmakingPingResponse);
 	luaL_newmetatable(L, "ISteamMatchmakingPingResponse");
 	add_func(L, "__gc", ISteamMatchmakingPingResponse_gc);
 	ISteamMatchmakingPingResponseMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newISteamMatchmakingPlayersResponse", lua_newISteamMatchmakingPlayersResponse);
 	luaL_newmetatable(L, "ISteamMatchmakingPlayersResponse");
 	add_func(L, "__gc", ISteamMatchmakingPlayersResponse_gc);
 	ISteamMatchmakingPlayersResponseMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	add_func(L, "newISteamMatchmakingRulesResponse", lua_newISteamMatchmakingRulesResponse);
 	luaL_newmetatable(L, "ISteamMatchmakingRulesResponse");
 	add_func(L, "__gc", ISteamMatchmakingRulesResponse_gc);
 	ISteamMatchmakingRulesResponseMetatable_ref = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -247,13 +254,6 @@ void shutdown_callback_interfaces_auto(lua_State *L) {
 	ISteamMatchmakingPlayersResponseMetatable_ref = LUA_NOREF;
 	luaL_unref(L, LUA_REGISTRYINDEX, ISteamMatchmakingRulesResponseMetatable_ref);
 	ISteamMatchmakingRulesResponseMetatable_ref = LUA_NOREF;
-}
-
-void add_callback_interfaces_auto(lua_State *L) {
-	add_func(L, "newISteamMatchmakingServerListResponse", lua_newISteamMatchmakingServerListResponse);
-	add_func(L, "newISteamMatchmakingPingResponse", lua_newISteamMatchmakingPingResponse);
-	add_func(L, "newISteamMatchmakingPlayersResponse", lua_newISteamMatchmakingPlayersResponse);
-	add_func(L, "newISteamMatchmakingRulesResponse", lua_newISteamMatchmakingRulesResponse);
 }
 
 } // namespace luasteam

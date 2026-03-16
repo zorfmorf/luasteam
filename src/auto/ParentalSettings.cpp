@@ -26,8 +26,9 @@ void ParentalSettingsCallbackListener::OnSteamParentalSettingsChanged(SteamParen
 ParentalSettingsCallbackListener *ParentalSettings_listener = nullptr;
 } // namespace
 
-void init_ParentalSettings_auto(lua_State *L) { if (ParentalSettings_listener != nullptr) return; ParentalSettings_listener = new ParentalSettingsCallbackListener(); }
+void add_callback_listener_ParentalSettings(lua_State *L) { if (ParentalSettings_listener != nullptr) return; ParentalSettings_listener = new ParentalSettingsCallbackListener(); }
 void shutdown_ParentalSettings_auto(lua_State *L) {
+	if (ParentalSettings_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, ParentalSettings_ref);
 	ParentalSettings_ref = LUA_NOREF;
 	delete ParentalSettings_listener; ParentalSettings_listener = nullptr;
@@ -112,9 +113,13 @@ void register_ParentalSettings_auto(lua_State *L) {
 	add_func(L, "BIsFeatureInBlockList", luasteam_ParentalSettings_BIsFeatureInBlockList);
 }
 
-void add_ParentalSettings_auto(lua_State *L) {
-	lua_createtable(L, 0, 6);
+void add_ParentalSettings_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::ParentalSettings_count + static_cast<int>(extra_funcs.size()) + 1);
 	register_ParentalSettings_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_ParentalSettings(L);
 	lua_pushvalue(L, -1);
 	ParentalSettings_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "ParentalSettings");

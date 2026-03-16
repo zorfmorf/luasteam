@@ -326,8 +326,9 @@ void FriendsCallbackListener::OnEquippedProfileItems(EquippedProfileItems_t *dat
 FriendsCallbackListener *Friends_listener = nullptr;
 } // namespace
 
-void init_Friends_auto(lua_State *L) { if (Friends_listener != nullptr) return; Friends_listener = new FriendsCallbackListener(); }
+void add_callback_listener_Friends(lua_State *L) { if (Friends_listener != nullptr) return; Friends_listener = new FriendsCallbackListener(); }
 void shutdown_Friends_auto(lua_State *L) {
+	if (Friends_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Friends_ref);
 	Friends_ref = LUA_NOREF;
 	delete Friends_listener; Friends_listener = nullptr;
@@ -1648,9 +1649,13 @@ void register_Friends_auto(lua_State *L) {
 	add_func(L, "GetProfileItemPropertyUint", luasteam_Friends_GetProfileItemPropertyUint);
 }
 
-void add_Friends_auto(lua_State *L) {
-	lua_createtable(L, 0, 78);
+void add_Friends_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Friends_count + static_cast<int>(extra_funcs.size()) + 21);
 	register_Friends_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Friends(L);
 	lua_pushvalue(L, -1);
 	Friends_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Friends");

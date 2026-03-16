@@ -296,8 +296,9 @@ void UGCCallbackListener::OnWorkshopEULAStatus(WorkshopEULAStatus_t *data) {
 UGCCallbackListener *UGC_listener = nullptr;
 } // namespace
 
-void init_UGC_auto(lua_State *L) { if (UGC_listener != nullptr) return; UGC_listener = new UGCCallbackListener(); }
+void add_callback_listener_UGC(lua_State *L) { if (UGC_listener != nullptr) return; UGC_listener = new UGCCallbackListener(); }
 void shutdown_UGC_auto(lua_State *L) {
+	if (UGC_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, UGC_ref);
 	UGC_ref = LUA_NOREF;
 	delete UGC_listener; UGC_listener = nullptr;
@@ -2474,9 +2475,13 @@ void register_UGC_auto(lua_State *L, bool is_gs) {
 	add_func(L, "SetSubscriptionsLoadOrder", is_gs ? luasteam_UGC_SetSubscriptionsLoadOrder_gs : luasteam_UGC_SetSubscriptionsLoadOrder_user);
 }
 
-void add_UGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 95);
+void add_UGC_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::UGC_count + static_cast<int>(extra_funcs.size()) + 19);
 	register_UGC_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_UGC(L);
 	lua_pushvalue(L, -1);
 	UGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "UGC");
@@ -2776,16 +2781,21 @@ void GameServerUGCCallbackListener::OnWorkshopEULAStatus(WorkshopEULAStatus_t *d
 GameServerUGCCallbackListener *GameServerUGC_listener = nullptr;
 } // namespace
 
-void init_GameServerUGC_auto(lua_State *L) { if (GameServerUGC_listener != nullptr) return; GameServerUGC_listener = new GameServerUGCCallbackListener(); }
+void add_callback_listener_GameServerUGC(lua_State *L) { if (GameServerUGC_listener != nullptr) return; GameServerUGC_listener = new GameServerUGCCallbackListener(); }
 void shutdown_GameServerUGC_auto(lua_State *L) {
+	if (GameServerUGC_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerUGC_ref);
 	GameServerUGC_ref = LUA_NOREF;
 	delete GameServerUGC_listener; GameServerUGC_listener = nullptr;
 }
 
-void add_GameServerUGC_auto(lua_State *L) {
-	lua_createtable(L, 0, 95);
+void add_GameServerUGC_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerUGC_count + static_cast<int>(extra_funcs.size()) + 19);
 	register_UGC_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerUGC(L);
 	lua_pushvalue(L, -1);
 	GameServerUGC_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerUGC");

@@ -1,5 +1,6 @@
 #include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
+#include <cassert>
 
 // =============================================
 // ======= SteamNetworkingMessage_t ============
@@ -229,7 +230,8 @@ static int SteamNetworkingMessage_t_newindex(lua_State *L) {
 
 namespace luasteam {
 
-void init_SteamNetworkingMessage_t(lua_State *L) {
+void add_SteamNetworkingMessage_t(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
     lua_newtable(L);
     lua_pushcfunction(L, SteamNetworkingMessage_t_index);
     lua_setfield(L, -2, "__index");
@@ -258,6 +260,8 @@ void init_SteamNetworkingMessage_t(lua_State *L) {
 }
 
 void shutdown_SteamNetworkingMessage_t(lua_State *L) {
+    if (SteamNetworkingMessage_tMetatable_ref == LUA_NOREF)
+        return;
     luaL_unref(L, LUA_REGISTRYINDEX, SteamNetworkingMessage_tMetatable_ref);
     SteamNetworkingMessage_tMetatable_ref = LUA_NOREF;
 }

@@ -26,8 +26,9 @@ void NetworkingUtilsCallbackListener::OnSteamRelayNetworkStatus(SteamRelayNetwor
 NetworkingUtilsCallbackListener *NetworkingUtils_listener = nullptr;
 } // namespace
 
-void init_NetworkingUtils_auto(lua_State *L) { if (NetworkingUtils_listener != nullptr) return; NetworkingUtils_listener = new NetworkingUtilsCallbackListener(); }
+void add_callback_listener_NetworkingUtils(lua_State *L) { if (NetworkingUtils_listener != nullptr) return; NetworkingUtils_listener = new NetworkingUtilsCallbackListener(); }
 void shutdown_NetworkingUtils_auto(lua_State *L) {
+	if (NetworkingUtils_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, NetworkingUtils_ref);
 	NetworkingUtils_ref = LUA_NOREF;
 	delete NetworkingUtils_listener; NetworkingUtils_listener = nullptr;
@@ -409,9 +410,13 @@ void register_NetworkingUtils_auto(lua_State *L) {
 	add_func(L, "SteamNetworkingIdentity_ParseString", luasteam_NetworkingUtils_SteamNetworkingIdentity_ParseString);
 }
 
-void add_NetworkingUtils_auto(lua_State *L) {
-	lua_createtable(L, 0, 26);
+void add_NetworkingUtils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::NetworkingUtils_count + static_cast<int>(extra_funcs.size()) + 1);
 	register_NetworkingUtils_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_NetworkingUtils(L);
 	lua_pushvalue(L, -1);
 	NetworkingUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "NetworkingUtils");

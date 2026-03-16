@@ -4,6 +4,7 @@
 #include "steam/steam_api_flat.h"
 #include "steam/steam_gameserver.h"
 #include "steam/steamnetworkingfakeip.h"
+#include <initializer_list>
 extern "C" {
 #include <lauxlib.h>
 #include <lua.h>
@@ -29,6 +30,8 @@ void copy_str_into(const char *&dest, const char *src);
 
 // Adds a C function to the table on top of the stack, with given name
 void add_func(lua_State *L, const char *name, lua_CFunction func);
+void set_steam_table(lua_State *L, int index);
+void push_steam_table(lua_State *L);
 
 // Sets a read-only metatable on the table at the top of the stack.
 // Writing to the table will produce an error.
@@ -41,7 +44,7 @@ template <typename T> class CallResultListener {
     CCallResult<CallResultListener, T> call_result;
 };
 
-void init_Common(lua_State *L);
+void add_Common(lua_State *L);
 void shutdown_Common(lua_State *L);
 
 } // namespace luasteam

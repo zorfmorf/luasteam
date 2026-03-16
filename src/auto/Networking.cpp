@@ -56,8 +56,9 @@ void NetworkingCallbackListener::OnSocketStatusCallback(SocketStatusCallback_t *
 NetworkingCallbackListener *Networking_listener = nullptr;
 } // namespace
 
-void init_Networking_auto(lua_State *L) { if (Networking_listener != nullptr) return; Networking_listener = new NetworkingCallbackListener(); }
+void add_callback_listener_Networking(lua_State *L) { if (Networking_listener != nullptr) return; Networking_listener = new NetworkingCallbackListener(); }
 void shutdown_Networking_auto(lua_State *L) {
+	if (Networking_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Networking_ref);
 	Networking_ref = LUA_NOREF;
 	delete Networking_listener; Networking_listener = nullptr;
@@ -437,9 +438,13 @@ void register_Networking_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetMaxPacketSize", is_gs ? luasteam_Networking_GetMaxPacketSize_gs : luasteam_Networking_GetMaxPacketSize_user);
 }
 
-void add_Networking_auto(lua_State *L) {
-	lua_createtable(L, 0, 22);
+void add_Networking_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Networking_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_Networking_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Networking(L);
 	lua_pushvalue(L, -1);
 	Networking_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Networking");
@@ -499,16 +504,21 @@ void GameServerNetworkingCallbackListener::OnSocketStatusCallback(SocketStatusCa
 GameServerNetworkingCallbackListener *GameServerNetworking_listener = nullptr;
 } // namespace
 
-void init_GameServerNetworking_auto(lua_State *L) { if (GameServerNetworking_listener != nullptr) return; GameServerNetworking_listener = new GameServerNetworkingCallbackListener(); }
+void add_callback_listener_GameServerNetworking(lua_State *L) { if (GameServerNetworking_listener != nullptr) return; GameServerNetworking_listener = new GameServerNetworkingCallbackListener(); }
 void shutdown_GameServerNetworking_auto(lua_State *L) {
+	if (GameServerNetworking_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerNetworking_ref);
 	GameServerNetworking_ref = LUA_NOREF;
 	delete GameServerNetworking_listener; GameServerNetworking_listener = nullptr;
 }
 
-void add_GameServerNetworking_auto(lua_State *L) {
-	lua_createtable(L, 0, 22);
+void add_GameServerNetworking_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerNetworking_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_Networking_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerNetworking(L);
 	lua_pushvalue(L, -1);
 	GameServerNetworking_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerNetworking");

@@ -71,8 +71,9 @@ void VideoCallbackListener::OnBroadcastUploadStop(BroadcastUploadStop_t *data) {
 VideoCallbackListener *Video_listener = nullptr;
 } // namespace
 
-void init_Video_auto(lua_State *L) { if (Video_listener != nullptr) return; Video_listener = new VideoCallbackListener(); }
+void add_callback_listener_Video(lua_State *L) { if (Video_listener != nullptr) return; Video_listener = new VideoCallbackListener(); }
 void shutdown_Video_auto(lua_State *L) {
+	if (Video_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Video_ref);
 	Video_ref = LUA_NOREF;
 	delete Video_listener; Video_listener = nullptr;
@@ -136,9 +137,13 @@ void register_Video_auto(lua_State *L) {
 	add_func(L, "GetOPFStringForApp", luasteam_Video_GetOPFStringForApp);
 }
 
-void add_Video_auto(lua_State *L) {
-	lua_createtable(L, 0, 4);
+void add_Video_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Video_count + static_cast<int>(extra_funcs.size()) + 4);
 	register_Video_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Video(L);
 	lua_pushvalue(L, -1);
 	Video_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Video");

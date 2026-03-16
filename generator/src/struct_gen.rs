@@ -108,8 +108,9 @@ impl Generator {
         }
 
         // Lifecycle functions
-        cpp.line("void init_structs_auto(lua_State *L) {");
+        cpp.line("void add_structs_auto(lua_State *L) {");
         for output in &outputs {
+            cpp.raw(&output.add_code);
             cpp.raw(&output.init_code);
         }
         cpp.line("}");
@@ -118,13 +119,6 @@ impl Generator {
         cpp.line("void shutdown_structs_auto(lua_State *L) {");
         for output in &outputs {
             cpp.raw(&output.shutdown_code);
-        }
-        cpp.line("}");
-        cpp.preceeding_blank_line();
-
-        cpp.line("void add_structs_auto(lua_State *L) {");
-        for output in &outputs {
-            cpp.raw(&output.add_code);
         }
         cpp.line("}");
         cpp.preceeding_blank_line();

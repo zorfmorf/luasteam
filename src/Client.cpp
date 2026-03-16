@@ -1,5 +1,6 @@
 #include "Client.hpp"
 #include "auto/auto.hpp"
+#include <cassert>
 
 // ======================================
 // ======= ISteamClient =================
@@ -66,27 +67,26 @@ EXTERN int luasteam_GameServerClient_SetWarningMessageHook(lua_State *L) {
 
 namespace luasteam {
 
-void add_Client(lua_State *L) {
-    lua_createtable(L, 0, luasteam::Client_count + 1);
-    register_Client_auto(L, false);
-    add_func(L, "SetWarningMessageHook", luasteam_Client_SetWarningMessageHook);
-    lua_setfield(L, -2, "Client");
+void add_Client(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_Client_auto(L, {{"SetWarningMessageHook", luasteam_Client_SetWarningMessageHook}});
 }
 
-void add_GameServerClient(lua_State *L) {
-    lua_createtable(L, 0, luasteam::GameServerClient_count + 1);
-    register_Client_auto(L, true);
-    add_func(L, "SetWarningMessageHook", luasteam_GameServerClient_SetWarningMessageHook);
-    lua_setfield(L, -2, "GameServerClient");
+void add_GameServerClient(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_GameServerClient_auto(L, {{"SetWarningMessageHook", luasteam_GameServerClient_SetWarningMessageHook}});
 }
-
-void init_Client(lua_State *L) {}
 
 void shutdown_Client(lua_State *L) {
+    shutdown_Client_auto(L);
     if (warning_hook_ref != LUA_NOREF) {
         luaL_unref(L, LUA_REGISTRYINDEX, warning_hook_ref);
         warning_hook_ref = LUA_NOREF;
     }
+}
+
+void shutdown_GameServerClient(lua_State *L) {
+    shutdown_GameServerClient_auto(L);
     if (gs_warning_hook_ref != LUA_NOREF) {
         luaL_unref(L, LUA_REGISTRYINDEX, gs_warning_hook_ref);
         gs_warning_hook_ref = LUA_NOREF;

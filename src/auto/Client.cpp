@@ -4,7 +4,7 @@ namespace luasteam {
 
 int Client_ref = LUA_NOREF;
 
-void init_Client_auto(lua_State *L) {}
+void add_callback_listener_Client(lua_State *L) {}
 void shutdown_Client_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, Client_ref);
 	Client_ref = LUA_NOREF;
@@ -124,9 +124,13 @@ void register_Client_auto(lua_State *L, bool is_gs) {
 	add_func(L, "BShutdownIfAllPipesClosed", is_gs ? luasteam_Client_BShutdownIfAllPipesClosed_gs : luasteam_Client_BShutdownIfAllPipesClosed_user);
 }
 
-void add_Client_auto(lua_State *L) {
-	lua_createtable(L, 0, 8);
+void add_Client_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Client_count + static_cast<int>(extra_funcs.size()) + 0);
 	register_Client_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Client(L);
 	lua_pushvalue(L, -1);
 	Client_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Client");
@@ -134,15 +138,19 @@ void add_Client_auto(lua_State *L) {
 
 int GameServerClient_ref = LUA_NOREF;
 
-void init_GameServerClient_auto(lua_State *L) {}
+void add_callback_listener_GameServerClient(lua_State *L) {}
 void shutdown_GameServerClient_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerClient_ref);
 	GameServerClient_ref = LUA_NOREF;
 }
 
-void add_GameServerClient_auto(lua_State *L) {
-	lua_createtable(L, 0, 8);
+void add_GameServerClient_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerClient_count + static_cast<int>(extra_funcs.size()) + 0);
 	register_Client_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerClient(L);
 	lua_pushvalue(L, -1);
 	GameServerClient_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerClient");

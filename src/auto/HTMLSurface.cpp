@@ -356,8 +356,9 @@ void HTMLSurfaceCallbackListener::OnHTML_BrowserRestarted(HTML_BrowserRestarted_
 HTMLSurfaceCallbackListener *HTMLSurface_listener = nullptr;
 } // namespace
 
-void init_HTMLSurface_auto(lua_State *L) { if (HTMLSurface_listener != nullptr) return; HTMLSurface_listener = new HTMLSurfaceCallbackListener(); }
+void add_callback_listener_HTMLSurface(lua_State *L) { if (HTMLSurface_listener != nullptr) return; HTMLSurface_listener = new HTMLSurfaceCallbackListener(); }
 void shutdown_HTMLSurface_auto(lua_State *L) {
+	if (HTMLSurface_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, HTMLSurface_ref);
 	HTMLSurface_ref = LUA_NOREF;
 	delete HTMLSurface_listener; HTMLSurface_listener = nullptr;
@@ -872,9 +873,12 @@ void register_HTMLSurface_auto(lua_State *L) {
 	add_func(L, "JSDialogResponse", luasteam_HTMLSurface_JSDialogResponse);
 }
 
-void add_HTMLSurface_auto(lua_State *L) {
-	lua_createtable(L, 0, 87);
+void add_HTMLSurface_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::HTMLSurface_count + static_cast<int>(extra_funcs.size()) + 74);
 	register_HTMLSurface_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
 	lua_pushinteger(L, ISteamHTMLSurface::eHTMLMouseButton_Left);
 	lua_setfield(L, -2, "eHTMLMouseButton_Left");
 	lua_pushinteger(L, ISteamHTMLSurface::eHTMLMouseButton_Right);
@@ -977,6 +981,7 @@ void add_HTMLSurface_auto(lua_State *L) {
 	lua_setfield(L, -2, "k_eHTMLKeyModifier_CtrlDown");
 	lua_pushinteger(L, ISteamHTMLSurface::k_eHTMLKeyModifier_ShiftDown);
 	lua_setfield(L, -2, "k_eHTMLKeyModifier_ShiftDown");
+	luasteam::add_callback_listener_HTMLSurface(L);
 	lua_pushvalue(L, -1);
 	HTMLSurface_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "HTMLSurface");

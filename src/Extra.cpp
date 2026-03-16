@@ -24,8 +24,6 @@ void add_Extra(lua_State *L) {
     lua_setfield(L, -2, "Extra");
 }
 
-void init_extra(lua_State *L) {}
-
-void shutdown_extra(lua_State *L) {}
+void shutdown_Extra(lua_State *L) {}
 
 } // namespace luasteam

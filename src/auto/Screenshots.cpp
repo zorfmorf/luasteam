@@ -41,8 +41,9 @@ void ScreenshotsCallbackListener::OnScreenshotRequested(ScreenshotRequested_t *d
 ScreenshotsCallbackListener *Screenshots_listener = nullptr;
 } // namespace
 
-void init_Screenshots_auto(lua_State *L) { if (Screenshots_listener != nullptr) return; Screenshots_listener = new ScreenshotsCallbackListener(); }
+void add_callback_listener_Screenshots(lua_State *L) { if (Screenshots_listener != nullptr) return; Screenshots_listener = new ScreenshotsCallbackListener(); }
 void shutdown_Screenshots_auto(lua_State *L) {
+	if (Screenshots_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Screenshots_ref);
 	Screenshots_ref = LUA_NOREF;
 	delete Screenshots_listener; Screenshots_listener = nullptr;
@@ -177,9 +178,13 @@ void register_Screenshots_auto(lua_State *L) {
 	add_func(L, "AddVRScreenshotToLibrary", luasteam_Screenshots_AddVRScreenshotToLibrary);
 }
 
-void add_Screenshots_auto(lua_State *L) {
-	lua_createtable(L, 0, 9);
+void add_Screenshots_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Screenshots_count + static_cast<int>(extra_funcs.size()) + 2);
 	register_Screenshots_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Screenshots(L);
 	lua_pushvalue(L, -1);
 	Screenshots_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Screenshots");

@@ -101,8 +101,9 @@ void PartiesCallbackListener::OnActiveBeaconsUpdated(ActiveBeaconsUpdated_t *dat
 PartiesCallbackListener *Parties_listener = nullptr;
 } // namespace
 
-void init_Parties_auto(lua_State *L) { if (Parties_listener != nullptr) return; Parties_listener = new PartiesCallbackListener(); }
+void add_callback_listener_Parties(lua_State *L) { if (Parties_listener != nullptr) return; Parties_listener = new PartiesCallbackListener(); }
 void shutdown_Parties_auto(lua_State *L) {
+	if (Parties_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Parties_ref);
 	Parties_ref = LUA_NOREF;
 	delete Parties_listener; Parties_listener = nullptr;
@@ -390,9 +391,13 @@ void register_Parties_auto(lua_State *L) {
 	add_func(L, "GetBeaconLocationData", luasteam_Parties_GetBeaconLocationData);
 }
 
-void add_Parties_auto(lua_State *L) {
-	lua_createtable(L, 0, 12);
+void add_Parties_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Parties_count + static_cast<int>(extra_funcs.size()) + 6);
 	register_Parties_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Parties(L);
 	lua_pushvalue(L, -1);
 	Parties_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Parties");

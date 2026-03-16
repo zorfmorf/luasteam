@@ -1,7 +1,9 @@
 #include "Common.hpp"
+#include <cassert>
 #include <string>
 
 namespace {
+int steam_table_ref = LUA_NOREF;
 int uint64Metatable_ref = LUA_NOREF;
 int readonly_table_Metatable_ref = LUA_NOREF;
 
@@ -83,7 +85,19 @@ void add_func(lua_State *L, const char *name, lua_CFunction func) {
     lua_setfield(L, -2, name);
 }
 
-void init_Common(lua_State *L) {
+void set_steam_table(lua_State *L, int index) {
+    if (steam_table_ref != LUA_NOREF)
+        return;
+    lua_pushvalue(L, index);
+    steam_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+}
+
+void push_steam_table(lua_State *L) {
+    assert(steam_table_ref != LUA_NOREF);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, steam_table_ref);
+}
+
+void add_Common(lua_State *L) {
     if (global_lua_state != nullptr)
         return;
     global_lua_state = L;
@@ -104,11 +118,15 @@ void init_Common(lua_State *L) {
 }
 
 void shutdown_Common(lua_State *L) {
+    if (global_lua_state == nullptr)
+        return;
     global_lua_state = nullptr;
     luaL_unref(L, LUA_REGISTRYINDEX, uint64Metatable_ref);
     uint64Metatable_ref = LUA_NOREF;
     luaL_unref(L, LUA_REGISTRYINDEX, readonly_table_Metatable_ref);
     readonly_table_Metatable_ref = LUA_NOREF;
+    luaL_unref(L, LUA_REGISTRYINDEX, steam_table_ref);
+    steam_table_ref = LUA_NOREF;
 }
 
 } // namespace luasteam

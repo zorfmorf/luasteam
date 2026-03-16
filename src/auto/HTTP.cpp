@@ -56,8 +56,9 @@ void HTTPCallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataReceived_t *
 HTTPCallbackListener *HTTP_listener = nullptr;
 } // namespace
 
-void init_HTTP_auto(lua_State *L) { if (HTTP_listener != nullptr) return; HTTP_listener = new HTTPCallbackListener(); }
+void add_callback_listener_HTTP(lua_State *L) { if (HTTP_listener != nullptr) return; HTTP_listener = new HTTPCallbackListener(); }
 void shutdown_HTTP_auto(lua_State *L) {
+	if (HTTP_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, HTTP_ref);
 	HTTP_ref = LUA_NOREF;
 	delete HTTP_listener; HTTP_listener = nullptr;
@@ -459,9 +460,13 @@ void register_HTTP_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetHTTPRequestWasTimedOut", is_gs ? luasteam_HTTP_GetHTTPRequestWasTimedOut_gs : luasteam_HTTP_GetHTTPRequestWasTimedOut_user);
 }
 
-void add_HTTP_auto(lua_State *L) {
-	lua_createtable(L, 0, 25);
+void add_HTTP_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::HTTP_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_HTTP_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_HTTP(L);
 	lua_pushvalue(L, -1);
 	HTTP_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "HTTP");
@@ -521,16 +526,21 @@ void GameServerHTTPCallbackListener::OnHTTPRequestDataReceived(HTTPRequestDataRe
 GameServerHTTPCallbackListener *GameServerHTTP_listener = nullptr;
 } // namespace
 
-void init_GameServerHTTP_auto(lua_State *L) { if (GameServerHTTP_listener != nullptr) return; GameServerHTTP_listener = new GameServerHTTPCallbackListener(); }
+void add_callback_listener_GameServerHTTP(lua_State *L) { if (GameServerHTTP_listener != nullptr) return; GameServerHTTP_listener = new GameServerHTTPCallbackListener(); }
 void shutdown_GameServerHTTP_auto(lua_State *L) {
+	if (GameServerHTTP_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerHTTP_ref);
 	GameServerHTTP_ref = LUA_NOREF;
 	delete GameServerHTTP_listener; GameServerHTTP_listener = nullptr;
 }
 
-void add_GameServerHTTP_auto(lua_State *L) {
-	lua_createtable(L, 0, 25);
+void add_GameServerHTTP_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerHTTP_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_HTTP_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerHTTP(L);
 	lua_pushvalue(L, -1);
 	GameServerHTTP_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerHTTP");

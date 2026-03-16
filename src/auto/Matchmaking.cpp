@@ -176,8 +176,9 @@ void MatchmakingCallbackListener::OnFavoritesListAccountsUpdated(FavoritesListAc
 MatchmakingCallbackListener *Matchmaking_listener = nullptr;
 } // namespace
 
-void init_Matchmaking_auto(lua_State *L) { if (Matchmaking_listener != nullptr) return; Matchmaking_listener = new MatchmakingCallbackListener(); }
+void add_callback_listener_Matchmaking(lua_State *L) { if (Matchmaking_listener != nullptr) return; Matchmaking_listener = new MatchmakingCallbackListener(); }
 void shutdown_Matchmaking_auto(lua_State *L) {
+	if (Matchmaking_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Matchmaking_ref);
 	Matchmaking_ref = LUA_NOREF;
 	delete Matchmaking_listener; Matchmaking_listener = nullptr;
@@ -839,9 +840,13 @@ void register_Matchmaking_auto(lua_State *L) {
 	add_func(L, "SetLinkedLobby", luasteam_Matchmaking_SetLinkedLobby);
 }
 
-void add_Matchmaking_auto(lua_State *L) {
-	lua_createtable(L, 0, 38);
+void add_Matchmaking_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Matchmaking_count + static_cast<int>(extra_funcs.size()) + 11);
 	register_Matchmaking_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Matchmaking(L);
 	lua_pushvalue(L, -1);
 	Matchmaking_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Matchmaking");

@@ -221,8 +221,9 @@ void GameServerCallbackListener::OnComputeNewPlayerCompatibilityResult(ComputeNe
 GameServerCallbackListener *GameServer_listener = nullptr;
 } // namespace
 
-void init_GameServer_auto(lua_State *L) { if (GameServer_listener != nullptr) return; GameServer_listener = new GameServerCallbackListener(); }
+void add_callback_listener_GameServer(lua_State *L) { if (GameServer_listener != nullptr) return; GameServer_listener = new GameServerCallbackListener(); }
 void shutdown_GameServer_auto(lua_State *L) {
+	if (GameServer_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServer_ref);
 	GameServer_ref = LUA_NOREF;
 	delete GameServer_listener; GameServer_listener = nullptr;
@@ -842,9 +843,13 @@ void register_GameServer_auto(lua_State *L) {
 	add_func(L, "BUpdateUserData", luasteam_GameServer_BUpdateUserData);
 }
 
-void add_GameServer_auto(lua_State *L) {
-	lua_createtable(L, 0, 39);
+void add_GameServer_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServer_count + static_cast<int>(extra_funcs.size()) + 14);
 	register_GameServer_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServer(L);
 	lua_pushvalue(L, -1);
 	GameServer_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServer");

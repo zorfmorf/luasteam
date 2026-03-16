@@ -41,8 +41,9 @@ void TimelineCallbackListener::OnSteamTimelineEventRecordingExists(SteamTimeline
 TimelineCallbackListener *Timeline_listener = nullptr;
 } // namespace
 
-void init_Timeline_auto(lua_State *L) { if (Timeline_listener != nullptr) return; Timeline_listener = new TimelineCallbackListener(); }
+void add_callback_listener_Timeline(lua_State *L) { if (Timeline_listener != nullptr) return; Timeline_listener = new TimelineCallbackListener(); }
 void shutdown_Timeline_auto(lua_State *L) {
+	if (Timeline_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Timeline_ref);
 	Timeline_ref = LUA_NOREF;
 	delete Timeline_listener; Timeline_listener = nullptr;
@@ -370,9 +371,13 @@ void register_Timeline_auto(lua_State *L) {
 	add_func(L, "OpenOverlayToTimelineEvent", luasteam_Timeline_OpenOverlayToTimelineEvent);
 }
 
-void add_Timeline_auto(lua_State *L) {
-	lua_createtable(L, 0, 18);
+void add_Timeline_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Timeline_count + static_cast<int>(extra_funcs.size()) + 2);
 	register_Timeline_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Timeline(L);
 	lua_pushvalue(L, -1);
 	Timeline_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Timeline");

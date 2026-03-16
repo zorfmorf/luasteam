@@ -251,8 +251,9 @@ void UserCallbackListener::OnGSPolicyResponse(GSPolicyResponse_t *data) {
 UserCallbackListener *User_listener = nullptr;
 } // namespace
 
-void init_User_auto(lua_State *L) { if (User_listener != nullptr) return; User_listener = new UserCallbackListener(); }
+void add_callback_listener_User(lua_State *L) { if (User_listener != nullptr) return; User_listener = new UserCallbackListener(); }
 void shutdown_User_auto(lua_State *L) {
+	if (User_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, User_ref);
 	User_ref = LUA_NOREF;
 	delete User_listener; User_listener = nullptr;
@@ -829,9 +830,13 @@ void register_User_auto(lua_State *L) {
 	add_func(L, "BSetDurationControlOnlineState", luasteam_User_BSetDurationControlOnlineState);
 }
 
-void add_User_auto(lua_State *L) {
-	lua_createtable(L, 0, 31);
+void add_User_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::User_count + static_cast<int>(extra_funcs.size()) + 16);
 	register_User_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_User(L);
 	lua_pushvalue(L, -1);
 	User_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "User");

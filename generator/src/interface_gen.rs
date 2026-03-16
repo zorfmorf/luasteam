@@ -182,10 +182,17 @@ impl Generator {
         }
 
         // Lifecycle functions
-        cpp.line("void init_callback_interfaces_auto(lua_State *L) {");
+        cpp.line("void add_callback_interfaces_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {");
         cpp.indent_right();
+        cpp.line("for (const auto &fn : extra_funcs) {");
+        cpp.indent_right();
+        cpp.line("add_func(L, fn.name, fn.func);");
+        cpp.indent_left();
+        cpp.line("}");
+
         for iface in &callback_interfaces {
             let name = &iface.classname;
+            cpp.line(&format!("add_func(L, \"new{}\", lua_new{});", name, name));
             cpp.line(&format!("luaL_newmetatable(L, \"{}\");", name));
             cpp.line(&format!("add_func(L, \"__gc\", {}_gc);", name));
             cpp.store_metatable_ref(name);
@@ -199,16 +206,6 @@ impl Generator {
         for iface in &callback_interfaces {
             let name = &iface.classname;
             cpp.release_metatable_ref(name);
-        }
-        cpp.indent_left();
-        cpp.line("}");
-        cpp.preceeding_blank_line();
-
-        cpp.line("void add_callback_interfaces_auto(lua_State *L) {");
-        cpp.indent_right();
-        for iface in &callback_interfaces {
-            let name = &iface.classname;
-            cpp.line(&format!("add_func(L, \"new{}\", lua_new{});", name, name));
         }
         cpp.indent_left();
         cpp.line("}");
@@ -275,7 +272,10 @@ impl Generator {
         let mut s = CodeBuilder::new();
         let class_name = format!("{}CallbackListener", name_lower);
         if callbacks.is_empty() {
-            s.line(&format!("void init_{}_auto(lua_State *L) {{}}", name_lower));
+            s.line(&format!(
+                "void add_callback_listener_{}(lua_State *L) {{}}",
+                name_lower
+            ));
             s.line(&format!(
                 "void shutdown_{}_auto(lua_State *L) {{",
                 name_lower
@@ -356,7 +356,7 @@ impl Generator {
         s.line("} // namespace");
         s.preceeding_blank_line();
         s.line(&format!(
-            "void init_{}_auto(lua_State *L) {{ if ({}_listener != nullptr) return; {}_listener = new {}(); }}",
+            "void add_callback_listener_{}(lua_State *L) {{ if ({}_listener != nullptr) return; {}_listener = new {}(); }}",
             name_lower, name_lower, name_lower, class_name
         ));
         s.line(&format!(
@@ -364,6 +364,7 @@ impl Generator {
             name_lower
         ));
         s.indent_right();
+        s.line(&format!("if ({}_listener == nullptr) return;", name_lower));
         s.line(&format!(
             "luaL_unref(L, LUA_REGISTRYINDEX, {}_ref);",
             name_lower
@@ -599,11 +600,14 @@ impl Generator {
         // Generate add_..._auto function
         let interface_enum_values_count: usize =
             interface.enums.iter().map(|enm| enm.values.len()).sum();
-        cpp.line(&format!("void add_{}_auto(lua_State *L) {{", name));
+        cpp.line(&format!(
+            "void add_{}_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {{",
+            name
+        ));
         cpp.indent_right();
         cpp.line(&format!(
-            "lua_createtable(L, 0, {});",
-            generated_methods.len() + interface_enum_values_count
+            "lua_createtable(L, 0, luasteam::{}_count + static_cast<int>(extra_funcs.size()) + {});",
+            name, callbacks.len() + interface_enum_values_count
         ));
         cpp.line(&format!(
             "register_{}_auto({});",
@@ -614,6 +618,11 @@ impl Generator {
                 "L".to_string()
             }
         ));
+        cpp.line("for (const auto &fn : extra_funcs) {");
+        cpp.indent_right();
+        cpp.line("add_func(L, fn.name, fn.func);");
+        cpp.indent_left();
+        cpp.line("}");
         for enm in &interface.enums {
             for val in &enm.values {
                 cpp.line(&format!(
@@ -623,6 +632,8 @@ impl Generator {
                 cpp.line(&format!("lua_setfield(L, -2, \"{}\");", val.name));
             }
         }
+        cpp.line(&format!("luasteam::add_callback_listener_{}(L);", name));
+
         cpp.line("lua_pushvalue(L, -1);");
         cpp.line(&format!("{}_ref = luaL_ref(L, LUA_REGISTRYINDEX);", name));
         cpp.line(&format!("lua_setfield(L, -2, \"{}\");", name));
@@ -647,13 +658,22 @@ impl Generator {
                 ));
                 cpp.preceeding_blank_line();
 
-                cpp.line(&format!("void add_{}_auto(lua_State *L) {{", gs_name));
+                cpp.line(&format!(
+                    "void add_{}_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {{",
+                    gs_name
+                ));
                 cpp.indent_right();
                 cpp.line(&format!(
-                    "lua_createtable(L, 0, {});",
-                    generated_methods.len()
+                    "lua_createtable(L, 0, luasteam::{}_count + static_cast<int>(extra_funcs.size()) + {});",
+                    gs_name, callbacks.len() + interface_enum_values_count,
                 ));
                 cpp.line(&format!("register_{}_auto(L, true);", name));
+                cpp.line("for (const auto &fn : extra_funcs) {");
+                cpp.indent_right();
+                cpp.line("add_func(L, fn.name, fn.func);");
+                cpp.indent_left();
+                cpp.line("}");
+                cpp.line(&format!("luasteam::add_callback_listener_{}(L);", gs_name));
                 cpp.line("lua_pushvalue(L, -1);");
                 cpp.line(&format!(
                     "{}_ref = luaL_ref(L, LUA_REGISTRYINDEX);",

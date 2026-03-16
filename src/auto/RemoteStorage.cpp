@@ -386,8 +386,9 @@ void RemoteStorageCallbackListener::OnRemoteStorageLocalFileChange(RemoteStorage
 RemoteStorageCallbackListener *RemoteStorage_listener = nullptr;
 } // namespace
 
-void init_RemoteStorage_auto(lua_State *L) { if (RemoteStorage_listener != nullptr) return; RemoteStorage_listener = new RemoteStorageCallbackListener(); }
+void add_callback_listener_RemoteStorage(lua_State *L) { if (RemoteStorage_listener != nullptr) return; RemoteStorage_listener = new RemoteStorageCallbackListener(); }
 void shutdown_RemoteStorage_auto(lua_State *L) {
+	if (RemoteStorage_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, RemoteStorage_ref);
 	RemoteStorage_ref = LUA_NOREF;
 	delete RemoteStorage_listener; RemoteStorage_listener = nullptr;
@@ -1968,9 +1969,13 @@ void register_RemoteStorage_auto(lua_State *L) {
 	add_func(L, "EndFileWriteBatch", luasteam_RemoteStorage_EndFileWriteBatch);
 }
 
-void add_RemoteStorage_auto(lua_State *L) {
-	lua_createtable(L, 0, 59);
+void add_RemoteStorage_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::RemoteStorage_count + static_cast<int>(extra_funcs.size()) + 25);
 	register_RemoteStorage_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_RemoteStorage(L);
 	lua_pushvalue(L, -1);
 	RemoteStorage_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "RemoteStorage");

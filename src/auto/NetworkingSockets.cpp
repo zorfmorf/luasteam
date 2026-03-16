@@ -56,8 +56,9 @@ void NetworkingSocketsCallbackListener::OnSteamNetworkingFakeIPResult(SteamNetwo
 NetworkingSocketsCallbackListener *NetworkingSockets_listener = nullptr;
 } // namespace
 
-void init_NetworkingSockets_auto(lua_State *L) { if (NetworkingSockets_listener != nullptr) return; NetworkingSockets_listener = new NetworkingSocketsCallbackListener(); }
+void add_callback_listener_NetworkingSockets(lua_State *L) { if (NetworkingSockets_listener != nullptr) return; NetworkingSockets_listener = new NetworkingSocketsCallbackListener(); }
 void shutdown_NetworkingSockets_auto(lua_State *L) {
+	if (NetworkingSockets_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, NetworkingSockets_ref);
 	NetworkingSockets_ref = LUA_NOREF;
 	delete NetworkingSockets_listener; NetworkingSockets_listener = nullptr;
@@ -687,9 +688,13 @@ void register_NetworkingSockets_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetRemoteFakeIPForConnection", is_gs ? luasteam_NetworkingSockets_GetRemoteFakeIPForConnection_gs : luasteam_NetworkingSockets_GetRemoteFakeIPForConnection_user);
 }
 
-void add_NetworkingSockets_auto(lua_State *L) {
-	lua_createtable(L, 0, 35);
+void add_NetworkingSockets_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::NetworkingSockets_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_NetworkingSockets_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_NetworkingSockets(L);
 	lua_pushvalue(L, -1);
 	NetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "NetworkingSockets");
@@ -749,16 +754,21 @@ void GameServerNetworkingSocketsCallbackListener::OnSteamNetworkingFakeIPResult(
 GameServerNetworkingSocketsCallbackListener *GameServerNetworkingSockets_listener = nullptr;
 } // namespace
 
-void init_GameServerNetworkingSockets_auto(lua_State *L) { if (GameServerNetworkingSockets_listener != nullptr) return; GameServerNetworkingSockets_listener = new GameServerNetworkingSocketsCallbackListener(); }
+void add_callback_listener_GameServerNetworkingSockets(lua_State *L) { if (GameServerNetworkingSockets_listener != nullptr) return; GameServerNetworkingSockets_listener = new GameServerNetworkingSocketsCallbackListener(); }
 void shutdown_GameServerNetworkingSockets_auto(lua_State *L) {
+	if (GameServerNetworkingSockets_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerNetworkingSockets_ref);
 	GameServerNetworkingSockets_ref = LUA_NOREF;
 	delete GameServerNetworkingSockets_listener; GameServerNetworkingSockets_listener = nullptr;
 }
 
-void add_GameServerNetworkingSockets_auto(lua_State *L) {
-	lua_createtable(L, 0, 35);
+void add_GameServerNetworkingSockets_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerNetworkingSockets_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_NetworkingSockets_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerNetworkingSockets(L);
 	lua_pushvalue(L, -1);
 	GameServerNetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerNetworkingSockets");

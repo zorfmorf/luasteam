@@ -41,8 +41,9 @@ void NetworkingMessagesCallbackListener::OnSteamNetworkingMessagesSessionFailed(
 NetworkingMessagesCallbackListener *NetworkingMessages_listener = nullptr;
 } // namespace
 
-void init_NetworkingMessages_auto(lua_State *L) { if (NetworkingMessages_listener != nullptr) return; NetworkingMessages_listener = new NetworkingMessagesCallbackListener(); }
+void add_callback_listener_NetworkingMessages(lua_State *L) { if (NetworkingMessages_listener != nullptr) return; NetworkingMessages_listener = new NetworkingMessagesCallbackListener(); }
 void shutdown_NetworkingMessages_auto(lua_State *L) {
+	if (NetworkingMessages_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, NetworkingMessages_ref);
 	NetworkingMessages_ref = LUA_NOREF;
 	delete NetworkingMessages_listener; NetworkingMessages_listener = nullptr;
@@ -132,9 +133,13 @@ void register_NetworkingMessages_auto(lua_State *L, bool is_gs) {
 	add_func(L, "GetSessionConnectionInfo", is_gs ? luasteam_NetworkingMessages_GetSessionConnectionInfo_gs : luasteam_NetworkingMessages_GetSessionConnectionInfo_user);
 }
 
-void add_NetworkingMessages_auto(lua_State *L) {
-	lua_createtable(L, 0, 5);
+void add_NetworkingMessages_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::NetworkingMessages_count + static_cast<int>(extra_funcs.size()) + 2);
 	register_NetworkingMessages_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_NetworkingMessages(L);
 	lua_pushvalue(L, -1);
 	NetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "NetworkingMessages");
@@ -179,16 +184,21 @@ void GameServerNetworkingMessagesCallbackListener::OnSteamNetworkingMessagesSess
 GameServerNetworkingMessagesCallbackListener *GameServerNetworkingMessages_listener = nullptr;
 } // namespace
 
-void init_GameServerNetworkingMessages_auto(lua_State *L) { if (GameServerNetworkingMessages_listener != nullptr) return; GameServerNetworkingMessages_listener = new GameServerNetworkingMessagesCallbackListener(); }
+void add_callback_listener_GameServerNetworkingMessages(lua_State *L) { if (GameServerNetworkingMessages_listener != nullptr) return; GameServerNetworkingMessages_listener = new GameServerNetworkingMessagesCallbackListener(); }
 void shutdown_GameServerNetworkingMessages_auto(lua_State *L) {
+	if (GameServerNetworkingMessages_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerNetworkingMessages_ref);
 	GameServerNetworkingMessages_ref = LUA_NOREF;
 	delete GameServerNetworkingMessages_listener; GameServerNetworkingMessages_listener = nullptr;
 }
 
-void add_GameServerNetworkingMessages_auto(lua_State *L) {
-	lua_createtable(L, 0, 5);
+void add_GameServerNetworkingMessages_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerNetworkingMessages_count + static_cast<int>(extra_funcs.size()) + 2);
 	register_NetworkingMessages_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerNetworkingMessages(L);
 	lua_pushvalue(L, -1);
 	GameServerNetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerNetworkingMessages");

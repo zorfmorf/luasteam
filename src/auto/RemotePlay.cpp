@@ -56,8 +56,9 @@ void RemotePlayCallbackListener::OnSteamRemotePlayTogetherGuestInvite(SteamRemot
 RemotePlayCallbackListener *RemotePlay_listener = nullptr;
 } // namespace
 
-void init_RemotePlay_auto(lua_State *L) { if (RemotePlay_listener != nullptr) return; RemotePlay_listener = new RemotePlayCallbackListener(); }
+void add_callback_listener_RemotePlay(lua_State *L) { if (RemotePlay_listener != nullptr) return; RemotePlay_listener = new RemotePlayCallbackListener(); }
 void shutdown_RemotePlay_auto(lua_State *L) {
+	if (RemotePlay_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, RemotePlay_ref);
 	RemotePlay_ref = LUA_NOREF;
 	delete RemotePlay_listener; RemotePlay_listener = nullptr;
@@ -275,9 +276,13 @@ void register_RemotePlay_auto(lua_State *L) {
 	add_func(L, "SetMouseCursor", luasteam_RemotePlay_SetMouseCursor);
 }
 
-void add_RemotePlay_auto(lua_State *L) {
-	lua_createtable(L, 0, 15);
+void add_RemotePlay_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::RemotePlay_count + static_cast<int>(extra_funcs.size()) + 3);
 	register_RemotePlay_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_RemotePlay(L);
 	lua_pushvalue(L, -1);
 	RemotePlay_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "RemotePlay");

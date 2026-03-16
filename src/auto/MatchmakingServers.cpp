@@ -4,7 +4,7 @@ namespace luasteam {
 
 int MatchmakingServers_ref = LUA_NOREF;
 
-void init_MatchmakingServers_auto(lua_State *L) {}
+void add_callback_listener_MatchmakingServers(lua_State *L) {}
 void shutdown_MatchmakingServers_auto(lua_State *L) {
 	luaL_unref(L, LUA_REGISTRYINDEX, MatchmakingServers_ref);
 	MatchmakingServers_ref = LUA_NOREF;
@@ -269,9 +269,13 @@ void register_MatchmakingServers_auto(lua_State *L) {
 	add_func(L, "CancelServerQuery", luasteam_MatchmakingServers_CancelServerQuery);
 }
 
-void add_MatchmakingServers_auto(lua_State *L) {
-	lua_createtable(L, 0, 16);
+void add_MatchmakingServers_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::MatchmakingServers_count + static_cast<int>(extra_funcs.size()) + 0);
 	register_MatchmakingServers_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_MatchmakingServers(L);
 	lua_pushvalue(L, -1);
 	MatchmakingServers_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "MatchmakingServers");

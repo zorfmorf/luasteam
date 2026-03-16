@@ -1,6 +1,7 @@
 #include "NetworkingMessages.hpp"
 #include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
+#include <cassert>
 
 // ========================================
 // ======= SteamNetworkingMessages ========
@@ -31,22 +32,22 @@ static int luasteam_ReceiveMessagesOnChannel_gs(lua_State *L) { return luasteam_
 
 namespace luasteam {
 
-void add_NetworkingMessages(lua_State *L) {
-    lua_createtable(L, 0, luasteam::NetworkingMessages_count + 1);
-    register_NetworkingMessages_auto(L, false);
-    add_func(L, "ReceiveMessagesOnChannel", luasteam_ReceiveMessagesOnChannel_user);
-    lua_pushvalue(L, -1);
-    luasteam::NetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "NetworkingMessages");
+void add_NetworkingMessages(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_NetworkingMessages_auto(L, {
+                                       {"ReceiveMessagesOnChannel", luasteam_ReceiveMessagesOnChannel_user},
+                                   });
 }
 
-void add_GameServerNetworkingMessages(lua_State *L) {
-    lua_createtable(L, 0, luasteam::GameServerNetworkingMessages_count + 1);
-    register_NetworkingMessages_auto(L, true);
-    add_func(L, "ReceiveMessagesOnChannel", luasteam_ReceiveMessagesOnChannel_gs);
-    lua_pushvalue(L, -1);
-    luasteam::GameServerNetworkingMessages_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "GameServerNetworkingMessages");
+void add_GameServerNetworkingMessages(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_GameServerNetworkingMessages_auto(L, {
+                                                 {"ReceiveMessagesOnChannel", luasteam_ReceiveMessagesOnChannel_gs},
+                                             });
 }
+
+void shutdown_NetworkingMessages(lua_State *L) { shutdown_NetworkingMessages_auto(L); }
+
+void shutdown_GameServerNetworkingMessages(lua_State *L) { shutdown_GameServerNetworkingMessages_auto(L); }
 
 } // namespace luasteam

@@ -146,8 +146,9 @@ void UtilsCallbackListener::OnFilterTextDictionaryChanged(FilterTextDictionaryCh
 UtilsCallbackListener *Utils_listener = nullptr;
 } // namespace
 
-void init_Utils_auto(lua_State *L) { if (Utils_listener != nullptr) return; Utils_listener = new UtilsCallbackListener(); }
+void add_callback_listener_Utils(lua_State *L) { if (Utils_listener != nullptr) return; Utils_listener = new UtilsCallbackListener(); }
 void shutdown_Utils_auto(lua_State *L) {
+	if (Utils_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Utils_ref);
 	Utils_ref = LUA_NOREF;
 	delete Utils_listener; Utils_listener = nullptr;
@@ -697,9 +698,13 @@ void register_Utils_auto(lua_State *L, bool is_gs) {
 	add_func(L, "DismissGamepadTextInput", is_gs ? luasteam_Utils_DismissGamepadTextInput_gs : luasteam_Utils_DismissGamepadTextInput_user);
 }
 
-void add_Utils_auto(lua_State *L) {
-	lua_createtable(L, 0, 36);
+void add_Utils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Utils_count + static_cast<int>(extra_funcs.size()) + 9);
 	register_Utils_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Utils(L);
 	lua_pushvalue(L, -1);
 	Utils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Utils");
@@ -849,16 +854,21 @@ void GameServerUtilsCallbackListener::OnFilterTextDictionaryChanged(FilterTextDi
 GameServerUtilsCallbackListener *GameServerUtils_listener = nullptr;
 } // namespace
 
-void init_GameServerUtils_auto(lua_State *L) { if (GameServerUtils_listener != nullptr) return; GameServerUtils_listener = new GameServerUtilsCallbackListener(); }
+void add_callback_listener_GameServerUtils(lua_State *L) { if (GameServerUtils_listener != nullptr) return; GameServerUtils_listener = new GameServerUtilsCallbackListener(); }
 void shutdown_GameServerUtils_auto(lua_State *L) {
+	if (GameServerUtils_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerUtils_ref);
 	GameServerUtils_ref = LUA_NOREF;
 	delete GameServerUtils_listener; GameServerUtils_listener = nullptr;
 }
 
-void add_GameServerUtils_auto(lua_State *L) {
-	lua_createtable(L, 0, 36);
+void add_GameServerUtils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerUtils_count + static_cast<int>(extra_funcs.size()) + 9);
 	register_Utils_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerUtils(L);
 	lua_pushvalue(L, -1);
 	GameServerUtils_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerUtils");

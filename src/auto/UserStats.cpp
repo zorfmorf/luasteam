@@ -206,8 +206,9 @@ void UserStatsCallbackListener::OnGSStatsUnloaded(GSStatsUnloaded_t *data) {
 UserStatsCallbackListener *UserStats_listener = nullptr;
 } // namespace
 
-void init_UserStats_auto(lua_State *L) { if (UserStats_listener != nullptr) return; UserStats_listener = new UserStatsCallbackListener(); }
+void add_callback_listener_UserStats(lua_State *L) { if (UserStats_listener != nullptr) return; UserStats_listener = new UserStatsCallbackListener(); }
 void shutdown_UserStats_auto(lua_State *L) {
+	if (UserStats_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, UserStats_ref);
 	UserStats_ref = LUA_NOREF;
 	delete UserStats_listener; UserStats_listener = nullptr;
@@ -1195,9 +1196,13 @@ void register_UserStats_auto(lua_State *L) {
 	add_func(L, "GetAchievementProgressLimitsFloat", luasteam_UserStats_GetAchievementProgressLimitsFloat);
 }
 
-void add_UserStats_auto(lua_State *L) {
-	lua_createtable(L, 0, 44);
+void add_UserStats_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::UserStats_count + static_cast<int>(extra_funcs.size()) + 13);
 	register_UserStats_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_UserStats(L);
 	lua_pushvalue(L, -1);
 	UserStats_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "UserStats");

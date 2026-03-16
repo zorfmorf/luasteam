@@ -1,6 +1,7 @@
 #include "NetworkingSockets.hpp"
 #include "SteamNetworkingMessage.hpp"
 #include "auto/auto.hpp"
+#include <cassert>
 
 // ======================================
 // ======= SteamNetworkingSockets =======
@@ -81,26 +82,25 @@ EXTERN int luasteam_SendMessages_gameserver(lua_State *L) { return luasteam_Send
 
 namespace luasteam {
 
-void add_NetworkingSockets(lua_State *L) {
-    lua_createtable(L, 0, luasteam::NetworkingSockets_count + 3);
-    register_NetworkingSockets_auto(L, false);
-    add_func(L, "ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_user);
-    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_user);
-    add_func(L, "SendMessages", luasteam_SendMessages_user);
-    lua_pushvalue(L, -1);
-    luasteam::NetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "NetworkingSockets");
+void add_NetworkingSockets(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_NetworkingSockets_auto(L, {
+                                      {"ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_user},
+                                      {"ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_user},
+                                      {"SendMessages", luasteam_SendMessages_user},
+                                  });
 }
 
-void add_GameServerNetworkingSockets(lua_State *L) {
-    lua_createtable(L, 0, luasteam::GameServerNetworkingSockets_count + 3);
-    register_NetworkingSockets_auto(L, true);
-    add_func(L, "ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_gameserver);
-    add_func(L, "ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_gameserver);
-    add_func(L, "SendMessages", luasteam_SendMessages_gameserver);
-    lua_pushvalue(L, -1);
-    luasteam::GameServerNetworkingSockets_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_setfield(L, -2, "GameServerNetworkingSockets");
+void add_GameServerNetworkingSockets(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+    assert(extra_funcs.size() == 0);
+    add_GameServerNetworkingSockets_auto(L, {
+                                                {"ReceiveMessagesOnConnection", luasteam_ReceiveMessagesOnConnection_gameserver},
+                                                {"ReceiveMessagesOnPollGroup", luasteam_ReceiveMessagesOnPollGroup_gameserver},
+                                                {"SendMessages", luasteam_SendMessages_gameserver},
+                                            });
 }
+
+void shutdown_NetworkingSockets(lua_State *L) { shutdown_NetworkingSockets_auto(L); }
+void shutdown_GameServerNetworkingSockets(lua_State *L) { shutdown_GameServerNetworkingSockets_auto(L); }
 
 } // namespace luasteam

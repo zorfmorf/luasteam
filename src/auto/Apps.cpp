@@ -86,8 +86,9 @@ void AppsCallbackListener::OnTimedTrialStatus(TimedTrialStatus_t *data) {
 AppsCallbackListener *Apps_listener = nullptr;
 } // namespace
 
-void init_Apps_auto(lua_State *L) { if (Apps_listener != nullptr) return; Apps_listener = new AppsCallbackListener(); }
+void add_callback_listener_Apps(lua_State *L) { if (Apps_listener != nullptr) return; Apps_listener = new AppsCallbackListener(); }
 void shutdown_Apps_auto(lua_State *L) {
+	if (Apps_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Apps_ref);
 	Apps_ref = LUA_NOREF;
 	delete Apps_listener; Apps_listener = nullptr;
@@ -588,9 +589,13 @@ void register_Apps_auto(lua_State *L) {
 	add_func(L, "SetActiveBeta", luasteam_Apps_SetActiveBeta);
 }
 
-void add_Apps_auto(lua_State *L) {
-	lua_createtable(L, 0, 33);
+void add_Apps_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Apps_count + static_cast<int>(extra_funcs.size()) + 5);
 	register_Apps_auto(L);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Apps(L);
 	lua_pushvalue(L, -1);
 	Apps_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Apps");

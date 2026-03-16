@@ -101,8 +101,9 @@ void InventoryCallbackListener::OnSteamInventoryRequestPricesResult(SteamInvento
 InventoryCallbackListener *Inventory_listener = nullptr;
 } // namespace
 
-void init_Inventory_auto(lua_State *L) { if (Inventory_listener != nullptr) return; Inventory_listener = new InventoryCallbackListener(); }
+void add_callback_listener_Inventory(lua_State *L) { if (Inventory_listener != nullptr) return; Inventory_listener = new InventoryCallbackListener(); }
 void shutdown_Inventory_auto(lua_State *L) {
+	if (Inventory_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, Inventory_ref);
 	Inventory_ref = LUA_NOREF;
 	delete Inventory_listener; Inventory_listener = nullptr;
@@ -980,9 +981,13 @@ void register_Inventory_auto(lua_State *L, bool is_gs) {
 	add_func(L, "InspectItem", is_gs ? luasteam_Inventory_InspectItem_gs : luasteam_Inventory_InspectItem_user);
 }
 
-void add_Inventory_auto(lua_State *L) {
-	lua_createtable(L, 0, 37);
+void add_Inventory_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::Inventory_count + static_cast<int>(extra_funcs.size()) + 6);
 	register_Inventory_auto(L, false);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_Inventory(L);
 	lua_pushvalue(L, -1);
 	Inventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "Inventory");
@@ -1087,16 +1092,21 @@ void GameServerInventoryCallbackListener::OnSteamInventoryRequestPricesResult(St
 GameServerInventoryCallbackListener *GameServerInventory_listener = nullptr;
 } // namespace
 
-void init_GameServerInventory_auto(lua_State *L) { if (GameServerInventory_listener != nullptr) return; GameServerInventory_listener = new GameServerInventoryCallbackListener(); }
+void add_callback_listener_GameServerInventory(lua_State *L) { if (GameServerInventory_listener != nullptr) return; GameServerInventory_listener = new GameServerInventoryCallbackListener(); }
 void shutdown_GameServerInventory_auto(lua_State *L) {
+	if (GameServerInventory_listener == nullptr) return;
 	luaL_unref(L, LUA_REGISTRYINDEX, GameServerInventory_ref);
 	GameServerInventory_ref = LUA_NOREF;
 	delete GameServerInventory_listener; GameServerInventory_listener = nullptr;
 }
 
-void add_GameServerInventory_auto(lua_State *L) {
-	lua_createtable(L, 0, 37);
+void add_GameServerInventory_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
+	lua_createtable(L, 0, luasteam::GameServerInventory_count + static_cast<int>(extra_funcs.size()) + 6);
 	register_Inventory_auto(L, true);
+	for (const auto &fn : extra_funcs) {
+		add_func(L, fn.name, fn.func);
+	}
+	luasteam::add_callback_listener_GameServerInventory(L);
 	lua_pushvalue(L, -1);
 	GameServerInventory_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	lua_setfield(L, -2, "GameServerInventory");

@@ -414,6 +414,7 @@ impl Generator {
         h.line("#define LUASTEAM_AUTO_HPP");
         h.preceeding_blank_line();
         h.line("#include \"../Common.hpp\"");
+        h.line("#include <initializer_list>");
         h.line("#include <vector>");
         h.preceeding_blank_line();
         h.line("namespace luasteam {");
@@ -425,9 +426,8 @@ impl Generator {
         h.line("void add_structs_auto(lua_State *L);");
         // Callback interface lifecycle + check functions
         if !self.added_callback_interfaces.is_empty() {
-            h.line("void init_callback_interfaces_auto(lua_State *L);");
+            h.line("void add_callback_interfaces_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs = {});");
             h.line("void shutdown_callback_interfaces_auto(lua_State *L);");
-            h.line("void add_callback_interfaces_auto(lua_State *L);");
             let mut cb_sorted: Vec<_> = self.added_callback_interfaces.iter().collect();
             cb_sorted.sort();
             for name in cb_sorted {
@@ -463,8 +463,10 @@ impl Generator {
             } else {
                 h.line(&format!("void register_{}_auto(lua_State *L);", name));
             }
-            h.line(&format!("void add_{}_auto(lua_State *L);", name));
-            h.line(&format!("void init_{}_auto(lua_State *L);", name));
+            h.line(&format!(
+                "void add_{}_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs = {{}});",
+                name
+            ));
             h.line(&format!("void shutdown_{}_auto(lua_State *L);", name));
             h.line(&format!("extern int {}_ref;", name));
             if let Some(&count) = interface_counts.get(name) {
@@ -472,8 +474,10 @@ impl Generator {
             }
         }
         for gs_name in gs_names {
-            h.line(&format!("void add_{}_auto(lua_State *L);", gs_name));
-            h.line(&format!("void init_{}_auto(lua_State *L);", gs_name));
+            h.line(&format!(
+                "void add_{}_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs = {{}});",
+                gs_name
+            ));
             h.line(&format!("void shutdown_{}_auto(lua_State *L);", gs_name));
             h.line(&format!("extern int {}_ref;", gs_name));
             if let Some(&count) = interface_counts.get(gs_name) {
