@@ -8,12 +8,20 @@ Installation
 Download a pre-compiled binary from the `releases page
 <https://github.com/uspgamedev/luasteam/releases>`_. Pick the binary for your
 platform and rename it to ``luasteam.dll`` (Windows) or ``luasteam.so`` (Linux) or
-``luasteam.dylib`` (macOS). Copy it to the same directory as your Lua files so that
+``luasteam.so`` (macOS). Copy it to the same directory as your Lua files so that
 ``require 'luasteam'`` works.
 
-See the ``examples/basic`` directory for a minimal working example.
+When deploying via LOVE, you probably want to put the luasteam binary next to the ``.love`` file. Note that, by default, Lua will not load binaries from there, so you need to modify your ``package.cpath`` variable to tell Lua where to look for libraries. One example of how to do that is below. Also see the `Lua Reference <https://www.lua.org/manual/5.1/manual.html#pdf-package.loaders>`_.
 
-On Linux you may need ``LD_LIBRARY_PATH=. love ...`` when running with LÖVE. This tells bash to look in the current directory for shared libraries. To allow placing the binaries next to the love file on all OSs, you may need to use `this hack <https://github.com/MarvellousSoft/MarvInc/blob/e914dcd15d7b538793c7dcac27d3350d716d47db/marv/main.lua#L10-L13>`_.
+.. code-block:: lua
+
+    local ext = package.config:sub(1, 1) == '\\' and 'dll' or 'so'
+    package.cpath = string.format("%s;%s/?.%s", package.cpath, love.filesystem.getSourceBaseDirectory(), ext)
+
+
+On Linux you *may* need ``LD_LIBRARY_PATH=. lovec ...`` when running with LÖVE. This tells bash to look in the current directory for shared libraries.
+
+See the ``examples/basic`` directory for a minimal working example.
 
 .. warning::
 

@@ -1,4 +1,3 @@
-package.cpath = package.cpath .. ";./?.dll"
 local before = os.clock()
 local Steam = require('luasteam')
 print("luasteam loaded in " .. (os.clock() - before) .. " seconds!")

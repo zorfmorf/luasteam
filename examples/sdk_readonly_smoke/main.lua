@@ -1,5 +1,3 @@
-package.cpath = package.cpath .. ";./?.dll;./?.so"
-
 local Steam = require("luasteam")
 
 local started = os.clock()
