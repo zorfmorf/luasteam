@@ -16,6 +16,7 @@ EXTERN int luaopen_luasteam(lua_State *L) {
     luasteam::add_structs_auto(L);
     luasteam::add_callback_interfaces_auto(L);
     luasteam::add_SteamNetworkingMessage_t(L, {});
+    luasteam::add_interface_placeholders(L);
 
     luasteam::set_steam_table(L, -1);
     return 1;

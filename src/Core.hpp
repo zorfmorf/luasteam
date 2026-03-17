@@ -7,6 +7,7 @@ namespace luasteam {
 
 // Adds functions SteamAPI_*
 void add_Core(lua_State *L);
+void add_interface_placeholders(lua_State *L);
 
 } // namespace luasteam
 

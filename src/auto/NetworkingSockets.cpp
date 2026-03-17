@@ -689,7 +689,7 @@ void register_NetworkingSockets_auto(lua_State *L, bool is_gs) {
 }
 
 void add_NetworkingSockets_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::NetworkingSockets_count + static_cast<int>(extra_funcs.size()) + 3);
+	lua_getfield(L, -1, "NetworkingSockets");
 	register_NetworkingSockets_auto(L, false);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);
@@ -763,7 +763,7 @@ void shutdown_GameServerNetworkingSockets_auto(lua_State *L) {
 }
 
 void add_GameServerNetworkingSockets_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::GameServerNetworkingSockets_count + static_cast<int>(extra_funcs.size()) + 3);
+	lua_getfield(L, -1, "GameServerNetworkingSockets");
 	register_NetworkingSockets_auto(L, true);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

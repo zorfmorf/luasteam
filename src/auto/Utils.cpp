@@ -699,7 +699,7 @@ void register_Utils_auto(lua_State *L, bool is_gs) {
 }
 
 void add_Utils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::Utils_count + static_cast<int>(extra_funcs.size()) + 9);
+	lua_getfield(L, -1, "Utils");
 	register_Utils_auto(L, false);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);
@@ -863,7 +863,7 @@ void shutdown_GameServerUtils_auto(lua_State *L) {
 }
 
 void add_GameServerUtils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::GameServerUtils_count + static_cast<int>(extra_funcs.size()) + 9);
+	lua_getfield(L, -1, "GameServerUtils");
 	register_Utils_auto(L, true);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

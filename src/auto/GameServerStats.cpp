@@ -267,7 +267,7 @@ void register_GameServerStats_auto(lua_State *L) {
 }
 
 void add_GameServerStats_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::GameServerStats_count + static_cast<int>(extra_funcs.size()) + 2);
+	lua_getfield(L, -1, "GameServerStats");
 	register_GameServerStats_auto(L);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

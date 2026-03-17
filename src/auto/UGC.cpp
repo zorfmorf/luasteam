@@ -2524,7 +2524,7 @@ void register_UGC_auto(lua_State *L, bool is_gs) {
 }
 
 void add_UGC_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::UGC_count + static_cast<int>(extra_funcs.size()) + 19);
+	lua_getfield(L, -1, "UGC");
 	register_UGC_auto(L, false);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);
@@ -2838,7 +2838,7 @@ void shutdown_GameServerUGC_auto(lua_State *L) {
 }
 
 void add_GameServerUGC_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::GameServerUGC_count + static_cast<int>(extra_funcs.size()) + 19);
+	lua_getfield(L, -1, "GameServerUGC");
 	register_UGC_auto(L, true);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

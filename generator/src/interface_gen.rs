@@ -605,10 +605,7 @@ impl Generator {
             name
         ));
         cpp.indent_right();
-        cpp.line(&format!(
-            "lua_createtable(L, 0, luasteam::{}_count + static_cast<int>(extra_funcs.size()) + {});",
-            name, callbacks.len() + interface_enum_values_count
-        ));
+        cpp.line(&format!("lua_getfield(L, -1, \"{}\");", name));
         cpp.line(&format!(
             "register_{}_auto({});",
             name,
@@ -663,10 +660,7 @@ impl Generator {
                     gs_name
                 ));
                 cpp.indent_right();
-                cpp.line(&format!(
-                    "lua_createtable(L, 0, luasteam::{}_count + static_cast<int>(extra_funcs.size()) + {});",
-                    gs_name, callbacks.len() + interface_enum_values_count,
-                ));
+                cpp.line(&format!("lua_getfield(L, -1, \"{}\");", gs_name));
                 cpp.line(&format!("register_{}_auto(L, true);", name));
                 cpp.line("for (const auto &fn : extra_funcs) {");
                 cpp.indent_right();

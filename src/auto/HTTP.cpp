@@ -461,7 +461,7 @@ void register_HTTP_auto(lua_State *L, bool is_gs) {
 }
 
 void add_HTTP_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::HTTP_count + static_cast<int>(extra_funcs.size()) + 3);
+	lua_getfield(L, -1, "HTTP");
 	register_HTTP_auto(L, false);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);
@@ -535,7 +535,7 @@ void shutdown_GameServerHTTP_auto(lua_State *L) {
 }
 
 void add_GameServerHTTP_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::GameServerHTTP_count + static_cast<int>(extra_funcs.size()) + 3);
+	lua_getfield(L, -1, "GameServerHTTP");
 	register_HTTP_auto(L, true);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

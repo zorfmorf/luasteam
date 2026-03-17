@@ -125,7 +125,7 @@ void register_Client_auto(lua_State *L, bool is_gs) {
 }
 
 void add_Client_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::Client_count + static_cast<int>(extra_funcs.size()) + 0);
+	lua_getfield(L, -1, "Client");
 	register_Client_auto(L, false);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);
@@ -145,7 +145,7 @@ void shutdown_GameServerClient_auto(lua_State *L) {
 }
 
 void add_GameServerClient_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::GameServerClient_count + static_cast<int>(extra_funcs.size()) + 0);
+	lua_getfield(L, -1, "GameServerClient");
 	register_Client_auto(L, true);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

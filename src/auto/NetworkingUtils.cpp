@@ -411,7 +411,7 @@ void register_NetworkingUtils_auto(lua_State *L) {
 }
 
 void add_NetworkingUtils_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::NetworkingUtils_count + static_cast<int>(extra_funcs.size()) + 1);
+	lua_getfield(L, -1, "NetworkingUtils");
 	register_NetworkingUtils_auto(L);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);

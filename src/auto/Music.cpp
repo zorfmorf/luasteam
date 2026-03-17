@@ -157,7 +157,7 @@ void register_Music_auto(lua_State *L) {
 }
 
 void add_Music_auto(lua_State *L, std::initializer_list<luaL_Reg> extra_funcs) {
-	lua_createtable(L, 0, luasteam::Music_count + static_cast<int>(extra_funcs.size()) + 2);
+	lua_getfield(L, -1, "Music");
 	register_Music_auto(L);
 	for (const auto &fn : extra_funcs) {
 		add_func(L, fn.name, fn.func);
