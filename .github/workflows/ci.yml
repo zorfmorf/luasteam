@@ -141,3 +141,14 @@ jobs:
           files: |
             build/**/*.dll
             build/**/*.so
+      - uses: actions/checkout@v6
+        if: github.event.action == 'published'
+        with:
+          fetch-depth: 0
+      - name: Update stable tag
+        if: github.event.action == 'published'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f stable ${{ github.event.release.tag_name }}
+          git push origin stable --force
