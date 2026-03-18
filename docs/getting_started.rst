@@ -13,7 +13,7 @@ platform and rename it to ``luasteam.dll`` (Windows) or ``luasteam.so`` (Linux) 
 
 See the ``examples/basic`` directory for a minimal working example.
 
-On Linux you may need ``LD_LIBRARY_PATH=. love ...`` when running with LÖVE. This tells bash to look in the current directory for shared libraries.
+On Linux you may need ``LD_LIBRARY_PATH=. love ...`` when running with LÖVE. This tells bash to look in the current directory for shared libraries. To allow placing the binaries next to the love file on all OSs, you may need to use `this hack <https://github.com/MarvellousSoft/MarvInc/blob/e914dcd15d7b538793c7dcac27d3350d716d47db/marv/main.lua#L10-L13>`_.
 
 .. warning::
 
